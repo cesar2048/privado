@@ -1,0 +1,69 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mo: <http://purl.org/ontology/mo/> .
+@prefix af: <http://purl.org/ontology/af/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix event: <http://purl.org/NET/c4dm/event.owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix tl: <http://purl.org/NET/c4dm/timeline.owl#> .
+@prefix vamp: <http://purl.org/ontology/vamp/> .
+@prefix : <#> .
+
+:transform_0_noisy a vamp:Transform ;
+    vamp:plugin <http://vamp-plugins.org/rdf/plugins/vamp-aubio#aubiosilence> ;
+    vamp:step_size "1024"^^xsd:int ; 
+    vamp:block_size "1024"^^xsd:int ; 
+    vamp:sample_rate "44100"^^xsd:float ; 
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "silencethreshold" ] ;
+        vamp:value "-40"^^xsd:float ;
+    ] ;
+    vamp:output <http://vamp-plugins.org/rdf/plugins/vamp-aubio#aubiosilence_output_noisy> .
+
+
+:transform_0_coefficients a vamp:Transform ;
+    vamp:plugin <http://vamp-plugins.org/rdf/plugins/qm-vamp-plugins#qm-mfcc> ;
+    vamp:step_size "1024"^^xsd:int ; 
+    vamp:block_size "2048"^^xsd:int ; 
+    vamp:sample_rate "44100"^^xsd:float ; 
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "logpower" ] ;
+        vamp:value "1"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "nceps" ] ;
+        vamp:value "20"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "wantc0" ] ;
+        vamp:value "1"^^xsd:float ;
+    ] ;
+    vamp:output <http://vamp-plugins.org/rdf/plugins/qm-vamp-plugins#qm-mfcc_output_coefficients> .
+
+:transform_0_pitch a vamp:Transform ;
+    vamp:plugin <http://vamp-plugins.org/rdf/plugins/vamp-aubio#aubiopitch> ;
+    vamp:step_size "256"^^xsd:int ; 
+    vamp:block_size "1024"^^xsd:int ; 
+	vamp:sample_rate "44100"^^xsd:float ; 
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "maxfreq" ] ;
+        vamp:value "1900.0"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "minfreq" ] ;
+        vamp:value "50.00"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "pitchtype" ] ;
+        vamp:value "4"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "silencethreshold" ] ;
+        vamp:value "-40"^^xsd:float ;
+    ] ;
+    vamp:parameter_binding [
+        vamp:parameter [ vamp:identifier "wraprange" ] ;
+        vamp:value "0"^^xsd:float ;
+    ] ;
+    vamp:output <http://vamp-plugins.org/rdf/plugins/vamp-aubio#aubiopitch_output_frequency> .
