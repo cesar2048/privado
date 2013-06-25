@@ -2,6 +2,7 @@
 #
 #	Comments:
 #
+$octave 	= "octave.exe";
 
 sub main
 {
@@ -22,7 +23,6 @@ sub main
 	# call octave
 	#
 	
-	$octave 	= "C:\\Program Files\\Octave\\3.2.4_gcc-4.4.0\\bin\\octave-3.2.4.exe";
 	$command	= " \"${octave}\" -q funciones\\main.m ";
 	system ($command);
 }

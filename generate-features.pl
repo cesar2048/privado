@@ -7,9 +7,9 @@ sub generate_features;
 
 # global variables
 our($octave, $annotator, $audio_dir, $temp_dir);
-$annotator 	= "G:\\Enrique\\Documentos\\Univer~1\\Semestres\\Privado\\software\\sonic-annotator-1.0-win32\\sonic-annotator.exe";
-$octave 	= "C:\\Program Files\\Octave\\3.2.4_gcc-4.4.0\\bin\\octave-3.2.4.exe";
-$audio_dir 	= "datos/";
+$annotator 	= "sonic-annotator.exe";
+$octave 	= "octave.exe";
+$audio_dir 	= "data/";
 $temp_dir	= "temp/";
 
 sub main
