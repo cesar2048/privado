@@ -137,10 +137,10 @@ else
 	label		= base2dec (label, 10)
 	
 	pitchData			= csvread(filePitch);
-	pitchData		 	= pitchFeatures(pitchData, 150, 0, 0, 1);
+	pitchData		 	= pitchFeatures(pitchData, 150, 1, 0, 0);	% data, limit, bData, bDeriv, bStats
 	
 	mfccData			= csvread(fileMfcc);
-	mfccData			= mfccFeatures(mfccData, 50, 3, 0, 0);
+	mfccData			= mfccFeatures(mfccData, 50, 20, 0, 1);		% dta, limit, nCoeficients, bData, bStats
 	
 	%% append data
 	fid = fopen(outputFile, "r");

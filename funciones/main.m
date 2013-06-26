@@ -1,31 +1,63 @@
 %% Machine Learning System
 
-%% =========== Initialization =============
-
-clear ; close all;
-
-%% Setup NN parameters
-addpath("./funciones");
-input_layer_size  	= 303;	% 303 MFCC values + pitch values
-hidden_layer_size 	= 20;	% 20 hidden units
-num_labels		 	= 2;	% 6 labels, [enojado|tranquilo]
-lambda 				= 1;
-max_iter 			= 200;
-
-fprintf('Loading features ...\n')
-data = load("temp/features.csv");
-X =  data(:,2:end);		% something like [1504 x 20]
-y =  data(:,1);			% something like [1504 x 1]
-m = size(X, 1);
+%%
+%% Determine if a file exists
+%%
+function exists = fileExists( filename )
+	fid = fopen(filename, "r");
+	if fid ~= -1
+		fclose(fid);
+		exists = 1;
+	else 
+		exists = 0;
+	end
+end
 
 
-%% ================ Part 6: Train the NN ================
+%
+% Splits the data matrix into two matrices, one for training and the other for testing
+% 	The rows are randomly selected, the proportion indicates how many rows send for training
+%
+function [train test] = splitSamples( data, proportion, selector )
+	
+	[m,n] 		= size(data);
+	
+	% if selector is an empty matrix, generate one
+	if ( sum(size(ones(0))) == 0)
+		do
+			selector = rand(m,1) <= proportion;
+		until ( sum(selector) == round(m * proportion) )
+	end
+	
+	train 		= zeros(m * proportion + 1	, n);
+	test		= zeros(m * (1-proportion) 	, n);
+	train_n		= 1;
+	test_n		= 1;
+	
+	for i = [1:m]
+		sel = selector(i);
+		if sel
+			train(train_n,:) = data(i,:);
+			train_n ++;
+		else
+			test(test_n,:) = data(i,:);
+			test_n++;
+		end
+	end
+end
 
-fid = fopen("nn_theta.dat", "r");
-if fid ~= -1
-	fclose(fid);
-	load("nn_theta.dat");
-else
+%%
+%% Train neural network
+%%
+function [ Theta1 Theta2 ] = trainNerualNetwork( X, y )
+
+	input_layer_size  	= size(X,2);	% Pitch + MFCC data
+	hidden_layer_size 	= 20;			% 20 hidden units
+	num_labels		 	= 2;			% 6 labels, [enojado|tranquilo]
+	lambda 				= 1;
+	max_iter 			= 50;
+	m 					= size(X, 1);
+	
 	% theta initialization
 	initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
 	initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
@@ -54,11 +86,39 @@ else
 	save -binary "nn_theta.dat" Theta*;
 end
 
-%% ================= Part 10: Implement Predict =================
 
-[values, probability, pred] = predict(Theta1, Theta2, X);
-fprintf('Input Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 
-compare = [ y pred values];
+
+%% =========== Initialization =============
+
+clear ; close all;
+addpath("./funciones");
+fprintf('Loading features ...\n');
+data 			= load("temp/features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
+
+[train test] 	= splitSamples( data, 0.8, [] );	% 
+
+fprintf('splitted ...\n');
+Xtrain 		= train(:,2:end);
+ytrain		= train(:,1);
+
+Xtest		= test(:,2:end);
+ytest		= test(:,1);
+
+if fileExists("nn_theta.dat")
+	load("nn_theta.dat");
+else
+	[ Theta1 Theta2 ] = trainNerualNetwork( Xtrain, ytrain );
+end
+
+%% ================= Predict =================
+
+[values, probability, pred] = predict(Theta1, Theta2, Xtrain);
+fprintf('Training set accuracy: %f\n', mean(double(pred == ytrain)) * 100);
+
+[values, probability, pred] = predict(Theta1, Theta2, Xtest);
+fprintf('Training set accuracy: %f\n', mean(double(pred == ytest)) * 100);
+
+compare = [ ytest pred values];
 csvwrite("temp/predictions.csv", compare);
 
