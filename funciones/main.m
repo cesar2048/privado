@@ -95,7 +95,8 @@ clear ; close all;
 addpath("./funciones");
 fprintf('Loading features ...\n');
 data 			= load("temp/features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
-
+[X_norm, mu, sigma] = featureNormalize(data(:,2:end));
+data(:,2:end)=X_norm;
 [train test] 	= splitSamples( data, 0.8, [] );	% 
 
 fprintf('splitted %i training, %i testing\n', size(train,1), size(test,1) );
