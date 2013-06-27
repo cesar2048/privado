@@ -54,7 +54,7 @@ end
 %%
 function [ features ] = pitchFeatures ( data, limit, bData, bDeriv, bStats )
 	vecStat1 	= getStatistics(data(:,2) );		% data is [mean, std, max, min]
-	data		= fillPitchData(data);
+	%data		= fillPitchData(data);
 	
 	columna		= data(:,2);
 	m			= size(columna,1);
@@ -137,7 +137,7 @@ else
 	label		= base2dec (label, 10)
 	
 	pitchData			= csvread(filePitch);
-	pitchData		 	= pitchFeatures(pitchData, 150, 1, 0, 0);	% data, limit, bData, bDeriv, bStats
+	pitchData		 	= pitchFeatures(pitchData, 150, 0, 0, 0);	% data, limit, bData, bDeriv, bStats
 	
 	mfccData			= csvread(fileMfcc);
 	mfccData			= mfccFeatures(mfccData, 50, 20, 0, 1);		% dta, limit, nCoeficients, bData, bStats

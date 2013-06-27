@@ -53,9 +53,9 @@ function [ Theta1 Theta2 ] = trainNerualNetwork( X, y )
 
 	input_layer_size  	= size(X,2);	% Pitch + MFCC data
 	hidden_layer_size 	= 20;			% 20 hidden units
-	num_labels		 	= 2;			% 6 labels, [enojado|tranquilo]
-	lambda 				= 1;
-	max_iter 			= 50;
+	num_labels		 	= 3;			% 6 labels, [enojado|tranquilo]
+	lambda 				= 01;
+	max_iter 			= 100;
 	m 					= size(X, 1);
 	
 	% theta initialization

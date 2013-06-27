@@ -15,7 +15,7 @@ $temp_dir	= "temp/";
 sub main
 {
 	my(@filters, $filterOk, $fileName, $filter, $output_file);
-	@filters 		= ("tranquilo.*wav", "enojado.*wav");
+	@filters 		= ("A.*wav", "D.*wav", "E.*wav");
 	$output_file	= "${temp_dir}/features.csv";
 	
 	unlink($output_file);
@@ -71,7 +71,7 @@ sub apply_transformations
 	
 	# generate label from the file name
 	$label = 0;
-	%labels = ("enojado" => 1, "tranquilo" => 2 );
+	%labels = ("A" => 1, "D" => 2, "E" => 3 );
 	while ( ($key, $value) = each(%labels)){
 		 $regexp = "$key.*";
 		 if ( $fileName =~ $regexp ) {
@@ -91,9 +91,9 @@ sub apply_transformations
 	system ($command);
 	
 	# deleting original files
-	#unlink($file_mfcc);
+	unlink($file_mfcc);
 	unlink($file_noisi);
-	#unlink($file_pitch);
+	unlink($file_pitch);
 }
 
 
