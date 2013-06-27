@@ -14,8 +14,8 @@ $temp_dir	= "temp/";
 
 sub main
 {
-	my(@filters, $filterOk, $fileName, $filter, $output_file);
-	@filters 		= ("A.*wav", "D.*wav", "E.*wav");
+	my($filterOk, $fileName, $filter, $output_file, %labels, $key, $value, $label);
+	%labels 		= ("A" => 1, "D" => 2, "E" => 3 );
 	$output_file	= "${temp_dir}/features.csv";
 	
 	unlink($output_file);
@@ -28,29 +28,28 @@ sub main
 	closedir $dh;
 	
 	foreach (@files) {
-		$filterOk = 0;
+		$label = 0;
 		$fileName = $_;
 		
-		foreach(@filters) {
-			$filter = $_;
-			if ( $fileName =~ $filter) {
-				$filterOk = 1;
+		while ( ($key, $value) = each(%labels)){
+			 if ( $fileName =~ "${key}.*wav" ) {
+				$label = $value;
 				last;
-			}
+			 }
 		}
 		
-		if ( $filterOk ) {
-			 apply_transformations($output_file, $fileName, $audio_dir, $temp_dir);
-			
+		# label = 0 doesn't exists, it means the file is excluded
+		if ( $label ) {	
+			 apply_transformations($label, $output_file, $fileName, $audio_dir, $temp_dir);
 		}
 	}
 }
 
 sub apply_transformations
 {
-	my ($output_file, $fileName, $audio_dir, $temp_dir) = @_;
+	my ($label, $output_file, $fileName, $audio_dir, $temp_dir) = @_;
 	my ($input_file, $file_mfcc, $file_noisi, $file_pitch);
-	my ($transf_desc, $command, $label, $key, $value, $regexp, %labels);
+	my ($transf_desc, $command, $key, $value, $regexp, %labels);
 	
 	print("$fileName\n");
 	$input_file		= "${audio_dir}${fileName}";
@@ -68,21 +67,9 @@ sub apply_transformations
 		print("Error: transformations file '$transf_desc' does not exists\n");
 		return;
 	}
-	
-	# generate label from the file name
-	$label = 0;
-	%labels = ("A" => 1, "D" => 2, "E" => 3 );
-	while ( ($key, $value) = each(%labels)){
-		 $regexp = "$key.*";
-		 if ( $fileName =~ $regexp ) {
-			$label = $value;
-			last;
-		 }
-	}
-	
+
 	# -------- extract low level data with sonic-annotator ---------------
 	
-	#$command	= " \"${annotator}\" -t ${transf_desc} \"${input_file}\" -w rdf";
 	$command	= " \"${annotator}\" -t ${transf_desc} \"${input_file}\" -w csv --csv-basedir ${temp_dir} --csv-force 2> sonic-log.txt";
 	system ($command);
 	

@@ -49,14 +49,12 @@ end
 %%
 %% Train neural network
 %%
-function [ Theta1 Theta2 ] = trainNerualNetwork( X, y )
+function [ Theta1 Theta2 ] = trainNerualNetwork( X, y, lambda, max_iter )
 
 	input_layer_size  	= size(X,2);	% Pitch + MFCC data
 	hidden_layer_size 	= 20;			% 20 hidden units
-	num_labels		 	= 3;			% 6 labels, [enojado|tranquilo]
-	lambda 				= 01;
-	max_iter 			= 100;
 	m 					= size(X, 1);
+	num_labels			= max(y);		% 
 	
 	% theta initialization
 	initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
@@ -108,7 +106,7 @@ ytest		= test(:,1);
 if fileExists("nn_theta.dat")
 	load("nn_theta.dat");
 else
-	[ Theta1 Theta2 ] = trainNerualNetwork( Xtrain, ytrain );
+	[ Theta1 Theta2 ] = trainNerualNetwork( Xtrain, ytrain, 1, 100);
 end
 
 %% ================= Predict =================

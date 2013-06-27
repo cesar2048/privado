@@ -21,6 +21,15 @@ sub main
 		my $data = "";
 		while(<$client>) {
 			$data .= $_;
+			
+			# if ( $data =~ ".*policy-file-request.*") {
+				# printf("policy file requested\n");
+				
+				# print $client "<?xml version=\"1.0\"?><cross-domain-policy>";
+				# print $client "<allow-access-from domain=\"*\" to-ports=\"*\" />";
+				# print $client "</cross-domain-policy>\0\0";
+				# $data = "";
+			# }
 		}
 		
 		my $bytes = length($data);

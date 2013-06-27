@@ -19,6 +19,7 @@
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.system.Security;
 	
 	public class Main extends MovieClip {
 		
@@ -37,6 +38,7 @@
 			dbg("inicializando");
 			txtLevel.addEventListener(Event.CHANGE, onTxtLevelChange);
 			this._micBytes = new ByteArray();
+			Security.allowDomain("*"); 
 			
 			// microphone init
 			mic = Microphone.getMicrophone();
