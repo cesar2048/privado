@@ -1,0 +1,4 @@
+<?xml version="1.0"?> 
+<cross-domain-policy> 
+<allow-access-from domain="localhost" to-ports="7070" /> 
+</cross-domain-policy>
