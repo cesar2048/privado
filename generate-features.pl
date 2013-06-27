@@ -49,7 +49,7 @@ sub apply_transformations
 {
 	my ($label, $output_file, $fileName, $audio_dir, $temp_dir) = @_;
 	my ($input_file, $file_mfcc, $file_noisi, $file_pitch);
-	my ($transf_desc, $command, $key, $value, $regexp, %labels);
+	my ($transf_desc, $command);
 	
 	print("$fileName\n");
 	$input_file		= "${audio_dir}${fileName}";

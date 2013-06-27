@@ -124,7 +124,11 @@ function [ features ] = mfccFeatures(mfccData, limit, nCoeficients, bData, bStat
 end
 
 %%
-%%	args:  getEstadistica.m  outputFile filePitch fileMfcc label
+%%	args:  
+%%		outputFile 
+%%		filePitch 
+%%		fileMfcc 
+%%		label
 %%
 if nargin < 4
 	printf("Insificient arguments\n");
@@ -140,7 +144,7 @@ else
 	pitchData		 	= pitchFeatures(pitchData, 150, 0, 0, 0);	% data, limit, bData, bDeriv, bStats
 	
 	mfccData			= csvread(fileMfcc);
-	mfccData			= mfccFeatures(mfccData, 50, 20, 0, 1);		% dta, limit, nCoeficients, bData, bStats
+	mfccData			= mfccFeatures(mfccData, 50, 20, 0, 1);		% data, limit, nCoeficients, bData, bStats
 	
 	%% append data
 	fid = fopen(outputFile, "r");

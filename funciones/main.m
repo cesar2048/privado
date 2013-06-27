@@ -115,8 +115,7 @@ end
 fprintf('Training set accuracy: %f\n', mean(double(pred == ytrain)) * 100);
 
 [values, probability, pred] = predict(Theta1, Theta2, Xtest);
-fprintf('Training set accuracy: %f\n', mean(double(pred == ytest)) * 100);
+fprintf('Testing  set accuracy: %f\n', mean(double(pred == ytest)) * 100);
 
 compare = [ ytest pred values];
 csvwrite("temp/predictions.csv", compare);
-
