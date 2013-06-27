@@ -44,6 +44,8 @@ function [train test] = splitSamples( data, proportion, selector )
 			test_n++;
 		end
 	end
+	
+	csvwrite("temp/selector.csv", selector);
 end
 
 %%
@@ -96,7 +98,7 @@ data 			= load("temp/features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X
 
 [train test] 	= splitSamples( data, 0.8, [] );	% 
 
-fprintf('splitted ...\n');
+fprintf('splitted %i training, %i testing\n', size(train,1), size(test,1) );
 Xtrain 		= train(:,2:end);
 ytrain		= train(:,1);
 

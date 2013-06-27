@@ -14,7 +14,7 @@ $temp_dir	= "temp/";
 
 sub main
 {
-	my($filterOk, $fileName, $filter, $output_file, %labels, $key, $value, $label);
+	my($filterOk, $fileName, $filter, $output_file, %labels, $key, $value, $label, $regexp);
 	%labels 		= ("A" => 1, "D" => 2, "E" => 3 );
 	$output_file	= "${temp_dir}/features.csv";
 	
@@ -32,10 +32,10 @@ sub main
 		$fileName = $_;
 		
 		while ( ($key, $value) = each(%labels)){
-			 if ( $fileName =~ "${key}.*wav" ) {
+			$regexp = "${key}.+wav";
+			if ( $fileName =~ $regexp) {
 				$label = $value;
-				last;
-			 }
+			}
 		}
 		
 		# label = 0 doesn't exists, it means the file is excluded
