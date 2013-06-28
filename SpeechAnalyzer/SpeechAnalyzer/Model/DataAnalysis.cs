@@ -14,11 +14,15 @@ namespace SpeechAnalyzer.Model
 {
 	class DataAnalysis
 	{
-		public static String SonicAnnotator = @"G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator-1.0-win32\sonic-annotator.exe";
+		private String SonicAnnotator;
+		private String DataDirectory;
+		private String TempDirectory;
 
-		public DataAnalysis() 
+		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
 		{
- 
+			this.SonicAnnotator = SonicAnotatorPath;
+			this.TempDirectory = tempDir;
+			this.DataDirectory = dataDir;
 		}
 
 
@@ -26,20 +30,20 @@ namespace SpeechAnalyzer.Model
 		/// Extracts the data using sonic annotator and generates the feature vector for each file
 		/// </summary>
 		/// <param name="sourceDirPath"></param>
-		public void ReadTrainingFiles(String sourceDirPath)
+		public void ReadTrainingFiles()
 		{
-			DirectoryInfo srcDir = new DirectoryInfo(sourceDirPath);
+			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
 			Dictionary<string, int> labels = null;
 
 			if (!srcDir.Exists)
 			{
-				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", sourceDirPath));
+				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", DataDirectory));
 				return;
 			}
 
 			try
 			{
-				StreamReader sr = new StreamReader(Path.Combine(sourceDirPath, "labels.js"));
+				StreamReader sr = new StreamReader(Path.Combine(DataDirectory, "labels.js"));
 				String json = sr.ReadToEnd();
 				labels = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
 				sr.Close();
@@ -82,7 +86,7 @@ namespace SpeechAnalyzer.Model
 			// Generate features for every file
 			foreach (AudioFileFeatures audio in filesFeaturesList)
 			{
-				GenerateFeatures(audio, sourceDirPath, "temp");
+				GenerateFeatures(audio, this.DataDirectory, this.TempDirectory);
 			}
 
 			// get the shortest rowcount from all the mfcc matrices
@@ -98,7 +102,21 @@ namespace SpeechAnalyzer.Model
 				featureVector = featureVector.Append(ExtractMFCCFeatureVector(audio.mfcc, min, 20, false, true)) as DenseMatrix;
 				audio.featureVector = featureVector;
 			}
+
+			System.Diagnostics.Debug.WriteLine("FIN");
 		}
+
+
+
+
+
+
+
+
+
+
+
+
 
 		/// <summary>
 		/// Uses sonic-annotator to extract the low level features, using the transform-descriptor.n3 file

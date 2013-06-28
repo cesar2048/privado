@@ -15,20 +15,24 @@ namespace SpeechAnalyzer
 	public partial class Form1 : Form
 	{
 		DataAnalysis analysis;
+		Config config;
 
 		public Form1()
 		{
 			InitializeComponent();
-			this.analysis = new DataAnalysis();
+			
 
 			String dir = Directory.GetCurrentDirectory();
 			System.Diagnostics.Debug.WriteLine(dir);
+
+			this.config = Config.ReadConfigFile();
+			this.analysis = new DataAnalysis(config.DataDirectory, config.TempDirectory, config.SonicAnnotator);
 
 		}
 
 		private void btGen_Click(object sender, EventArgs e)
 		{
-			this.analysis.ReadTrainingFiles("data");
+			this.analysis.ReadTrainingFiles( );
 		}
 
 	}
