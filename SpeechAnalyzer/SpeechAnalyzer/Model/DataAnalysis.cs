@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Double.IO;
+using MathNet.Numerics.LinearAlgebra.IO;
 using MathNet.Numerics.Statistics;
 using Newtonsoft.Json;
 
@@ -25,22 +26,81 @@ namespace SpeechAnalyzer.Model
 			this.DataDirectory = dataDir;
 		}
 
+		public void TrainNeuralNetwork()
+		{
+			List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
+			DenseMatrix featuresMatrix = ReadFiles(trainingAudiosList);
+
+			// save the features matrix in a csv file
+			DelimitedWriter matrixWriter = new DelimitedWriter(",");
+			matrixWriter.WriteMatrix(featuresMatrix, Path.Combine(this.TempDirectory, "trainig-features.csv"));
+			
+			// TODO: execute machine learning process
+		}
+
+
 
 		/// <summary>
 		/// Extracts the data using sonic annotator and generates the feature vector for each file
 		/// </summary>
 		/// <param name="sourceDirPath"></param>
-		public void ReadTrainingFiles()
+		private DenseMatrix ReadFiles(List<AudioFileFeatures> AudioInfosList)
 		{
 			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
-			Dictionary<string, int> labels = null;
-
 			if (!srcDir.Exists)
 			{
 				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", DataDirectory));
-				return;
+				return null;
 			}
 
+			// Generate features for every file
+			int mfccLimit	= 55;
+			int pitchLimit	= 100;
+			foreach (AudioFileFeatures audio in AudioInfosList)
+			{
+				// call sonic-annotator to generate the features
+				GenerateFeatures(audio, this.DataDirectory, this.TempDirectory);
+
+				// extract statistical information from the previous features
+				DenseMatrix featureVector = DenseMatrix.Create(1, 1, (i, j) => audio.label);				// 1x1 matrix
+				DenseMatrix mfccVector = ExtractFeatureVector(audio.mfcc, mfccLimit, 20, false, true);		// append row
+				DenseMatrix pitchVector = ExtractFeatureVector(audio.pitch, pitchLimit, 1, false, true);	// apend row
+				
+				featureVector = featureVector.Append(mfccVector) as DenseMatrix;
+				featureVector = featureVector.Append(pitchVector) as DenseMatrix;
+				audio.featureVector = featureVector;
+			}
+
+			var query = from file in AudioInfosList
+						select file.featureVector.ColumnCount;
+
+			int width		= query.First();
+			int widthsCount = query.Distinct().Count();
+			if (widthsCount > 1) throw new Exception("features vectors are not the same width, aborting...");
+			
+			// generate labels:features matrix
+			DenseMatrix allFeatures = DenseMatrix.Create(AudioInfosList.Count, width, (i, j) => 0);
+			for (int i = 0; i < AudioInfosList.Count; i++)
+			{
+				DenseMatrix features = AudioInfosList[i].featureVector;
+				allFeatures.SetSubMatrix(i, 1, 0, features.ColumnCount, features);
+			}
+
+			// TODO: normalize columns 2,n in allFeatures (column 1 contains labels)
+			return allFeatures;
+		}
+
+		/// <summary>
+		/// Reads the {srcDir}/labels.js and every .wav file in the same directory
+		/// assigns the label property according to the associations in the labels.js hash
+		/// </summary>
+		/// <param name="srcDir"></param>
+		/// <param name="labels"></param>
+		/// <returns></returns>
+		private List<AudioFileFeatures> GetTrainingFilesList()
+		{
+			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
+			Dictionary<string, int> labels = null;
 			try
 			{
 				StreamReader sr = new StreamReader(Path.Combine(DataDirectory, "labels.js"));
@@ -50,12 +110,11 @@ namespace SpeechAnalyzer.Model
 			}
 			catch (Exception e)
 			{
-				System.Diagnostics.Debug.WriteLine("Error leyendo archivo labels: " + e.Message);
-				return;
+				throw new Exception("Error leyendo archivo labels: " + e.Message);
 			}
 
 			FileInfo[] files = srcDir.GetFiles("*.wav");
-			List<AudioFileFeatures> filesFeaturesList = new List<AudioFileFeatures>();
+			List<AudioFileFeatures> AudioInfosList = new List<AudioFileFeatures>();
 
 			// Add every matching file and its label to a list
 			foreach (FileInfo file in files)
@@ -73,37 +132,16 @@ namespace SpeechAnalyzer.Model
 
 				if (labelValue != -1)
 				{
-					AudioFileFeatures FileFeatures = new AudioFileFeatures()
+					AudioFileFeatures AudioInfo = new AudioFileFeatures()
 					{
 						fileInfo = file,
 						label = labelValue
 					};
 
-					filesFeaturesList.Add(FileFeatures);
+					AudioInfosList.Add(AudioInfo);
 				}
 			}
-
-			// Generate features for every file
-			foreach (AudioFileFeatures audio in filesFeaturesList)
-			{
-				GenerateFeatures(audio, this.DataDirectory, this.TempDirectory);
-			}
-
-			// get the shortest rowcount from all the mfcc matrices
-			var query = from audio in filesFeaturesList
-						select audio.mfcc.RowCount;
-			
-			int max = query.Max();
-			int min = query.Min();
-
-			foreach (AudioFileFeatures audio in filesFeaturesList)
-			{
-				DenseMatrix featureVector = DenseMatrix.Create(1, 1, (i, j) => 1);
-				featureVector = featureVector.Append(ExtractMFCCFeatureVector(audio.mfcc, min, 20, false, true)) as DenseMatrix;
-				audio.featureVector = featureVector;
-			}
-
-			System.Diagnostics.Debug.WriteLine("FIN");
+			return AudioInfosList;
 		}
 
 
@@ -119,12 +157,13 @@ namespace SpeechAnalyzer.Model
 
 
 		/// <summary>
-		/// Uses sonic-annotator to extract the low level features, using the transform-descriptor.n3 file
+		/// sets the mfcc and pitch properties of the audioInfo argument
+		/// using sonic-annotator to extract the low level features
 		/// </summary>
-		/// <param name="fileFeatures"></param>
+		/// <param name="audioInfo"></param>
 		/// <param name="dataDir"></param>
 		/// <param name="tempDir"></param>
-		public void GenerateFeatures(AudioFileFeatures fileFeatures, String dataDir, String tempDir)
+		private void GenerateFeatures(AudioFileFeatures audioInfo, String dataDir, String tempDir)
 		{
 			/*
 				A1.wav
@@ -132,8 +171,8 @@ namespace SpeechAnalyzer.Model
 				A1_vamp_qm-vamp-plugins_qm-mfcc_coefficients
 				A1_vamp_vamp-aubio_aubiosilence_noisy
 			 */
-			String wavFileName	= Path.GetFileNameWithoutExtension(fileFeatures.fileInfo.Name);
-			String wavFilePath	= fileFeatures.fileInfo.FullName.Replace("\\", "/");
+			String wavFileName	= Path.GetFileNameWithoutExtension(audioInfo.fileInfo.Name);
+			String wavFilePath	= audioInfo.fileInfo.FullName.Replace("\\", "/");
 			String filePitch	= String.Format("{0}_vamp_vamp-aubio_aubiopitch_frequency.csv", wavFileName);
 			String fileMfcc		= String.Format("{0}_vamp_qm-vamp-plugins_qm-mfcc_coefficients.csv", wavFileName);
 			String fileNoisi	= String.Format("{0}_vamp_vamp-aubio_aubiosilence_noisy.csv", wavFileName);
@@ -168,11 +207,11 @@ namespace SpeechAnalyzer.Model
 
 			// read csv files into matrices
 			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
-			fileFeatures.mfcc	= matrixReader.ReadMatrix(fileMfcc);
-			fileFeatures.pitch	= matrixReader.ReadMatrix(filePitch);
+			audioInfo.mfcc	= matrixReader.ReadMatrix(fileMfcc);
+			audioInfo.pitch	= matrixReader.ReadMatrix(filePitch);
 
 			// remove last 9 rows of data, for some reason SonicAnnotator plugin adds 9 rows full of zeros
-			fileFeatures.mfcc = fileFeatures.mfcc.SubMatrix(0, fileFeatures.mfcc.RowCount - 9, 0, fileFeatures.mfcc.ColumnCount) as DenseMatrix;
+			audioInfo.mfcc = audioInfo.mfcc.SubMatrix(0, audioInfo.mfcc.RowCount - 9, 0, audioInfo.mfcc.ColumnCount) as DenseMatrix;
 
 			// delete generated files
 			foreach(String file in new String[] {filePitch, fileMfcc, fileNoisi} ) 
@@ -181,30 +220,30 @@ namespace SpeechAnalyzer.Model
 				fInfo.Delete();
 			}
 
-			System.Diagnostics.Debug.WriteLine(String.Format("Processed: {0}", fileFeatures.fileInfo.Name));
+			System.Diagnostics.Debug.WriteLine(String.Format("Processed: {0}", audioInfo.fileInfo.Name));
 		}
 
 		/// <summary>
-		/// returns a 1xN row matrix with all the features
+		/// returns a 1xN row matrix with the statistics values for the first {nColumns} columns in {values}
 		/// </summary>
-		/// <param name="mfccValues"></param>
+		/// <param name="values"></param>
 		/// <param name="limit"></param>
-		/// <param name="nCoeficients"></param>
+		/// <param name="nColumns"></param>
 		/// <param name="bData"></param>
 		/// <param name="bStats"></param>
 		/// <returns></returns>
-		public DenseMatrix ExtractMFCCFeatureVector(DenseMatrix mfccValues, int limit, int nCoeficients, bool bData, bool bStats)
+		public DenseMatrix ExtractFeatureVector(DenseMatrix values, int limit, int nColumns, bool bData, bool bStats)
 		{
 			// zero length vectors are not supported
 			DenseMatrix result = null;
 			if (!bData && !bStats) throw new ArgumentException("at least one of bData or bStats must be true");
-			nCoeficients	= Math.Min(mfccValues.ColumnCount, nCoeficients + 1);
+			nColumns	= Math.Min(values.ColumnCount, nColumns + 1);
 
 			if (bStats)
 			{
-				for (int i = 1; i < nCoeficients; i++)
+				for (int i = 1; i < nColumns; i++)
 				{
-					Vector column = mfccValues.Column(i) as Vector;
+					Vector column = values.Column(i) as Vector;
 					if (result == null) {
 						result = GetStatistics(column);
 					} else {
@@ -215,8 +254,8 @@ namespace SpeechAnalyzer.Model
 
 			if (bData)
 			{
-				double[] dValues = mfccValues
-						.SubMatrix(0, mfccValues.RowCount, 1, nCoeficients)
+				double[] dValues = values
+						.SubMatrix(0, values.RowCount, 1, nColumns)
 						.ToColumnWiseArray();
 				
 				DenseMatrix dmValues = new DenseMatrix(1, dValues.Length, dValues);
@@ -231,6 +270,11 @@ namespace SpeechAnalyzer.Model
 			return result;
 		}
 
+		/// <summary>
+		/// Returns a 1x4 horizontal vector with statistics for the given vector
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
 		private DenseMatrix GetStatistics(Vector data)
 		{
 			double media	= data.Mean();

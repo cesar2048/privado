@@ -21,7 +21,6 @@ namespace SpeechAnalyzer
 		{
 			InitializeComponent();
 			
-
 			String dir = Directory.GetCurrentDirectory();
 			System.Diagnostics.Debug.WriteLine(dir);
 
@@ -32,7 +31,7 @@ namespace SpeechAnalyzer
 
 		private void btGen_Click(object sender, EventArgs e)
 		{
-			this.analysis.ReadTrainingFiles( );
+			this.analysis.TrainNeuralNetwork( );
 		}
 
 	}
