@@ -14,8 +14,13 @@ $temp_dir	= "temp/";
 
 sub main
 {
+<<<<<<< HEAD
+	my($filterOk, $fileName, $filter, $output_file, %labels, $key, $value, $label);
+	%labels 		= ("A" => 1, "D" => 2, "E" => 3 ,"P"=>4,"S"=>5,"R"=>6);
+=======
 	my($filterOk, $fileName, $filter, $output_file, %labels, $key, $value, $label, $regexp);
 	%labels 		= ("A" => 1, "D" => 2, "E" => 3 );
+>>>>>>> 7285b4f4e641d507aa33890bcf8175c97414bbee
 	$output_file	= "${temp_dir}/features.csv";
 	
 	unlink($output_file);
