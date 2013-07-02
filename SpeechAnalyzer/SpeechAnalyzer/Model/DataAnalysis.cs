@@ -10,6 +10,7 @@ using MathNet.Numerics.LinearAlgebra.Double.IO;
 using MathNet.Numerics.LinearAlgebra.IO;
 using MathNet.Numerics.Statistics;
 using Newtonsoft.Json;
+using DotNumerics.Optimization;
 
 namespace SpeechAnalyzer.Model
 {
@@ -28,14 +29,59 @@ namespace SpeechAnalyzer.Model
 
 		public void TrainNeuralNetwork()
 		{
-			List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
-			DenseMatrix featuresMatrix = ReadFiles(trainingAudiosList);
+			FileInfo trainingFile = new FileInfo(Path.Combine(this.TempDirectory, "training-features.csv"));
+			DenseMatrix dataMat;
 
-			// save the features matrix in a csv file
-			DelimitedWriter matrixWriter = new DelimitedWriter(",");
-			matrixWriter.WriteMatrix(featuresMatrix, Path.Combine(this.TempDirectory, "trainig-features.csv"));
-			
+			if (!trainingFile.Exists)
+			{
+				List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
+				dataMat = ReadFiles(trainingAudiosList);
+
+				// save the features matrix in a csv file
+				DelimitedWriter matrixWriter = new DelimitedWriter(",");
+				matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);
+			}
+			else
+			{
+				DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
+				dataMat = matrixReader.ReadMatrix(trainingFile.FullName);
+			}
+
 			// TODO: execute machine learning process
+			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
+			DenseVector y = dataMat.Column(0) as DenseVector;
+
+
+
+
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0);
+
+			nn.RandInitializeTheta();
+			double[] initialGuess = nn.getTheta();
+			int[] predictions;
+
+			double Jini = nn.costFunction(initialGuess);
+			double accIni = nn.Predict(initialGuess, out predictions);
+
+			L_BFGS_B LBFGSB = new L_BFGS_B();
+			LBFGSB.AccuracyFactor = 1E7;
+			LBFGSB.MaxFunEvaluations = 300000 * 4000;
+			LBFGSB.Tolerance = 0.01;
+
+
+			TruncatedNewton tNewton = new TruncatedNewton();
+			double[] minimum = LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
+
+			double J = nn.costFunction(minimum);
+			double accuracy = nn.Predict(minimum, out predictions);
+
+			System.Diagnostics.Debug.WriteLine("random init");
+			System.Diagnostics.Debug.WriteLine("J         = " + Jini);
+			System.Diagnostics.Debug.WriteLine("Accuracy  = " + accIni);
+			System.Diagnostics.Debug.WriteLine("after training");
+			System.Diagnostics.Debug.WriteLine("J         = " + J);
+			System.Diagnostics.Debug.WriteLine("Accuracy  = " + accuracy);
+			System.Diagnostics.Debug.WriteLine("------------------------");
 		}
 
 
@@ -85,7 +131,7 @@ namespace SpeechAnalyzer.Model
 				DenseMatrix features = AudioInfosList[i].featureVector;
 				allFeatures.SetSubMatrix(i, 1, 0, features.ColumnCount, features);
 			}
-
+			 
 			// TODO: normalize columns 2,n in allFeatures (column 1 contains labels)
 			return allFeatures;
 		}
@@ -281,7 +327,7 @@ namespace SpeechAnalyzer.Model
 			double varianza = data.Variance();
 			double max		= data.Maximum();
 			double min		= data.Minimum();
-
+			
 			return new DenseMatrix(1, 4, new double[] { media, varianza, max, min });
 		}
 

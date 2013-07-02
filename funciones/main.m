@@ -94,7 +94,7 @@ end
 clear ; close all;
 addpath("./funciones");
 fprintf('Loading features ...\n');
-data 			= load("temp/trainig-features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
+data 			= load("temp/training-features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
 [X_norm, mu, sigma] = featureNormalize(data(:,2:end));
 data(:,2:end)=X_norm;
 [train test] 	= splitSamples( data, 0.8, [] );	% 
@@ -109,7 +109,7 @@ ytest		= test(:,1);
 if fileExists("nn_theta.dat")
 	load("nn_theta.dat");
 else
-	[ Theta1 Theta2 ] = trainNerualNetwork( Xtrain, ytrain, 1, 100);
+	[ Theta1 Theta2 ] = trainNerualNetwork( Xtrain, ytrain, 0, 100);
 end
 
 %% ================= Predict =================

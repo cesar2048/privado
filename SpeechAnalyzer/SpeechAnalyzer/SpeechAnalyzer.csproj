@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNumerics">
+      <HintPath>Libs\DotNumerics V1.1 Dec-15-2009\Binaries\Release\DotNumerics.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>Libs\MathNet.Numerics\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -64,6 +67,8 @@
     </Compile>
     <Compile Include="Model\AudioFileFeatures.cs" />
     <Compile Include="Model\DataAnalysis.cs" />
+    <Compile Include="Model\MatrixExtensionMethods.cs" />
+    <Compile Include="Model\NeuralNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
