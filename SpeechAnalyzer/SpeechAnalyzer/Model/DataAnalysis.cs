@@ -59,10 +59,11 @@ namespace SpeechAnalyzer.Model
             
 
             //System.Diagnostics.Debug.WriteLine("X normalizada" + X.Row(1).ToString());
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0.1);
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0.01);
 
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
+            DenseVector intialGuessD = new DenseVector(initialGuess);
 			int[] predictions;
 
 			double Jini = nn.costFunction(initialGuess);
@@ -73,10 +74,10 @@ namespace SpeechAnalyzer.Model
 			LBFGSB.MaxFunEvaluations = 300000 * 4000;
 			LBFGSB.Tolerance = 0.01;
 
-
+           // double alpha = 0.1f;
 			TruncatedNewton tNewton = new TruncatedNewton();
 			double[] minimum = LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
-
+            //double[] minimum = nn.gradDescent(X, y, intialGuessD, alpha, 400);
 			double J = nn.costFunction(minimum);
 			double accuracy = nn.Predict(minimum, out predictions);
 

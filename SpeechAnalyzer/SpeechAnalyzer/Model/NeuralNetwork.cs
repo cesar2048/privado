@@ -171,7 +171,7 @@ namespace SpeechAnalyzer.Model
 
 		public void RandInitializeTheta()
 		{
-			double epsilon = 0.12;
+			double epsilon = 0.5;
 			Random rnd = new Random();
 
 			this.Theta1.MapInplace(a => rnd.NextDouble() * 2 * epsilon - epsilon);
@@ -198,19 +198,20 @@ namespace SpeechAnalyzer.Model
 			X = sigmoid(X).PointwiseMultiply(aux) as DenseMatrix;	// = sigmoid(X) .* aux
 			return X;
 		}
-        private DenseMatrix gradDescent(DenseMatrix X,DenseMatrix y,DenseMatrix theta,float alpha ,int num_iters)
+        public Double[] gradDescent(DenseMatrix X,DenseVector y,DenseVector theta,double alpha ,int num_iters)
         {
             int cont = 1;
-            
+            DenseMatrix thetaAux = theta.ToColumnMatrix() as DenseMatrix;
+            DenseMatrix yAux = y.ToColumnMatrix() as DenseMatrix;
             while(cont <= num_iters ){
-                DenseMatrix xTheta = X.Multiply(theta.Inverse()) as DenseMatrix;
-                DenseMatrix mult1= xTheta - y.Inverse() as DenseMatrix;
+                DenseMatrix xTheta = (thetaAux.Transpose()).Multiply(X.Transpose()) as DenseMatrix;
+                DenseMatrix mult1= xTheta - yAux.Transpose() as DenseMatrix;
                 DenseMatrix sum = mult1.Multiply(X) as DenseMatrix;
-                theta = theta - sum.Multiply(alpha/m) as DenseMatrix;
+                thetaAux = thetaAux - sum.Multiply(alpha / m) as DenseMatrix;
                 cont++;
             }
-
-            return theta;
+            Double[] thetaD = thetaAux.ToColumnWiseArray();
+            return thetaD;
         }
         public static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X)
         {
