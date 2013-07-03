@@ -19,6 +19,7 @@ namespace SpeechAnalyzer.Model
 		private String SonicAnnotator;
 		private String DataDirectory;
 		private String TempDirectory;
+        private DenseMatrix meanStdX;
 
 		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
 		{
@@ -51,7 +52,12 @@ namespace SpeechAnalyzer.Model
 			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
 			DenseVector y = dataMat.Column(0) as DenseVector;
            // System.Diagnostics.Debug.WriteLine("X antes" + X.Row(1).ToString());
-            X = NeuralNetwork.normalizeFeatures(X);
+            
+           var normalizeValue= NeuralNetwork.normalizeFeatures(X);
+           X= normalizeValue.Item1;
+           meanStdX = normalizeValue.Item2;
+            
+
             //System.Diagnostics.Debug.WriteLine("X normalizada" + X.Row(1).ToString());
 			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0.1);
 

@@ -212,24 +212,27 @@ namespace SpeechAnalyzer.Model
 
             return theta;
         }
-        public static DenseMatrix  normalizeFeatures(DenseMatrix X)
+        public static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X)
         {
             DenseVector meanN,stdN;
             DenseMatrix XN = X;
             meanN = X.MeanVertically() as DenseVector;
             stdN = X.StdVertically() as DenseVector;
-            DenseVector temp;
             int m = X.RowCount;
+            int n = X.ColumnCount;
+            int n2 = stdN.Count;
+            DenseMatrix parametersl = DenseMatrix.Create(2, n, (i, j) => 1); 
+            parametersl.SetRow(0,meanN);
+            parametersl.SetRow(1,stdN);
+            DenseVector temp;
             int cont = 0;
-            //System.Diagnostics.Debug.WriteLine("la x"+X.Row(1).ToString());
             while (cont < m)
             {
                 temp = (X.Row(cont).Subtract(meanN)).PointwiseDivide(stdN) as DenseVector;
                 XN.SetRow(cont, temp);
                 cont++;
             }
-           // System.Diagnostics.Debug.WriteLine("la XN" + XN.Row(1).ToString());
-            return XN;
+            return new Tuple<DenseMatrix,DenseMatrix> (XN,parametersl);
         }
 	}
 }
