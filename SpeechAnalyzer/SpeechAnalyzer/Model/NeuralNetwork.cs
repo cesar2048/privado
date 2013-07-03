@@ -8,8 +8,8 @@ namespace SpeechAnalyzer.Model
 {
 	class NeuralNetwork
 	{
-		public DenseMatrix Theta1, Theta2, X;
-		DenseVector y;
+        public DenseMatrix Theta1, Theta2, X;
+        DenseVector y;
 		int nOutput, nHidden, m, n;
 		double lambda;
 
@@ -198,6 +198,38 @@ namespace SpeechAnalyzer.Model
 			X = sigmoid(X).PointwiseMultiply(aux) as DenseMatrix;	// = sigmoid(X) .* aux
 			return X;
 		}
+        private DenseMatrix gradDescent(DenseMatrix X,DenseMatrix y,DenseMatrix theta,float alpha ,int num_iters)
+        {
+            int cont = 1;
+            
+            while(cont <= num_iters ){
+                DenseMatrix xTheta = X.Multiply(theta.Inverse()) as DenseMatrix;
+                DenseMatrix mult1= xTheta - y.Inverse() as DenseMatrix;
+                DenseMatrix sum = mult1.Multiply(X) as DenseMatrix;
+                theta = theta - sum.Multiply(alpha/m) as DenseMatrix;
+                cont++;
+            }
 
+            return theta;
+        }
+        public static DenseMatrix  normalizeFeatures(DenseMatrix X)
+        {
+            DenseVector meanN,stdN;
+            DenseMatrix XN = X;
+            meanN = X.MeanVertically() as DenseVector;
+            stdN = X.StdVertically() as DenseVector;
+            DenseVector temp;
+            int m = X.RowCount;
+            int cont = 0;
+            //System.Diagnostics.Debug.WriteLine("la x"+X.Row(1).ToString());
+            while (cont < m)
+            {
+                temp = (X.Row(cont).Subtract(meanN)).PointwiseDivide(stdN) as DenseVector;
+                XN.SetRow(cont, temp);
+                cont++;
+            }
+           // System.Diagnostics.Debug.WriteLine("la XN" + XN.Row(1).ToString());
+            return XN;
+        }
 	}
 }

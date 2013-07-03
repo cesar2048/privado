@@ -44,7 +44,7 @@
       <HintPath>Libs\MathNet.Numerics\Net40\MathNet.Numerics.IO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Libs\Json50r6\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Libs\Json50r6\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

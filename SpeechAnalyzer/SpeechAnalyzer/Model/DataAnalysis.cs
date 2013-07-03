@@ -50,11 +50,10 @@ namespace SpeechAnalyzer.Model
 			// TODO: execute machine learning process
 			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
 			DenseVector y = dataMat.Column(0) as DenseVector;
-
-
-
-
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0);
+           // System.Diagnostics.Debug.WriteLine("X antes" + X.Row(1).ToString());
+            X = NeuralNetwork.normalizeFeatures(X);
+            //System.Diagnostics.Debug.WriteLine("X normalizada" + X.Row(1).ToString());
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0.1);
 
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
