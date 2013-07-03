@@ -87,6 +87,51 @@ function [ Theta1 Theta2 ] = trainNerualNetwork( X, y, lambda, max_iter )
 end
 
 
+%%
+%% Train neural network
+%%
+function [ Theta1 Theta2 ] = testNeuralNetwork( X, y, lambda, hidden )
+
+	nInput	= size(X,2);	% Pitch + MFCC data
+	m 		= size(X, 1);	% 
+	nOutput	= max(y);		% 
+	
+	% theta initialization
+	initial_Theta1 = randInitializeWeights(nInput, hidden);
+	initial_Theta2 = randInitializeWeights(hidden, nOutput);
+	initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];	% unrolling
+	
+	fileName = "temp/initial_params.csv";
+	if fileExists(fileName)
+		initial_nn_params = load(fileName);
+	else
+		csvwrite(fileName, initial_nn_params);
+	end
+
+	fprintf('Test Neural Network... \n')
+	
+	% Call cost function
+	[J, nn_params] = nnCostFunction(initial_nn_params, nInput, hidden, nOutput, X, y, lambda);
+	
+
+	% Obtain Theta1 and Theta2 back from nn_params
+	Theta1 = reshape( nn_params(1:hidden * (nInput+1))      , hidden     , (nInput + 1) );
+	Theta2 = reshape( nn_params((1+(hidden*(nInput+1))):end), nOutput , (hidden + 1) );
+	
+	% g1 = sigmoidGradient([1 -0.5 0 0.5 1]);
+	% g2 = sigmoid([1 -0.5 0 0.5 1]);
+	% fprintf('Sigmoid gradient evaluated at [1 -0.5 0 0.5 1]:\n');
+	% fprintf('%f ', g1);
+	% printf('\n');
+	% fprintf('%f ', g2);
+	% printf('\n');
+
+	J
+	Theta1
+	Theta2
+end
+
+
 
 
 %% =========== Initialization =============
@@ -94,17 +139,30 @@ end
 clear ; close all;
 addpath("./funciones");
 fprintf('Loading features ...\n');
-data 			= load("temp/training-features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
+data 				= load("temp/training-features.csv");		% data is [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
 [X_norm, mu, sigma] = featureNormalize(data(:,2:end));
-data(:,2:end)=X_norm;
-[train test] 	= splitSamples( data, 0.8, [] );	% 
+data(:,2:end)		= X_norm;
 
+[train test] 		= splitSamples( data, 0.8, [] );	% 
 fprintf('splitted %i training, %i testing\n', size(train,1), size(test,1) );
+
 Xtrain 		= train(:,2:end);
 ytrain		= train(:,1);
 
 Xtest		= test(:,2:end);
 ytest		= test(:,1);
+
+%%%%  /-------- testing for comparison with C# implementation
+%%%% |
+
+% data is  [ y(i) : X(i)1 : X(i)2 : ... : X(i)n ]
+data 		= load("temp/training-features.csv");		
+X 			= data(:,2:end);
+y			= data(:,1);
+testNeuralNetwork(X, y, 0, 5);
+
+%%%% |
+%%%%  \-------- end testing
 
 if fileExists("nn_theta.dat")
 	load("nn_theta.dat");

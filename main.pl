@@ -19,7 +19,7 @@ sub main
 	
 	# delete previous files
 	unlink($predict_file);
-	unlink($theta);
+	#unlink($theta);
 	
 	#
 	# call octave

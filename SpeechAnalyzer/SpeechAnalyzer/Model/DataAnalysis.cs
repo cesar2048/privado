@@ -31,63 +31,81 @@ namespace SpeechAnalyzer.Model
 		public void TrainNeuralNetwork()
 		{
 			FileInfo trainingFile = new FileInfo(Path.Combine(this.TempDirectory, "training-features.csv"));
+			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
+			DelimitedWriter matrixWriter = new DelimitedWriter(",");
 			DenseMatrix dataMat;
 
+			// load or generate features
 			if (!trainingFile.Exists)
 			{
 				List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
 				dataMat = ReadFiles(trainingAudiosList);
-
-				// save the features matrix in a csv file
-				DelimitedWriter matrixWriter = new DelimitedWriter(",");
-				matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);
+				matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);	// save the features matrix in a csv file
 			}
 			else
 			{
-				DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
-				dataMat = matrixReader.ReadMatrix(trainingFile.FullName);
+				dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
 			}
 
-			// TODO: execute machine learning process
+
+			//
+			// execute machine learning process
+			//
+
+
 			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
 			DenseVector y = dataMat.Column(0) as DenseVector;
-           // System.Diagnostics.Debug.WriteLine("X antes" + X.Row(1).ToString());
-            
-           var normalizeValue= NeuralNetwork.normalizeFeatures(X);
-           X= normalizeValue.Item1;
-           meanStdX = normalizeValue.Item2;
-            
 
-            //System.Diagnostics.Debug.WriteLine("X normalizada" + X.Row(1).ToString());
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 25, 0.1);
+			// feature normalization
+			var normalizeValue = NeuralNetwork.normalizeFeatures(X);
+			//X = normalizeValue.Item1;
+			meanStdX = normalizeValue.Item2;
+
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, 0.001);
 
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
+			
+			// testing
+			/*
+			{
+				DenseMatrix dm = new DenseMatrix(1, 5, new double[] { 1, -0.5, 0, 0.5, 1 });
+				System.Diagnostics.Debug.WriteLine( dm.sigmoidGradient().ToMatrixString(100, 100) + "\n");
+				System.Diagnostics.Debug.WriteLine( dm.Sigmoid().ToMatrixString(100, 100) + "\n");
+				
+				initialGuess = matrixReader.ReadMatrix(Path.Combine(this.TempDirectory, "initial_params.csv")).ToColumnWiseArray();
+				double cost		= nn.costFunction(initialGuess);
+				double[] grad	= nn.gradFunction(initialGuess);
+
+				nn.reshapeTheta(grad);
+				System.Diagnostics.Debug.WriteLine("J = {0,7:f}", cost);
+				System.Diagnostics.Debug.WriteLine(nn.Theta1.ToMatrixString(nn.Theta1.RowCount, nn.Theta1.ColumnCount) + "\n");
+				System.Diagnostics.Debug.WriteLine(nn.Theta2.ToMatrixString(nn.Theta2.RowCount, nn.Theta2.ColumnCount) + "\n");
+			}
+			*/
+
 			int[] predictions;
+			double Jini			= nn.costFunction(initialGuess);
+			double accIni		= nn.Predict(initialGuess, out predictions);
 
-			double Jini = nn.costFunction(initialGuess);
-			double accIni = nn.Predict(initialGuess, out predictions);
-
-			L_BFGS_B LBFGSB = new L_BFGS_B();
-			LBFGSB.AccuracyFactor = 1E7;
-			LBFGSB.MaxFunEvaluations = 300000 * 4000;
-			LBFGSB.Tolerance = 0.01;
-
-
-			TruncatedNewton tNewton = new TruncatedNewton();
+			L_BFGS_B LBFGSB				= new L_BFGS_B();
+			//LBFGSB.AccuracyFactor		= 1E1;
+			//LBFGSB.MaxFunEvaluations	= 300000 * 4000;
+			//LBFGSB.Tolerance			= 0.000001;
+			
 			double[] minimum = LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
 
-			double J = nn.costFunction(minimum);
-			double accuracy = nn.Predict(minimum, out predictions);
+			double J			= nn.costFunction(minimum);
+			double accuracy		= nn.Predict(minimum, out predictions);
 
-			System.Diagnostics.Debug.WriteLine("random init");
-			System.Diagnostics.Debug.WriteLine("J         = " + Jini);
-			System.Diagnostics.Debug.WriteLine("Accuracy  = " + accIni);
-			System.Diagnostics.Debug.WriteLine("after training");
-			System.Diagnostics.Debug.WriteLine("J         = " + J);
-			System.Diagnostics.Debug.WriteLine("Accuracy  = " + accuracy);
+			//  random_init		J = 97.49	accuracy =  33.45 %
+			//  after_training  J = 10.45	accuracy = 150.97 %
 			System.Diagnostics.Debug.WriteLine("------------------------");
+			System.Diagnostics.Debug.WriteLine("random_init	   J = {0,5:f}	accuracy = {1,8:p}", Jini, accIni);
+			System.Diagnostics.Debug.WriteLine("after_training J = {0,5:f}	accuracy = {1,8:p}", J, accuracy);
+			
 		}
+
 
 
 

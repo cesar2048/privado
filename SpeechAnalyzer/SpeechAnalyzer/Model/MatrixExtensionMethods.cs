@@ -85,6 +85,26 @@ namespace SpeechAnalyzer.Model
 			return sDeviations;
 		}
 
+		public static Matrix<double> Sigmoid(this Matrix<double> X)
+		{
+			DenseMatrix aux = DenseMatrix.OfMatrix(X);
+			aux.MapInplace(z => 1.0 / (1.0 + Math.Exp(-z)));
+			return aux;
+		}
 
+		public static Matrix<double> sigmoidGradient(this Matrix<double> X)
+		{
+			Matrix<double> aux = X.Sigmoid();
+			aux.MapInplace(z => 1 - z);		// = (1-sigmoid(X))
+
+			aux = X.Sigmoid().PointwiseMultiply(aux) as DenseMatrix;	// = sigmoid(X) .* aux
+			return aux;
+		}
+
+		public static Matrix<double> Log(this Matrix<double> X)
+		{
+			X.MapInplace(z => Math.Log(z));
+			return X;
+		}
 	}
 }

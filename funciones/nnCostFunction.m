@@ -91,15 +91,27 @@ Theta2_grad = zeros(size(Theta2));
 	z3 = a2 * Theta2';
 	a3 = sigmoid(z3);	% a3 is [5000x10]
 	
+	z2
+	a2
+	
+	z3
+	a3
+	
 	for t = [1:m]
 		
 		% calculate del
 		del3 = a3(t,:)' - ybinary(t,:)';								% [10x1]
 		del2 = Theta2(:,2:end)' * del3 .* sigmoidGradient( z2(t,:)' );	% [25x1]
 		
+		%Theta2(:,2:end)' * del3
+		%sigmoidGradient( z2(t,:)')
+		del2
+		
 		% accumulator Delta
 		Delta2 += del3 * a2(t,:);	% [10 x 26 ]
 		Delta1 += del2 *  X(t,:);	% [25 x 401]
+		
+		printf("iter end----\n");
 		
 	end
 	
@@ -115,6 +127,9 @@ Theta2_grad = zeros(size(Theta2));
 	Theta1_grad = Delta1 / m + lambda * [ zeros(size(Theta1,1),1) Theta1(:,2:end) ] / m;
 	Theta2_grad = Delta2 / m + lambda * [ zeros(size(Theta2,1),1) Theta2(:,2:end) ] / m;
 
+	Theta1_grad
+	Theta2_grad
+	
 % -------------------------------------------------------------
 
 % =========================================================================

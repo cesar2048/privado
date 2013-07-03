@@ -75,12 +75,13 @@ namespace SpeechAnalyzer.Model
 			aux2.MapInplace(a => Math.Pow(a, 2));
 
 			J += lambda * (aux1.SumHorizontally().Sum() + aux2.SumHorizontally().Sum()) / 2 * m;
+			System.Diagnostics.Debug.WriteLine("J=" + J);
 			return J;
 		}
 
 		public double[] gradFunction(double[] theta)
 		{
-			DenseMatrix Delta1, Delta2, del2, del3, z2, z3, a2, a3, ybinary, Theta1Aux;
+			DenseMatrix Delta1, Delta2, del2, del3, z2, z3, a2, a3, ybinary, Theta2Aux, Theta1grad, Theta2grad;
 
 			reshapeTheta(theta);
 			feedForward(out a2, out a3, out z2, out z3, out ybinary);
@@ -88,26 +89,29 @@ namespace SpeechAnalyzer.Model
 			Delta1 = DenseMatrix.OfMatrix(Theta1).Multiply(0) as DenseMatrix;// zeros, same size
 			Delta2 = DenseMatrix.OfMatrix(Theta2).Multiply(0) as DenseMatrix;// zeros, same size
 
-			Theta1Aux = Theta2.GetSubMatrix(0, 0, 1, -1) as DenseMatrix;
+			Theta2Aux = Theta2.GetSubMatrix(0, 0, 1, -1) as DenseMatrix;
 
 			for (int t = 0; t < m; t++)
 			{
 				del3 = a3.Row(t).Subtract(ybinary.Row(t)).ToColumnMatrix() as DenseMatrix;
-				del2 = Theta1Aux.TransposeThisAndMultiply(del3).
-							PointwiseMultiply(
-								sigmoidGradient(z2.Row(t).ToColumnMatrix() as DenseMatrix)
-							) as DenseMatrix;
+				
+				del2 = Theta2Aux.TransposeThisAndMultiply(del3) as DenseMatrix;
+				DenseMatrix sig = z2.Row(t).ToColumnMatrix().sigmoidGradient() as DenseMatrix;
+				del2 = del2.PointwiseMultiply(sig) as DenseMatrix;
 
 				Delta2 = Delta2.Add(del3.Multiply(a2.Row(t).ToRowMatrix())) as DenseMatrix;
 				Delta1 = Delta1.Add(del2.Multiply(X.Row(t).ToRowMatrix())) as DenseMatrix;
 			}
 
-			Theta1 = Delta1.Divide(m) as DenseMatrix;
-			Theta2 = Delta2.Divide(m) as DenseMatrix;
+			Theta1grad = Delta1.Divide(m) as DenseMatrix;
+			Theta2grad = Delta2.Divide(m) as DenseMatrix;
+			
+			Theta1grad.MapIndexedInplace((i, j, z) => (j == 0) ? z : z + lambda * Theta1[i, j]);	// regularization ## Del(i,j) += λ * Θ(i,j)(l)   if j != 0
+			Theta2grad.MapIndexedInplace((i, j, z) => (j == 0) ? z : z + lambda * Theta2[i, j]);	// regularization ## Del(i,j) += λ * Θ(i,j)(l)   if j != 0
 
 			// unroll gradient
-			double[] t1 = Theta1.ToColumnWiseArray();
-			double[] t2 = Theta2.ToColumnWiseArray();
+			double[] t1 = Theta1grad.ToColumnWiseArray();
+			double[] t2 = Theta2grad.ToColumnWiseArray();
 			return t1.Concat(t2).ToArray();
 		}
 
@@ -151,13 +155,13 @@ namespace SpeechAnalyzer.Model
 			//a1.InsertColumn(0, DenseVector.Create(m, i => 1)) as DenseMatrix;
 
 			z2 = a1.TransposeAndMultiply(Theta1) as DenseMatrix;
-			a2 = sigmoid(z2);
+			a2 = z2.Sigmoid() as DenseMatrix;
 
 			// a2 -> a3
-			a2 = z2.InsertColumn(0, DenseVector.Create(m, i => 1)) as DenseMatrix;
+			a2 = a2.InsertColumn(0, DenseVector.Create(m, i => 1)) as DenseMatrix;
 
 			z3 = a2.TransposeAndMultiply(Theta2) as DenseMatrix;
-			a3 = sigmoid(z3);
+			a3 = z3.Sigmoid() as DenseMatrix;
 
 			// auxiliary
 			ybinary = new DenseMatrix(m, nOutput);
@@ -178,30 +182,10 @@ namespace SpeechAnalyzer.Model
 			this.Theta2.MapInplace(a => rnd.NextDouble() * 2 * epsilon - epsilon);
 		}
 
-		private DenseMatrix sigmoid(DenseMatrix X)
-		{
-			X.MapInplace(z => 1.0 / (1.0 + Math.Exp(-z)));
-			return X;
-		}
-
-		private DenseMatrix log(DenseMatrix X)
-		{
-			X.MapInplace(z => Math.Log(z));
-			return X;
-		}
-
-		private DenseMatrix sigmoidGradient(DenseMatrix X)
-		{
-			DenseMatrix aux = sigmoid(X);
-			aux.MapInplace(z => 1 - z);		// = (1-sigmoid(X))
-
-			X = sigmoid(X).PointwiseMultiply(aux) as DenseMatrix;	// = sigmoid(X) .* aux
-			return X;
-		}
         private DenseMatrix gradDescent(DenseMatrix X,DenseMatrix y,DenseMatrix theta,float alpha ,int num_iters)
         {
             int cont = 1;
-            
+			
             while(cont <= num_iters ){
                 DenseMatrix xTheta = X.Multiply(theta.Inverse()) as DenseMatrix;
                 DenseMatrix mult1= xTheta - y.Inverse() as DenseMatrix;
@@ -212,27 +196,32 @@ namespace SpeechAnalyzer.Model
 
             return theta;
         }
+
+
         public static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X)
         {
-            DenseVector meanN,stdN;
-            DenseMatrix XN = X;
-            meanN = X.MeanVertically() as DenseVector;
-            stdN = X.StdVertically() as DenseVector;
-            int m = X.RowCount;
-            int n = X.ColumnCount;
-            int n2 = stdN.Count;
-            DenseMatrix parametersl = DenseMatrix.Create(2, n, (i, j) => 1); 
+            DenseVector meanN,stdN, temp;
+			DenseMatrix XN, parametersl;
+
+            XN		= DenseMatrix.OfMatrix(X);
+            meanN	= XN.MeanVertically() as DenseVector;
+			stdN	= XN.StdVertically() as DenseVector;
+			int m	= XN.RowCount;
+            int n	= XN.ColumnCount;
+            int n2	= stdN.Count;
+
+            parametersl = DenseMatrix.Create(2, n, (i, j) => 1); 
             parametersl.SetRow(0,meanN);
             parametersl.SetRow(1,stdN);
-            DenseVector temp;
-            int cont = 0;
-            while (cont < m)
-            {
-                temp = (X.Row(cont).Subtract(meanN)).PointwiseDivide(stdN) as DenseVector;
-                XN.SetRow(cont, temp);
-                cont++;
-            }
-            return new Tuple<DenseMatrix,DenseMatrix> (XN,parametersl);
+			
+			int cont = 0;
+			while (cont < m)
+			{
+				temp = (XN.Row(cont).Subtract(meanN)).PointwiseDivide(stdN) as DenseVector;
+				XN.SetRow(cont, temp);
+				cont++;
+			}
+			return new Tuple<DenseMatrix,DenseMatrix> (XN,parametersl);
         }
 	}
 }
