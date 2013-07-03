@@ -66,7 +66,7 @@ namespace SpeechAnalyzer.Model
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
 			
-			// testing
+			// testing 
 			/*
 			{
 				DenseMatrix dm = new DenseMatrix(1, 5, new double[] { 1, -0.5, 0, 0.5, 1 });

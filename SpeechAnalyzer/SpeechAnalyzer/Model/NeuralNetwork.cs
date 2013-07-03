@@ -79,6 +79,7 @@ namespace SpeechAnalyzer.Model
 			return J;
 		}
 
+
 		public double[] gradFunction(double[] theta)
 		{
 			DenseMatrix Delta1, Delta2, del2, del3, z2, z3, a2, a3, ybinary, Theta2Aux, Theta1grad, Theta2grad;

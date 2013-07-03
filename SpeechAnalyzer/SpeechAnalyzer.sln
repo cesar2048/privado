@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechAnalyzer", "SpeechAnalyzer\SpeechAnalyzer.csproj", "{A507C96B-4CFB-49F4-B4C0-4209EF1F88D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoAudio", "DemoAudio\DemoAudio\DemoAudio.csproj", "{2AC7ED72-CADC-4A87-BB4C-94CA0C97BAFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{A507C96B-4CFB-49F4-B4C0-4209EF1F88D9}.Debug|x86.Build.0 = Debug|x86
 		{A507C96B-4CFB-49F4-B4C0-4209EF1F88D9}.Release|x86.ActiveCfg = Release|x86
 		{A507C96B-4CFB-49F4-B4C0-4209EF1F88D9}.Release|x86.Build.0 = Release|x86
+		{2AC7ED72-CADC-4A87-BB4C-94CA0C97BAFA}.Debug|x86.ActiveCfg = Debug|x86
+		{2AC7ED72-CADC-4A87-BB4C-94CA0C97BAFA}.Debug|x86.Build.0 = Debug|x86
+		{2AC7ED72-CADC-4A87-BB4C-94CA0C97BAFA}.Release|x86.ActiveCfg = Release|x86
+		{2AC7ED72-CADC-4A87-BB4C-94CA0C97BAFA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
