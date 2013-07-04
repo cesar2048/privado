@@ -60,8 +60,8 @@ namespace SpeechAnalyzer.Model
 			aux1 = DenseMatrix.OfMatrix(a3);
 			aux2 = DenseMatrix.OfMatrix(a3);
 
-			aux1.MapIndexedInplace((i, j, a) => ybinary[i, j] * Math.Log(a));			// ybinary * log(a3)
-			aux2.MapIndexedInplace((i, j, a) => (1 - ybinary[i, j]) * Math.Log(1 - a));	// (1-ybinary) .* log(1-a3)
+			aux1.MapIndexedInplace((i, j, a) => (ybinary[i, j] == 1 ) ? Math.Log(a)     : 0);	// ybinary * log(a3)
+			aux2.MapIndexedInplace((i, j, a) => (ybinary[i, j] == 0 ) ? Math.Log(1 - a) : 0);	// (1-ybinary) .* log(1-a3)
 			aux = aux1.Add(aux2) as DenseMatrix;
 
 			J = aux.SumVertically().Sum();
@@ -75,7 +75,7 @@ namespace SpeechAnalyzer.Model
 			aux2.MapInplace(a => Math.Pow(a, 2));
 
 			J += lambda * (aux1.SumHorizontally().Sum() + aux2.SumHorizontally().Sum()) / 2 * m;
-			System.Diagnostics.Debug.WriteLine("J=" + J);
+			//System.Diagnostics.Debug.WriteLine("J=" + J);
 			return J;
 		}
 

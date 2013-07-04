@@ -58,10 +58,10 @@ namespace SpeechAnalyzer.Model
 
 			// feature normalization
 			var normalizeValue = NeuralNetwork.normalizeFeatures(X);
-			//X = normalizeValue.Item1;
+			X = normalizeValue.Item1;
 			meanStdX = normalizeValue.Item2;
 
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, 0.001);
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, 0.1);
 
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
@@ -92,17 +92,33 @@ namespace SpeechAnalyzer.Model
 			//LBFGSB.AccuracyFactor		= 1E1;
 			//LBFGSB.MaxFunEvaluations	= 300000 * 4000;
 			//LBFGSB.Tolerance			= 0.000001;
-			
-			double[] minimum = LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
 
-			double J			= nn.costFunction(minimum);
-			double accuracy		= nn.Predict(minimum, out predictions);
+			List<Tuple<Double, Double>> JValues = new List<Tuple<double,double>>();
+			double[] minimum;
+			double J = 0, accuracy = 0;
+
+			for (int i = 0; i < 1000; i++)
+			{
+				nn.RandInitializeTheta();
+				initialGuess	= nn.getTheta();
+				minimum			= LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
+				J				= nn.costFunction(minimum);
+				accuracy		= nn.Predict(minimum, out predictions);
+
+				JValues.Add(new Tuple<double, double>(J, accuracy));
+				System.Diagnostics.Debug.WriteLine("Iter: " + i + " -> " + (accuracy*100) + "%");
+			}
+
+			var queryJ = String.Join("\n", (from tuple in JValues
+										  select (tuple.Item1 + " " + tuple.Item2 ) ).ToArray());
 
 			//  random_init		J = 97.49	accuracy =  33.45 %
 			//  after_training  J = 10.45	accuracy = 150.97 %
 			System.Diagnostics.Debug.WriteLine("------------------------");
 			System.Diagnostics.Debug.WriteLine("random_init	   J = {0,5:f}	accuracy = {1,8:p}", Jini, accIni);
 			System.Diagnostics.Debug.WriteLine("after_training J = {0,5:f}	accuracy = {1,8:p}", J, accuracy);
+
+			System.Diagnostics.Debug.WriteLine("J values: \n" + queryJ);
 			
 		}
 
