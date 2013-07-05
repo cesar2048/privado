@@ -84,9 +84,9 @@ namespace DemoAudio
         /// <param name="e"></param>
         private void ondaEntrada_DatosDisponibles(object sender, WaveInEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine(thresh);
-            //ficheroOndaSalida.WriteData(e.Buffer, 0, e.BytesRecorded);
-            for (int index = 0; index < e.BytesRecorded && flagStart==0; index += 2)
+            System.Diagnostics.Debug.WriteLine(thresh);
+            ficheroOndaSalida.WriteData(e.Buffer, 0, e.BytesRecorded);
+            /*for (int index = 0; index < e.BytesRecorded && flagStart==0; index += 2)
             {
                 short sample = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
                 System.Diagnostics.Debug.WriteLine("volumen de sample:" + sample);
@@ -108,6 +108,7 @@ namespace DemoAudio
                 numMuestras = 0;
                 Parar();
             }
+			 * */
           }
 
         /// <summary>

@@ -89,9 +89,6 @@ namespace SpeechAnalyzer.Model
 			double accIni		= nn.Predict(initialGuess, out predictions);
 
 			L_BFGS_B LBFGSB				= new L_BFGS_B();
-			//LBFGSB.AccuracyFactor		= 1E1;
-			//LBFGSB.MaxFunEvaluations	= 300000 * 4000;
-			//LBFGSB.Tolerance			= 0.000001;
 
 			List<Tuple<Double, Double>> JValues = new List<Tuple<double,double>>();
 			double[] minimum;
