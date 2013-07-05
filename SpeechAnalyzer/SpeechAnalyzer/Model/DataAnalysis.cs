@@ -24,6 +24,9 @@ namespace SpeechAnalyzer.Model
 		public Double FinalCostValue { get; set; }
 		public Int32 ProgressValue { get; set; }
 		public String ConsoleOut { get; set; }
+		public Double Lambda { get; set; }
+		public Int32 Attempts { get; set; }
+		public Int32 Iterations { get; set; }
 		
 		public event EventHandler Finished;
 		public event EventHandler Progress;
@@ -36,6 +39,7 @@ namespace SpeechAnalyzer.Model
 
 			this.FinalCostValue = Double.PositiveInfinity;
 			this.ConsoleOut = "";
+			this.Lambda = 0.1;
 		}
 
 		public void TrainNeuralNetwork()
@@ -71,7 +75,7 @@ namespace SpeechAnalyzer.Model
 			X = normalizeValue.Item1;
 			meanStdX = normalizeValue.Item2;
 
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, 0.1);
+			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, this.Lambda);
 
 			nn.RandInitializeTheta();
 			double[] initialGuess = nn.getTheta();
@@ -99,12 +103,14 @@ namespace SpeechAnalyzer.Model
 			double accIni		= nn.Predict(initialGuess, out predictions);
 
 			L_BFGS_B LBFGSB				= new L_BFGS_B();
+			LBFGSB.MaxFunEvaluations	= this.Iterations;
+
 
 			List<Tuple<Double, Double>> JValues = new List<Tuple<double,double>>();
 			double[] minimum;
 			double J = 0, accuracy = 0;
 
-			for (int i = 0; i < 1000; i++)
+			for (int i = 0; i < this.Attempts; i++)
 			{
 				nn.RandInitializeTheta();
 				initialGuess	= nn.getTheta();
@@ -114,7 +120,7 @@ namespace SpeechAnalyzer.Model
 
 				JValues.Add(new Tuple<double, double>(J, accuracy));
 
-				String msg = "Iter: " + i + " -> " + (accuracy * 100) + "%";
+				String msg = "Training: " + i + " -> " + (accuracy * 100) + "%";
 				System.Diagnostics.Debug.WriteLine(msg);
 				this.ConsoleOut += msg + "\r\n";
 				this.OnProgress(EventArgs.Empty);

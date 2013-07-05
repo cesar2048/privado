@@ -60,6 +60,9 @@ namespace SpeechAnalyzer
 			this.txtTiempo.Text		= "5";
 			this.nupHold.Value		= 30;
 			this.picWorking.Visible = false;
+			this.txtLambda.Text = analysis.Lambda.ToString();
+			this.analysis.Iterations = Convert.ToInt32(this.txtIteraciones.Text);
+			this.analysis.Attempts = Convert.ToInt32(this.txtIntentos.Text);
         }
 
 		private string[] withOutSlash(string[] filePaths)
@@ -100,26 +103,31 @@ namespace SpeechAnalyzer
 		{
 			this.lblNetStatus.Text = "Working...";
 			this.workerThread = new Thread(new ThreadStart(this.analysis.TrainNeuralNetwork));
+			this.workerThread.IsBackground = true;
 			this.workerThread.Start();
 			this.picWorking.Visible = true;
 			this.btGen.Enabled = false;
+			this.txtIntentos.Enabled = false;
 		}
 
 		void analysis_Finished(object sender, EventArgs e)
 		{
-			this.lblNetStatus.Text = "Finished, Cost = " + analysis.FinalCostValue;
-			this.picWorking.Visible = false;
-			this.btGen.Enabled = true;
+			if (this.InvokeRequired) {
+				this.BeginInvoke(new EventHandler<EventArgs>(analysis_Finished), sender, e);
+			} else {
+				this.lblNetStatus.Text = "Finished, Cost = " + analysis.FinalCostValue;
+				this.picWorking.Visible = false;
+				this.btGen.Enabled = true;
+				this.txtLambda.Enabled = true;
+				this.txtIntentos.Enabled = true;
+			}
 		}
 
 		void analysis_Progress(object sender, EventArgs e)
 		{
-			if (this.InvokeRequired)
-			{
+			if (this.InvokeRequired) {
 				this.BeginInvoke(new EventHandler<EventArgs>(analysis_Progress), sender, e);
-			}
-			else
-			{
+			} else {
 				this.txtNetConsole.Text = this.analysis.ConsoleOut;
 			}
 		}
@@ -357,6 +365,37 @@ namespace SpeechAnalyzer
 				player.Stop();
 			}
 			btnPlay.Text = "Reproducir";
+		}
+
+		private void txtLambda_TextChanged(object sender, EventArgs e)
+		{
+			double lambda = this.analysis.Lambda;
+			if (Double.TryParse(this.txtLambda.Text, out lambda)) {
+				this.analysis.Lambda = lambda;
+			} else {
+				MessageBox.Show("Invalid value");
+			}
+		}
+
+		private void txtIntentos_TextChanged(object sender, EventArgs e)
+		{
+			Int32 attempts = this.analysis.Attempts;
+			if (Int32.TryParse(this.txtIntentos.Text, out attempts))
+			{
+				this.analysis.Attempts = attempts;
+			}
+			else
+			{
+				MessageBox.Show("Invalid value");
+			}
+		}
+
+		private void txtIteraciones_TextChanged(object sender, EventArgs e)
+		{
+			Int32 iter = this.analysis.Iterations;
+			if (Int32.TryParse(this.txtIteraciones.Text, out iter)) {
+				this.analysis.Iterations = iter;
+			}
 		}
 
 	}

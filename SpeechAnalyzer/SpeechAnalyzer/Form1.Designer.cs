@@ -49,10 +49,16 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.txtLambda = new System.Windows.Forms.TextBox();
+			this.txtNetConsole = new System.Windows.Forms.TextBox();
+			this.picWorking = new System.Windows.Forms.PictureBox();
 			this.lblNetStatus = new System.Windows.Forms.Label();
 			this.btGen = new System.Windows.Forms.Button();
-			this.picWorking = new System.Windows.Forms.PictureBox();
-			this.txtNetConsole = new System.Windows.Forms.TextBox();
+			this.txtIntentos = new System.Windows.Forms.TextBox();
+			this.txtIteraciones = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -275,6 +281,12 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.txtIteraciones);
+			this.tabPage2.Controls.Add(this.label7);
+			this.tabPage2.Controls.Add(this.txtIntentos);
+			this.tabPage2.Controls.Add(this.label6);
+			this.tabPage2.Controls.Add(this.label5);
+			this.tabPage2.Controls.Add(this.txtLambda);
 			this.tabPage2.Controls.Add(this.txtNetConsole);
 			this.tabPage2.Controls.Add(this.picWorking);
 			this.tabPage2.Controls.Add(this.lblNetStatus);
@@ -287,9 +299,57 @@
 			this.tabPage2.Text = "Red Neural";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(12, 80);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(41, 13);
+			this.label6.TabIndex = 29;
+			this.label6.Text = "Repetir";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label5.Location = new System.Drawing.Point(11, 51);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(18, 20);
+			this.label5.TabIndex = 28;
+			this.label5.Text = "λ";
+			// 
+			// txtLambda
+			// 
+			this.txtLambda.Location = new System.Drawing.Point(77, 51);
+			this.txtLambda.Name = "txtLambda";
+			this.txtLambda.Size = new System.Drawing.Size(71, 20);
+			this.txtLambda.TabIndex = 27;
+			this.txtLambda.TextChanged += new System.EventHandler(this.txtLambda_TextChanged);
+			// 
+			// txtNetConsole
+			// 
+			this.txtNetConsole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtNetConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.txtNetConsole.Location = new System.Drawing.Point(235, 7);
+			this.txtNetConsole.Multiline = true;
+			this.txtNetConsole.Name = "txtNetConsole";
+			this.txtNetConsole.ReadOnly = true;
+			this.txtNetConsole.Size = new System.Drawing.Size(362, 241);
+			this.txtNetConsole.TabIndex = 26;
+			// 
+			// picWorking
+			// 
+			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources._120x120px_LS_482a3971_multilockon;
+			this.picWorking.Location = new System.Drawing.Point(11, 159);
+			this.picWorking.Name = "picWorking";
+			this.picWorking.Size = new System.Drawing.Size(128, 91);
+			this.picWorking.TabIndex = 25;
+			this.picWorking.TabStop = false;
+			// 
 			// lblNetStatus
 			// 
-			this.lblNetStatus.Location = new System.Drawing.Point(8, 106);
+			this.lblNetStatus.Location = new System.Drawing.Point(12, 143);
 			this.lblNetStatus.Name = "lblNetStatus";
 			this.lblNetStatus.Size = new System.Drawing.Size(193, 13);
 			this.lblNetStatus.TabIndex = 24;
@@ -305,26 +365,32 @@
 			this.btGen.UseVisualStyleBackColor = true;
 			this.btGen.Click += new System.EventHandler(this.btGen_Click);
 			// 
-			// picWorking
+			// txtIntentos
 			// 
-			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources._120x120px_LS_482a3971_multilockon;
-			this.picWorking.Location = new System.Drawing.Point(11, 122);
-			this.picWorking.Name = "picWorking";
-			this.picWorking.Size = new System.Drawing.Size(128, 107);
-			this.picWorking.TabIndex = 25;
-			this.picWorking.TabStop = false;
+			this.txtIntentos.Location = new System.Drawing.Point(77, 77);
+			this.txtIntentos.Name = "txtIntentos";
+			this.txtIntentos.Size = new System.Drawing.Size(71, 20);
+			this.txtIntentos.TabIndex = 30;
+			this.txtIntentos.Text = "100";
+			this.txtIntentos.TextChanged += new System.EventHandler(this.txtIntentos_TextChanged);
 			// 
-			// txtNetConsole
+			// txtIteraciones
 			// 
-			this.txtNetConsole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtNetConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.txtNetConsole.Location = new System.Drawing.Point(235, 7);
-			this.txtNetConsole.Multiline = true;
-			this.txtNetConsole.Name = "txtNetConsole";
-			this.txtNetConsole.ReadOnly = true;
-			this.txtNetConsole.Size = new System.Drawing.Size(362, 241);
-			this.txtNetConsole.TabIndex = 26;
+			this.txtIteraciones.Location = new System.Drawing.Point(77, 103);
+			this.txtIteraciones.Name = "txtIteraciones";
+			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
+			this.txtIteraciones.TabIndex = 32;
+			this.txtIteraciones.Text = "10000";
+			this.txtIteraciones.TextChanged += new System.EventHandler(this.txtIteraciones_TextChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(12, 106);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(59, 13);
+			this.label7.TabIndex = 31;
+			this.label7.Text = "Iteraciones";
 			// 
 			// levelIndicator1
 			// 
@@ -385,6 +451,12 @@
 		private System.Windows.Forms.Button btGen;
 		private System.Windows.Forms.PictureBox picWorking;
 		private System.Windows.Forms.TextBox txtNetConsole;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TextBox txtLambda;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox txtIntentos;
+		private System.Windows.Forms.TextBox txtIteraciones;
+		private System.Windows.Forms.Label label7;
 
 	}
 }
