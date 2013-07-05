@@ -21,19 +21,22 @@ namespace SpeechAnalyzer
 	{
 		DataAnalysis analysis;
 		Config config;
+		Thread workerThread;
+
         private IWaveIn waveIn;
         private WaveFileWriter writer;
         private string outputFilename="";
         private readonly string outputFolder;
-        private float time = 30.0f;
+        
         private string[] filePaths;
         private IWavePlayer player;
         private WaveFileReader reader;
-        private Boolean thold = false;
         private int playPause = 1;
         private string filePlayed;
-        private int tHoldValue = 0;
-        private int tHoldInicio = 0;
+
+		private float time = 30.0f;
+		private int tHoldValue = 0;
+        private bool tHoldInicio = false;
 
 		public Form1()
 		{
@@ -43,29 +46,26 @@ namespace SpeechAnalyzer
             {
                 LoadWasapiDevicesCombo();
             }
-			String dir = Directory.GetCurrentDirectory();
-			System.Diagnostics.Debug.WriteLine(dir);
 
-			this.config = Config.ReadConfigFile();
-			this.analysis = new DataAnalysis(config.DataDirectory, config.TempDirectory, config.SonicAnnotator);
+			this.config		= Config.ReadConfigFile();
+			this.analysis	= new DataAnalysis(config.DataDirectory, config.TempDirectory, config.SonicAnnotator);
+			this.analysis.Finished += new EventHandler(analysis_Finished);
+			this.analysis.Progress += new EventHandler(analysis_Progress);
 
-            outputFolder = config.DataDirectory;
-            filePaths = Directory.GetFiles(@config.DataDirectory, "*.wav");
-            filePaths = withOutSlash(filePaths);
-            listBoxRecordings.Items.AddRange(filePaths);
+            outputFolder	= config.DataDirectory;
+            filePaths		= withOutSlash(Directory.GetFiles(@config.DataDirectory, "*.wav"));
+
+			// components
+			this.listBoxRecordings.Items.AddRange(filePaths);
+			this.txtTiempo.Text		= "5";
+			this.nupHold.Value		= 30;
+			this.picWorking.Visible = false;
         }
 
-        private string[] withOutSlash(string[] filePaths)
+		private string[] withOutSlash(string[] filePaths)
         {
-            int cont = 0;
-            while (cont < filePaths.Length)
-            {
-                char[] separadores = { '\\' };
-                string[] arrayFile = filePaths[cont].Split(separadores);
-                filePaths[cont] = arrayFile[1];
-                cont++;
-            }
-            return filePaths;
+			return (from name in filePaths
+					select Path.GetFileName(name)).ToArray();
         }
 
         private void LoadWasapiDevicesCombo()
@@ -76,11 +76,13 @@ namespace SpeechAnalyzer
             comboWasapiDevices.DataSource = devices;
             comboWasapiDevices.DisplayMember = "FriendlyName";
         }
+
         void OnRecordingPanelDisposed(object sender, EventArgs e)
         {
             Cleanup();
         }
-        private void Cleanup()
+        
+		private void Cleanup()
         {
             if (waveIn != null) 
             {
@@ -93,105 +95,121 @@ namespace SpeechAnalyzer
                 writer = null;
             }
         }
+
 		private void btGen_Click(object sender, EventArgs e)
 		{
-			this.analysis.TrainNeuralNetwork( );
+			this.lblNetStatus.Text = "Working...";
+			this.workerThread = new Thread(new ThreadStart(this.analysis.TrainNeuralNetwork));
+			this.workerThread.Start();
+			this.picWorking.Visible = true;
+			this.btGen.Enabled = false;
 		}
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+		void analysis_Finished(object sender, EventArgs e)
+		{
+			this.lblNetStatus.Text = "Finished, Cost = " + analysis.FinalCostValue;
+			this.picWorking.Visible = false;
+			this.btGen.Enabled = true;
+		}
 
-        }
+		void analysis_Progress(object sender, EventArgs e)
+		{
+			if (this.InvokeRequired)
+			{
+				this.BeginInvoke(new EventHandler<EventArgs>(analysis_Progress), sender, e);
+			}
+			else
+			{
+				this.txtNetConsole.Text = this.analysis.ConsoleOut;
+			}
+		}
+
+		private void StartRecording_Click(object sender, EventArgs e)
+		{
+			if (waveIn == null)
+			{
+				if (outputFilename == "" || outputFilename.StartsWith("muestra"))
+				{
+					outputFilename = String.Format("muestra{0:yyy-mm-ddHH-mm-ss}.wav", DateTime.Now);
+				}
+
+				waveIn = new WaveIn();
+				waveIn.WaveFormat			= new WaveFormat(8000, 1);
+				waveIn.DataAvailable		+= OnDataAvailable;
+				waveIn.RecordingStopped		+= OnRecordingStopped;
+
+				writer = new WaveFileWriter(Path.Combine(outputFolder, outputFilename), waveIn.WaveFormat);
+				waveIn.StartRecording();
+
+				btStartRecording.Enabled = false;
+			}
+		}
+
+
         void OnDataAvailable(object sender, WaveInEventArgs e)
         {
             if (this.InvokeRequired)
             {
-                //Debug.WriteLine("Data Available");
                 this.BeginInvoke(new EventHandler<WaveInEventArgs>(OnDataAvailable), sender, e);
             }
             else
             {
+				bool oldTHold = tHoldInicio;
                 if (chkThold.Checked == false)
                 {
-                    writer.Write(e.Buffer, 0, e.BytesRecorded);
-                    float secondsRecorded = (float)(writer.Length / writer.WaveFormat.AverageBytesPerSecond);
-                    if (secondsRecorded >= time)
-                    {
-                        progressBar1.Value = 100;
-                        StopRecording();
-                    }
-                    else
-                    {
-                        progressBar1.Value = (int)((secondsRecorded / time) * 100);
-                    }
+					tHoldInicio = true;
                 }
                 else
                 {
-                    if (tHoldInicio == 0)
-                    {
-                        byte[] bufAux = e.Buffer;
-                        int bRc = e.BytesRecorded;
-                        int startIndex = -1;
-                        for (int index = 0; index < bRc && startIndex == 0; index += 2)
-                        {
-                            byte[] auxByte = new byte[2] { bufAux[index + 1], bufAux[index] };
-                            int sample = BitConverter.ToUInt16(auxByte, 0);
-                            int sampleI = (int)((sample / 65535) * 100);
-                            if (sampleI > tHoldValue)
-                            {
-                                startIndex = index;
-                            }
-                        }
-                        if (startIndex > 0)
-                        {
-                            writer.Write(bufAux, startIndex, bRc - startIndex);
-                            tHoldInicio = 1;
-                            System.Diagnostics.Debug.WriteLine("emplieza a guardar datos SampleI:"+tHoldValue);
-                        }
-                    }
-                    else if (tHoldInicio==1)
-                    {
-                        writer.Write(e.Buffer, 0, e.BytesRecorded);
-                        float secondsRecorded = (float)(writer.Length / writer.WaveFormat.AverageBytesPerSecond);
-                        if (secondsRecorded >= time)
-                        {
-                            progressBar1.Value = 100;
-                            StopRecording();
-                        }
-                        else
-                        {
-                            progressBar1.Value = (int)((secondsRecorded / time) * 100);
-                        }
-                    }
+					MemoryStream ms = new MemoryStream(e.Buffer);
+					BinaryReader br = new BinaryReader(ms);
+					try
+					{
+						double max = 0;
+						for (int i = 0; i < e.Buffer.Length / 2; i++)
+						{
+							double val = Math.Abs((br.ReadInt16() * 100.0) / 0x8FFF);
+							if (val > max) max = val;
+						}
+						if (max > tHoldValue) { tHoldInicio = true; }
+						this.levelIndicator1.Level = (int)max;
+					} catch (EndOfStreamException /*eos*/) {
+						// ignored
+					} finally {
+						br.Close();
+					}
                 }
+
+				if (oldTHold != tHoldInicio && tHoldInicio == true)
+				{
+					lblStatus.Text = "Grabando...";
+				}
+
+				if (tHoldInicio)
+				{
+					writer.Write(e.Buffer, 0, e.BytesRecorded);
+					float secondsRecorded = (float)writer.Length / (float)writer.WaveFormat.AverageBytesPerSecond;
+					if (secondsRecorded >= time)
+					{
+						progressBar1.Value = 100;
+						tHoldInicio = false;
+						StopRecording();
+					}
+					else
+					{
+						progressBar1.Value = (int)((secondsRecorded / time) * 100);
+					}
+				}
             }
         }
 
-        private void StartRecording_Click(object sender, EventArgs e)
-        {
-            if (waveIn == null)
-            {
-                if (outputFilename == "" || outputFilename.StartsWith("muestra"))
-                    {
-                        outputFilename = String.Format("muestra{0:yyy-mm-ddHH-mm-ss}.wav", DateTime.Now);
-                    }                
-                    waveIn = new WaveIn();
-                    waveIn.WaveFormat = new WaveFormat(8000, 1);
-               
-
-                writer = new WaveFileWriter(Path.Combine(outputFolder, outputFilename), waveIn.WaveFormat);
-
-                waveIn.DataAvailable += OnDataAvailable;
-                waveIn.RecordingStopped += OnRecordingStopped;
-                waveIn.StartRecording();
-                StartRecording.Enabled = false;
-            }
-        }
         void StopRecording()
         {
             Debug.WriteLine("StopRecording");
             waveIn.StopRecording();
         }
+
+
         void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
             if (this.InvokeRequired)
@@ -201,8 +219,10 @@ namespace SpeechAnalyzer
             else
             {
                 Cleanup();
-                StartRecording.Enabled = true;
+                btStartRecording.Enabled = true;
                 progressBar1.Value = 0;
+				lblStatus.Text = "Esperando..";
+
                 if (e.Exception != null)
                 {
                     MessageBox.Show(String.Format("A problem was encountered during recording {0}",
@@ -221,17 +241,7 @@ namespace SpeechAnalyzer
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (player != null)
-            {
-                player.Stop();
-               
-            }
-            btnPlay.Text = "Reproducir";
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             if (listBoxRecordings.SelectedItem != null)
             {
@@ -251,37 +261,27 @@ namespace SpeechAnalyzer
             }
         }
 
-        private void buttonOpenFolder_Click(object sender, EventArgs e)
+        private void btnOpenFolder_Click(object sender, EventArgs e)
         {
             Process.Start(outputFolder);
         }
 
-        private void buttonPlay_Click(object sender, EventArgs e)
+        private void btnPlayExtern_Click(object sender, EventArgs e)
         {
             if (listBoxRecordings.SelectedItem != null)
             {
                 Process.Start(Path.Combine(outputFolder, (string)listBoxRecordings.SelectedItem));
             }
         }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+		
+        private void btnPlay_Click(object sender, EventArgs e)
         {
+			if (listBoxRecordings.SelectedItem == null)
+			{
+				MessageBox.Show("No audio selected");
+				return;
+			}
 
-        }
-
-        private void txtTiempo_TextChanged(object sender, EventArgs e)
-        {
-            time =(float) Convert.ToDouble(txtTiempo.Text.Replace('.',','));
-            System.Diagnostics.Debug.WriteLine("variable time" + time + "texto=" + txtTiempo.Text);
-        }
-
-        private void txtNombre_TextChanged(object sender, EventArgs e)
-        {
-            outputFilename = txtNombre.Text + ".wav";
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
             if (filePlayed != listBoxRecordings.SelectedItem.ToString() || playPause==0)
             {
                 filePlayed = listBoxRecordings.SelectedItem.ToString();
@@ -304,26 +304,31 @@ namespace SpeechAnalyzer
                 playPause = 1;
             }
         }
+
         void Playback_Stopped(object sender, StoppedEventArgs e)
         {
+			reader.Close();
             player.Dispose();
             btnPlay.Text = "Reproducir";
             playPause = 0;
         }
 
+
+		//															//
+		// ---------------- on change - events -------------------- //
+		//															//
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (thold == false)
+            if (chkThold.Checked)
             {
-                ButtonStopRecording.Enabled = false;
+                btStopRecording.Enabled = false;
                 nupHold.Enabled = true;
-                thold = true;
             }
             else
             {
-                ButtonStopRecording.Enabled = true;
+                btStopRecording.Enabled = true;
                 nupHold.Enabled = false;
-                thold = false;
             }
         }
 
@@ -331,5 +336,28 @@ namespace SpeechAnalyzer
         {
             tHoldValue = (int) nupHold.Value;
         }
+
+
+		private void txtTiempo_TextChanged(object sender, EventArgs e)
+		{
+			time = (float)Convert.ToDouble(txtTiempo.Text.Replace('.', ','));
+			System.Diagnostics.Debug.WriteLine("variable time" + time + "texto=" + txtTiempo.Text);
+		}
+
+		private void txtNombre_TextChanged(object sender, EventArgs e)
+		{
+			outputFilename = txtNombre.Text + ".wav";
+		}
+
+
+		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (player != null)
+			{
+				player.Stop();
+			}
+			btnPlay.Text = "Reproducir";
+		}
+
 	}
 }

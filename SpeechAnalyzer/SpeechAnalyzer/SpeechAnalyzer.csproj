@@ -74,6 +74,12 @@
     <Compile Include="Model\NeuralNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\LevelIndicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\LevelIndicator.Designer.cs">
+      <DependentUpon>LevelIndicator.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,7 +91,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\LevelIndicator.resx">
+      <DependentUpon>LevelIndicator.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\DataSources\MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -96,6 +106,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\120x120px-LS-482a3971_multilockon.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

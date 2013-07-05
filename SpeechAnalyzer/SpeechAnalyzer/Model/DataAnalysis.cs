@@ -21,11 +21,21 @@ namespace SpeechAnalyzer.Model
 		private String TempDirectory;
         private DenseMatrix meanStdX;
 
+		public Double FinalCostValue { get; set; }
+		public Int32 ProgressValue { get; set; }
+		public String ConsoleOut { get; set; }
+		
+		public event EventHandler Finished;
+		public event EventHandler Progress;
+
 		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
 		{
 			this.SonicAnnotator = SonicAnotatorPath;
 			this.TempDirectory = tempDir;
 			this.DataDirectory = dataDir;
+
+			this.FinalCostValue = Double.PositiveInfinity;
+			this.ConsoleOut = "";
 		}
 
 		public void TrainNeuralNetwork()
@@ -103,7 +113,11 @@ namespace SpeechAnalyzer.Model
 				accuracy		= nn.Predict(minimum, out predictions);
 
 				JValues.Add(new Tuple<double, double>(J, accuracy));
-				System.Diagnostics.Debug.WriteLine("Iter: " + i + " -> " + (accuracy*100) + "%");
+
+				String msg = "Iter: " + i + " -> " + (accuracy * 100) + "%";
+				System.Diagnostics.Debug.WriteLine(msg);
+				this.ConsoleOut += msg + "\r\n";
+				this.OnProgress(EventArgs.Empty);
 			}
 
 			var queryJ = String.Join("\n", (from tuple in JValues
@@ -116,10 +130,20 @@ namespace SpeechAnalyzer.Model
 			System.Diagnostics.Debug.WriteLine("after_training J = {0,5:f}	accuracy = {1,8:p}", J, accuracy);
 
 			System.Diagnostics.Debug.WriteLine("J values: \n" + queryJ);
-			
+
+			this.FinalCostValue = J;
+			OnFinished(EventArgs.Empty);
 		}
 
+		protected virtual void OnFinished(EventArgs e)
+		{
+			if (Finished != null) Finished(this, e);
+		}
 
+		protected virtual void OnProgress(EventArgs e)
+		{
+			if (Progress != null) Progress(this, e);
+		}
 
 
 		/// <summary>
