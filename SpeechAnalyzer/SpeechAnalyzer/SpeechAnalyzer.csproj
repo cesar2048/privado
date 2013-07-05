@@ -43,6 +43,9 @@
     <Reference Include="MathNet.Numerics.IO">
       <HintPath>Libs\MathNet.Numerics\Net40\MathNet.Numerics.IO.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>Libs\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Libs\Json50r6\Newtonsoft.Json.dll</HintPath>
     </Reference>

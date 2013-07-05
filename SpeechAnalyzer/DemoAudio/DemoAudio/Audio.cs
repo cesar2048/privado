@@ -15,8 +15,8 @@ namespace DemoAudio
         private double thresh;		// threshold linear
         private int flagStart=0;
         private int numMuestras = 0;
-        private int sampleRate=16000;
-        private float tiempoGrabacion = 15;
+        private int sampleRate=44100;
+        private float tiempoGrabacion = 1.25f;
         /// <summary>
         /// Constructor por defecto (frecuencua de muestreo: 44100 canales: 2)
         /// </summary>
@@ -32,7 +32,7 @@ namespace DemoAudio
             get 
             { 
                 return threshdB;
-                System.Diagnostics.Debug.WriteLine("threshDB" + threshdB);
+              //  System.Diagnostics.Debug.WriteLine("threshDB" + threshdB);
             }
             set 
             { 
@@ -85,8 +85,8 @@ namespace DemoAudio
         private void ondaEntrada_DatosDisponibles(object sender, WaveInEventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine(thresh);
-            //ficheroOndaSalida.WriteData(e.Buffer, 0, e.BytesRecorded);
-            for (int index = 0; index < e.BytesRecorded && flagStart==0; index += 2)
+            ficheroOndaSalida.WriteData(e.Buffer, 0, e.BytesRecorded);
+          /*  for (int index = 0; index < e.BytesRecorded && flagStart==0; index += 2)
             {
                 short sample = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
                 System.Diagnostics.Debug.WriteLine("volumen de sample:" + sample);
@@ -108,6 +108,7 @@ namespace DemoAudio
                 numMuestras = 0;
                 Parar();
             }
+           */
           }
 
         /// <summary>
