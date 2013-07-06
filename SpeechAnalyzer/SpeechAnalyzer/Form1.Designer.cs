@@ -49,6 +49,9 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.txtIteraciones = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.txtIntentos = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.txtLambda = new System.Windows.Forms.TextBox();
@@ -56,9 +59,6 @@
 			this.picWorking = new System.Windows.Forms.PictureBox();
 			this.lblNetStatus = new System.Windows.Forms.Label();
 			this.btGen = new System.Windows.Forms.Button();
-			this.txtIntentos = new System.Windows.Forms.TextBox();
-			this.txtIteraciones = new System.Windows.Forms.TextBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -299,6 +299,33 @@
 			this.tabPage2.Text = "Red Neural";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// txtIteraciones
+			// 
+			this.txtIteraciones.Location = new System.Drawing.Point(77, 103);
+			this.txtIteraciones.Name = "txtIteraciones";
+			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
+			this.txtIteraciones.TabIndex = 32;
+			this.txtIteraciones.Text = "10000";
+			this.txtIteraciones.TextChanged += new System.EventHandler(this.txtIteraciones_TextChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(12, 106);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(59, 13);
+			this.label7.TabIndex = 31;
+			this.label7.Text = "Iteraciones";
+			// 
+			// txtIntentos
+			// 
+			this.txtIntentos.Location = new System.Drawing.Point(77, 77);
+			this.txtIntentos.Name = "txtIntentos";
+			this.txtIntentos.Size = new System.Drawing.Size(71, 20);
+			this.txtIntentos.TabIndex = 30;
+			this.txtIntentos.Text = "100";
+			this.txtIntentos.TextChanged += new System.EventHandler(this.txtIntentos_TextChanged);
+			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
@@ -364,33 +391,6 @@
 			this.btGen.Text = "Compute Features && Neural network";
 			this.btGen.UseVisualStyleBackColor = true;
 			this.btGen.Click += new System.EventHandler(this.btGen_Click);
-			// 
-			// txtIntentos
-			// 
-			this.txtIntentos.Location = new System.Drawing.Point(77, 77);
-			this.txtIntentos.Name = "txtIntentos";
-			this.txtIntentos.Size = new System.Drawing.Size(71, 20);
-			this.txtIntentos.TabIndex = 30;
-			this.txtIntentos.Text = "100";
-			this.txtIntentos.TextChanged += new System.EventHandler(this.txtIntentos_TextChanged);
-			// 
-			// txtIteraciones
-			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(77, 103);
-			this.txtIteraciones.Name = "txtIteraciones";
-			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
-			this.txtIteraciones.TabIndex = 32;
-			this.txtIteraciones.Text = "10000";
-			this.txtIteraciones.TextChanged += new System.EventHandler(this.txtIteraciones_TextChanged);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(12, 106);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(59, 13);
-			this.label7.TabIndex = 31;
-			this.label7.Text = "Iteraciones";
 			// 
 			// levelIndicator1
 			// 
