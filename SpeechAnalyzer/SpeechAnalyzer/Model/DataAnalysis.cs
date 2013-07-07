@@ -11,6 +11,7 @@ using MathNet.Numerics.LinearAlgebra.IO;
 using MathNet.Numerics.Statistics;
 using Newtonsoft.Json;
 using DotNumerics.Optimization;
+using System.ComponentModel;
 
 namespace SpeechAnalyzer.Model
 {
@@ -19,17 +20,23 @@ namespace SpeechAnalyzer.Model
 		private String SonicAnnotator;
 		private String DataDirectory;
 		private String TempDirectory;
-        private DenseMatrix meanStdX;
 
-		public Double FinalCostValue { get; set; }
-		public Int32 ProgressValue { get; set; }
-		public String ConsoleOut { get; set; }
+		// properties
+		public NeuralNetworkParameters nnp { get; set; }
+		public FileInfo trainingFile { get; set; }
+		public FileInfo networkFile { get; set; }
+		public FileInfo labelsFile { get; set; }
+
+		// input properties
 		public Double Lambda { get; set; }
 		public Int32 Attempts { get; set; }
 		public Int32 Iterations { get; set; }
+
+		// output properties
+		public String ConsoleOut { get; set; }
+		public Double FinalCostValue { get; set; }
+		public Double FinalAccuracy { get; set; }
 		
-		public event EventHandler Finished;
-		public event EventHandler Progress;
 
 		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
 		{
@@ -40,167 +47,123 @@ namespace SpeechAnalyzer.Model
 			this.FinalCostValue = Double.PositiveInfinity;
 			this.ConsoleOut = "";
 			this.Lambda = 0.1;
+
+			this.trainingFile = new FileInfo(Path.Combine(this.TempDirectory, "training-features.csv"));
+			this.networkFile = new FileInfo(Path.Combine(TempDirectory, "networkParams.js"));
+			this.labelsFile = new FileInfo(Path.Combine(TempDirectory, "labels.js"));
 		}
 
-		public void TrainNeuralNetwork()
+		public String TestNeuralNetwork(String wavFilePath)
 		{
-			FileInfo trainingFile = new FileInfo(Path.Combine(this.TempDirectory, "training-features.csv"));
-			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
-			DelimitedWriter matrixWriter = new DelimitedWriter(",");
-			DenseMatrix dataMat;
+			this.networkFile.Refresh();
+			FileInfo wavFile = new FileInfo(wavFilePath);
+			StreamReader sr;
 
-			// load or generate features
-			if (!trainingFile.Exists)
+			// Load parameters if these are not already loaded
+			if (nnp == null && networkFile.Exists)
 			{
-				List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
-				dataMat = ReadFiles(trainingAudiosList);
-				matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);	// save the features matrix in a csv file
+				sr = new StreamReader(networkFile.FullName);
+				String serialization = sr.ReadToEnd();
+				sr.Close();
+
+				nnp = JsonConvert.DeserializeObject<NeuralNetworkParameters>(serialization);
 			}
-			else
+			if (nnp == null) throw new Exception("Neural network parameters are not loaded");
+			if (!wavFile.Exists) throw new Exception("Test file doesn't exists");
+
+
+			// generate features for the testing file
+			List<AudioFileFeatures> trainingAudiosList = new List<AudioFileFeatures>();
+			trainingAudiosList.Add(new AudioFileFeatures()
 			{
-				dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
-			}
+				fileInfo = wavFile
+			});
 
-
-			//
-			// execute machine learning process
-			//
-
+			DenseMatrix dataMat = ProcessFiles(trainingAudiosList);
+			NeuralNetwork nn = new NeuralNetwork(nnp);
 
 			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
 			DenseVector y = dataMat.Column(0) as DenseVector;
 
-			// feature normalization
-			var normalizeValue = NeuralNetwork.normalizeFeatures(X);
-			X = normalizeValue.Item1;
-			meanStdX = normalizeValue.Item2;
+			// execute neural network
+			int[] predictions;
+			int prediction;
+			this.FinalAccuracy = nn.Predict(X, y, out predictions);
+			prediction = predictions[0];
 
-			NeuralNetwork nn = new NeuralNetwork(X, y, (int)y.Max(), 50, this.Lambda);
+			// load labels
+			Dictionary<string, int> labels = LoadLabels();
 
-			nn.RandInitializeTheta();
-			double[] initialGuess = nn.getTheta();
-			
-			// testing 
-			/*
+			String label = "unknown";
+			var invQuery = from tuple in labels
+						   where tuple.Value == prediction
+						   select tuple.Key;
+			if (invQuery.Any())
 			{
-				DenseMatrix dm = new DenseMatrix(1, 5, new double[] { 1, -0.5, 0, 0.5, 1 });
-				System.Diagnostics.Debug.WriteLine( dm.sigmoidGradient().ToMatrixString(100, 100) + "\n");
-				System.Diagnostics.Debug.WriteLine( dm.Sigmoid().ToMatrixString(100, 100) + "\n");
-				
-				initialGuess = matrixReader.ReadMatrix(Path.Combine(this.TempDirectory, "initial_params.csv")).ToColumnWiseArray();
-				double cost		= nn.costFunction(initialGuess);
-				double[] grad	= nn.gradFunction(initialGuess);
-
-				nn.reshapeTheta(grad);
-				System.Diagnostics.Debug.WriteLine("J = {0,7:f}", cost);
-				System.Diagnostics.Debug.WriteLine(nn.Theta1.ToMatrixString(nn.Theta1.RowCount, nn.Theta1.ColumnCount) + "\n");
-				System.Diagnostics.Debug.WriteLine(nn.Theta2.ToMatrixString(nn.Theta2.RowCount, nn.Theta2.ColumnCount) + "\n");
+				label = invQuery.FirstOrDefault();
 			}
-			*/
+			return label;
+		}
+
+		public void TrainNeuralNetwork()
+		{
+			this.trainingFile.Refresh();
+			this.networkFile.Refresh();
+
+			// load features
+			if (!trainingFile.Exists) {
+				throw new Exception("No features exists for training");
+			}
+
+			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
+			DenseMatrix dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
+			DenseMatrix mat1, mat2;
+			NeuralNetwork.SplitDataRandomly(dataMat, 0.8, out mat1, out mat2);
+
+			//
+			// execute machine learning process
+			//
+			DenseMatrix Xtrain = mat1.SubMatrix(0, mat1.RowCount, 1, mat1.ColumnCount - 1) as DenseMatrix;
+			DenseVector ytrain = mat1.Column(0) as DenseVector;
+
+			DenseMatrix Xtest = mat2.SubMatrix(0, mat2.RowCount, 1, mat2.ColumnCount - 1) as DenseMatrix;
+			DenseVector ytest = mat2.Column(0) as DenseVector;
+
+			nnp = new NeuralNetworkParameters(Xtrain.ColumnCount, 50, (int)ytrain.Max(), this.Lambda);
+			NeuralNetwork nn = new NeuralNetwork(nnp);
 
 			int[] predictions;
-			double Jini			= nn.costFunction(initialGuess);
-			double accIni		= nn.Predict(initialGuess, out predictions);
+			nn.Train(this.Iterations, Xtrain, ytrain);
+			this.FinalCostValue = nn.costFunction();
+			this.FinalAccuracy = nn.Predict(Xtest, ytest, out predictions);
 
-			L_BFGS_B LBFGSB				= new L_BFGS_B();
-			LBFGSB.MaxFunEvaluations	= this.Iterations;
+			// save nerual network
+			String serialization = JsonConvert.SerializeObject(nnp, Formatting.Indented);
+			StreamWriter sw = new StreamWriter(networkFile.FullName);
+			sw.Write(serialization);
+			sw.Close();
 
-
-			List<Tuple<Double, Double>> JValues = new List<Tuple<double,double>>();
-			double[] minimum;
-			double J = 0, accuracy = 0;
-
-			for (int i = 0; i < this.Attempts; i++)
-			{
-				nn.RandInitializeTheta();
-				initialGuess	= nn.getTheta();
-				minimum			= LBFGSB.ComputeMin(nn.costFunction, nn.gradFunction, initialGuess);
-				J				= nn.costFunction(minimum);
-				accuracy		= nn.Predict(minimum, out predictions);
-
-				JValues.Add(new Tuple<double, double>(J, accuracy));
-
-				String msg = "Training: " + i + " -> " + (accuracy * 100) + "%";
-				System.Diagnostics.Debug.WriteLine(msg);
-				this.ConsoleOut += msg + "\r\n";
-				this.OnProgress(EventArgs.Empty);
-			}
-
-			var queryJ = String.Join("\n", (from tuple in JValues
-										  select (tuple.Item1 + " " + tuple.Item2 ) ).ToArray());
-
-			//  random_init		J = 97.49	accuracy =  33.45 %
-			//  after_training  J = 10.45	accuracy = 150.97 %
+			// process finished
 			System.Diagnostics.Debug.WriteLine("------------------------");
-			System.Diagnostics.Debug.WriteLine("random_init	   J = {0,5:f}	accuracy = {1,8:p}", Jini, accIni);
-			System.Diagnostics.Debug.WriteLine("after_training J = {0,5:f}	accuracy = {1,8:p}", J, accuracy);
-
-			System.Diagnostics.Debug.WriteLine("J values: \n" + queryJ);
-
-			this.FinalCostValue = J;
-			OnFinished(EventArgs.Empty);
-		}
-
-		protected virtual void OnFinished(EventArgs e)
-		{
-			if (Finished != null) Finished(this, e);
-		}
-
-		protected virtual void OnProgress(EventArgs e)
-		{
-			if (Progress != null) Progress(this, e);
-		}
-
-
-		/// <summary>
-		/// Extracts the data using sonic annotator and generates the feature vector for each file
-		/// </summary>
-		/// <param name="sourceDirPath"></param>
-		private DenseMatrix ReadFiles(List<AudioFileFeatures> AudioInfosList)
-		{
-			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
-			if (!srcDir.Exists)
-			{
-				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", DataDirectory));
-				return null;
-			}
-
-			// Generate features for every file
-			int mfccLimit	= 55;
-			int pitchLimit	= 100;
-			foreach (AudioFileFeatures audio in AudioInfosList)
-			{
-				// call sonic-annotator to generate the features
-				GenerateFeatures(audio, this.DataDirectory, this.TempDirectory);
-
-				// extract statistical information from the previous features
-				DenseMatrix featureVector = DenseMatrix.Create(1, 1, (i, j) => audio.label);				// 1x1 matrix
-				DenseMatrix mfccVector = ExtractFeatureVector(audio.mfcc, mfccLimit, 20, false, true);		// append row
-				DenseMatrix pitchVector = ExtractFeatureVector(audio.pitch, pitchLimit, 1, false, true);	// apend row
-				
-				featureVector = featureVector.Append(mfccVector) as DenseMatrix;
-				featureVector = featureVector.Append(pitchVector) as DenseMatrix;
-				audio.featureVector = featureVector;
-			}
-
-			var query = from file in AudioInfosList
-						select file.featureVector.ColumnCount;
-
-			int width		= query.First();
-			int widthsCount = query.Distinct().Count();
-			if (widthsCount > 1) throw new Exception("features vectors are not the same width, aborting...");
+			System.Diagnostics.Debug.WriteLine("training result J = {0,5:f}	accuracy = {1,8:p}", FinalCostValue, FinalAccuracy);
 			
-			// generate labels:features matrix
-			DenseMatrix allFeatures = DenseMatrix.Create(AudioInfosList.Count, width, (i, j) => 0);
-			for (int i = 0; i < AudioInfosList.Count; i++)
-			{
-				DenseMatrix features = AudioInfosList[i].featureVector;
-				allFeatures.SetSubMatrix(i, 1, 0, features.ColumnCount, features);
-			}
-			 
-			// TODO: normalize columns 2,n in allFeatures (column 1 contains labels)
-			return allFeatures;
 		}
+
+		public DenseMatrix GenerateTrainingFeatures(BackgroundWorker worker)
+		{
+			DelimitedWriter matrixWriter = new DelimitedWriter(",");
+			DenseMatrix dataMat;
+
+			List<AudioFileFeatures> trainingAudiosList = GetTrainingFilesList();
+			dataMat = ProcessFiles(trainingAudiosList, worker);
+			matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);	// save the features matrix in a csv file
+			
+			return dataMat;
+		}
+
+		
+
+
 
 		/// <summary>
 		/// Reads the {srcDir}/labels.js and every .wav file in the same directory
@@ -212,18 +175,7 @@ namespace SpeechAnalyzer.Model
 		private List<AudioFileFeatures> GetTrainingFilesList()
 		{
 			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
-			Dictionary<string, int> labels = null;
-			try
-			{
-				StreamReader sr = new StreamReader(Path.Combine(DataDirectory, "labels.js"));
-				String json = sr.ReadToEnd();
-				labels = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
-				sr.Close();
-			}
-			catch (Exception e)
-			{
-				throw new Exception("Error leyendo archivo labels: " + e.Message);
-			}
+			Dictionary<string, int> labels = LoadLabels();
 
 			FileInfo[] files = srcDir.GetFiles("*.wav");
 			List<AudioFileFeatures> AudioInfosList = new List<AudioFileFeatures>();
@@ -234,7 +186,7 @@ namespace SpeechAnalyzer.Model
 				int labelValue = -1;
 				foreach (String key in labels.Keys)
 				{
-					Regex regex = new Regex(key);
+					Regex regex = new Regex(String.Format(@"{0}\d+\.wav", key));
 					if (regex.IsMatch(file.Name))
 					{
 						labelValue = labels[key];
@@ -257,6 +209,38 @@ namespace SpeechAnalyzer.Model
 		}
 
 
+		public Dictionary<string, int> LoadLabels()
+		{
+			Dictionary<string, int> labels = null;
+			try
+			{
+				StreamReader sr = new StreamReader(this.labelsFile.FullName);
+				String json = sr.ReadToEnd();
+				labels = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+				sr.Close();
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Error leyendo archivo labels: " + e.Message);
+			}
+			return labels;
+		}
+
+		/// <summary>
+		/// Changes the labels assignations, deletes all the training data, and neural network parameters
+		/// </summary>
+		public void SaveLabels(String[] labels)
+		{
+			Dictionary<string, int> newLabels = new Dictionary<string, int>();
+			for (int i = 0; i < labels.Length; i++)
+			{
+				newLabels.Add(labels[i], i + 1);
+			}
+
+			StreamWriter sw = new StreamWriter(this.labelsFile.FullName);
+			sw.Write(JsonConvert.SerializeObject(newLabels, Formatting.Indented));
+			sw.Close();
+		}
 
 
 
@@ -267,6 +251,63 @@ namespace SpeechAnalyzer.Model
 
 
 
+
+
+		/// <summary>
+		/// Generates the feature vectors for every file passed in the AudioInfosList argument
+		/// </summary>
+		/// <param name="AudioInfosList"></param>
+		/// <param name="worker">Optional for progress reporting</param>
+		private DenseMatrix ProcessFiles(List<AudioFileFeatures> AudioInfosList, BackgroundWorker worker = null)
+		{
+			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
+			if (!srcDir.Exists)
+			{
+				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", DataDirectory));
+				return null;
+			}
+
+			// Generate features for every file
+			int mfccLimit = 55;
+			int pitchLimit = 100;
+			for (int count = 0; count < AudioInfosList.Count; count++)
+			{
+				AudioFileFeatures audio = AudioInfosList[count];
+
+				// call sonic-annotator to generate the features
+				GenerateFeatures(audio, this.DataDirectory, this.TempDirectory);
+
+				// extract statistical information from the previous features
+				DenseMatrix featureVector = DenseMatrix.Create(1, 1, (i, j) => audio.label);				// 1x1 matrix
+				DenseMatrix mfccVector = ExtractFeatureVector(audio.mfcc, mfccLimit, 20, false, true);		// append row
+				DenseMatrix pitchVector = ExtractFeatureVector(audio.pitch, pitchLimit, 1, false, true);	// apend row
+
+				featureVector = featureVector.Append(mfccVector) as DenseMatrix;
+				featureVector = featureVector.Append(pitchVector) as DenseMatrix;
+				audio.featureVector = featureVector;
+
+				// report progress
+				if (worker != null) worker.ReportProgress((count + 1) * 100 / AudioInfosList.Count);
+			}
+
+			var query = from file in AudioInfosList
+						select file.featureVector.ColumnCount;
+
+			int width = query.First();
+			int widthsCount = query.Distinct().Count();
+			if (widthsCount > 1) throw new Exception("features vectors are not the same width, aborting...");
+
+			// generate labels:features matrix
+			DenseMatrix allFeatures = DenseMatrix.Create(AudioInfosList.Count, width, (i, j) => 0);
+			for (int i = 0; i < AudioInfosList.Count; i++)
+			{
+				DenseMatrix features = AudioInfosList[i].featureVector;
+				allFeatures.SetSubMatrix(i, 1, 0, features.ColumnCount, features);
+			}
+
+			// TODO: normalize columns 2,n in allFeatures (column 1 contains labels)
+			return allFeatures;
+		}
 
 		/// <summary>
 		/// sets the mfcc and pitch properties of the audioInfo argument
@@ -396,6 +437,5 @@ namespace SpeechAnalyzer.Model
 			
 			return new DenseMatrix(1, 4, new double[] { media, varianza, max, min });
 		}
-
 	}
 }

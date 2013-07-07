@@ -48,22 +48,32 @@
 			this.lblStatus = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.btPredecir = new System.Windows.Forms.Button();
+			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
+			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.label10 = new System.Windows.Forms.Label();
 			this.txtIteraciones = new System.Windows.Forms.TextBox();
 			this.label7 = new System.Windows.Forms.Label();
-			this.txtIntentos = new System.Windows.Forms.TextBox();
-			this.label6 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.txtLambda = new System.Windows.Forms.TextBox();
-			this.txtNetConsole = new System.Windows.Forms.TextBox();
 			this.picWorking = new System.Windows.Forms.PictureBox();
 			this.lblNetStatus = new System.Windows.Forms.Label();
-			this.btGen = new System.Windows.Forms.Button();
-			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
+			this.btTrain = new System.Windows.Forms.Button();
+			this.progDataGen = new System.Windows.Forms.ProgressBar();
+			this.lblFeatStatus = new System.Windows.Forms.Label();
+			this.btGenFeatures = new System.Windows.Forms.Button();
+			this.label9 = new System.Windows.Forms.Label();
+			this.btRemoveFeatures = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.listLabels = new System.Windows.Forms.ListBox();
+			this.btAddLabel = new System.Windows.Forms.Button();
+			this.txtLabel = new System.Windows.Forms.TextBox();
+			this.btRemoveLabel = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
+			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -132,17 +142,17 @@
 			// 
 			// btnOpenFolder
 			// 
-			this.btnOpenFolder.Location = new System.Drawing.Point(503, 172);
+			this.btnOpenFolder.Location = new System.Drawing.Point(330, 227);
 			this.btnOpenFolder.Name = "btnOpenFolder";
 			this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
 			this.btnOpenFolder.TabIndex = 9;
-			this.btnOpenFolder.Text = "abrir";
+			this.btnOpenFolder.Text = "Abrir Folder";
 			this.btnOpenFolder.UseVisualStyleBackColor = true;
 			this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
 			// 
 			// btnPlayExtern
 			// 
-			this.btnPlayExtern.Location = new System.Drawing.Point(503, 143);
+			this.btnPlayExtern.Location = new System.Drawing.Point(503, 172);
 			this.btnPlayExtern.Name = "btnPlayExtern";
 			this.btnPlayExtern.Size = new System.Drawing.Size(87, 23);
 			this.btnPlayExtern.TabIndex = 10;
@@ -187,7 +197,7 @@
 			// 
 			// btnPlay
 			// 
-			this.btnPlay.Location = new System.Drawing.Point(503, 8);
+			this.btnPlay.Location = new System.Drawing.Point(503, 13);
 			this.btnPlay.Name = "btnPlay";
 			this.btnPlay.Size = new System.Drawing.Size(87, 23);
 			this.btnPlay.TabIndex = 15;
@@ -242,7 +252,7 @@
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPage1);
-			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -252,6 +262,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.btPredecir);
 			this.tabPage1.Controls.Add(this.label1);
 			this.tabPage1.Controls.Add(this.comboWasapiDevices);
 			this.tabPage1.Controls.Add(this.lblStatus);
@@ -279,118 +290,15 @@
 			this.tabPage1.Text = "Grabaciones";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
+			// btPredecir
 			// 
-			this.tabPage2.Controls.Add(this.txtIteraciones);
-			this.tabPage2.Controls.Add(this.label7);
-			this.tabPage2.Controls.Add(this.txtIntentos);
-			this.tabPage2.Controls.Add(this.label6);
-			this.tabPage2.Controls.Add(this.label5);
-			this.tabPage2.Controls.Add(this.txtLambda);
-			this.tabPage2.Controls.Add(this.txtNetConsole);
-			this.tabPage2.Controls.Add(this.picWorking);
-			this.tabPage2.Controls.Add(this.lblNetStatus);
-			this.tabPage2.Controls.Add(this.btGen);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(603, 256);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Red Neural";
-			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// txtIteraciones
-			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(77, 103);
-			this.txtIteraciones.Name = "txtIteraciones";
-			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
-			this.txtIteraciones.TabIndex = 32;
-			this.txtIteraciones.Text = "10000";
-			this.txtIteraciones.TextChanged += new System.EventHandler(this.txtIteraciones_TextChanged);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(12, 106);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(59, 13);
-			this.label7.TabIndex = 31;
-			this.label7.Text = "Iteraciones";
-			// 
-			// txtIntentos
-			// 
-			this.txtIntentos.Location = new System.Drawing.Point(77, 77);
-			this.txtIntentos.Name = "txtIntentos";
-			this.txtIntentos.Size = new System.Drawing.Size(71, 20);
-			this.txtIntentos.TabIndex = 30;
-			this.txtIntentos.Text = "100";
-			this.txtIntentos.TextChanged += new System.EventHandler(this.txtIntentos_TextChanged);
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(12, 80);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(41, 13);
-			this.label6.TabIndex = 29;
-			this.label6.Text = "Repetir";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(11, 51);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(18, 20);
-			this.label5.TabIndex = 28;
-			this.label5.Text = "λ";
-			// 
-			// txtLambda
-			// 
-			this.txtLambda.Location = new System.Drawing.Point(77, 51);
-			this.txtLambda.Name = "txtLambda";
-			this.txtLambda.Size = new System.Drawing.Size(71, 20);
-			this.txtLambda.TabIndex = 27;
-			this.txtLambda.TextChanged += new System.EventHandler(this.txtLambda_TextChanged);
-			// 
-			// txtNetConsole
-			// 
-			this.txtNetConsole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtNetConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.txtNetConsole.Location = new System.Drawing.Point(235, 7);
-			this.txtNetConsole.Multiline = true;
-			this.txtNetConsole.Name = "txtNetConsole";
-			this.txtNetConsole.ReadOnly = true;
-			this.txtNetConsole.Size = new System.Drawing.Size(362, 241);
-			this.txtNetConsole.TabIndex = 26;
-			// 
-			// picWorking
-			// 
-			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources._120x120px_LS_482a3971_multilockon;
-			this.picWorking.Location = new System.Drawing.Point(11, 159);
-			this.picWorking.Name = "picWorking";
-			this.picWorking.Size = new System.Drawing.Size(128, 91);
-			this.picWorking.TabIndex = 25;
-			this.picWorking.TabStop = false;
-			// 
-			// lblNetStatus
-			// 
-			this.lblNetStatus.Location = new System.Drawing.Point(12, 143);
-			this.lblNetStatus.Name = "lblNetStatus";
-			this.lblNetStatus.Size = new System.Drawing.Size(193, 13);
-			this.lblNetStatus.TabIndex = 24;
-			this.lblNetStatus.Text = "...";
-			// 
-			// btGen
-			// 
-			this.btGen.Location = new System.Drawing.Point(8, 6);
-			this.btGen.Name = "btGen";
-			this.btGen.Size = new System.Drawing.Size(118, 38);
-			this.btGen.TabIndex = 23;
-			this.btGen.Text = "Compute Features && Neural network";
-			this.btGen.UseVisualStyleBackColor = true;
-			this.btGen.Click += new System.EventHandler(this.btGen_Click);
+			this.btPredecir.Location = new System.Drawing.Point(503, 43);
+			this.btPredecir.Name = "btPredecir";
+			this.btPredecir.Size = new System.Drawing.Size(87, 23);
+			this.btPredecir.TabIndex = 22;
+			this.btPredecir.Text = "Predecir";
+			this.btPredecir.UseVisualStyleBackColor = true;
+			this.btPredecir.Click += new System.EventHandler(this.btPredecir_Click);
 			// 
 			// levelIndicator1
 			// 
@@ -403,6 +311,211 @@
 			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
 			this.levelIndicator1.TabIndex = 20;
 			// 
+			// tabPage3
+			// 
+			this.tabPage3.Controls.Add(this.label10);
+			this.tabPage3.Controls.Add(this.txtIteraciones);
+			this.tabPage3.Controls.Add(this.label7);
+			this.tabPage3.Controls.Add(this.label5);
+			this.tabPage3.Controls.Add(this.txtLambda);
+			this.tabPage3.Controls.Add(this.picWorking);
+			this.tabPage3.Controls.Add(this.lblNetStatus);
+			this.tabPage3.Controls.Add(this.btTrain);
+			this.tabPage3.Controls.Add(this.progDataGen);
+			this.tabPage3.Controls.Add(this.lblFeatStatus);
+			this.tabPage3.Controls.Add(this.btGenFeatures);
+			this.tabPage3.Controls.Add(this.label9);
+			this.tabPage3.Controls.Add(this.btRemoveFeatures);
+			this.tabPage3.Controls.Add(this.label8);
+			this.tabPage3.Controls.Add(this.label6);
+			this.tabPage3.Controls.Add(this.listLabels);
+			this.tabPage3.Controls.Add(this.btAddLabel);
+			this.tabPage3.Controls.Add(this.txtLabel);
+			this.tabPage3.Controls.Add(this.btRemoveLabel);
+			this.tabPage3.Location = new System.Drawing.Point(4, 22);
+			this.tabPage3.Name = "tabPage3";
+			this.tabPage3.Size = new System.Drawing.Size(603, 256);
+			this.tabPage3.TabIndex = 2;
+			this.tabPage3.Text = "Machine Learning";
+			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label10.Location = new System.Drawing.Point(387, 4);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(96, 17);
+			this.label10.TabIndex = 40;
+			this.label10.Text = "3. Red Neural";
+			// 
+			// txtIteraciones
+			// 
+			this.txtIteraciones.Location = new System.Drawing.Point(452, 51);
+			this.txtIteraciones.Name = "txtIteraciones";
+			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
+			this.txtIteraciones.TabIndex = 39;
+			this.txtIteraciones.Text = "10000";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(383, 54);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(59, 13);
+			this.label7.TabIndex = 38;
+			this.label7.Text = "Iteraciones";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label5.Location = new System.Drawing.Point(386, 25);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(18, 20);
+			this.label5.TabIndex = 37;
+			this.label5.Text = "λ";
+			// 
+			// txtLambda
+			// 
+			this.txtLambda.Location = new System.Drawing.Point(452, 25);
+			this.txtLambda.Name = "txtLambda";
+			this.txtLambda.Size = new System.Drawing.Size(71, 20);
+			this.txtLambda.TabIndex = 36;
+			this.txtLambda.Text = "0.1";
+			// 
+			// picWorking
+			// 
+			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources._120x120px_LS_482a3971_multilockon;
+			this.picWorking.Location = new System.Drawing.Point(395, 157);
+			this.picWorking.Name = "picWorking";
+			this.picWorking.Size = new System.Drawing.Size(128, 91);
+			this.picWorking.TabIndex = 35;
+			this.picWorking.TabStop = false;
+			// 
+			// lblNetStatus
+			// 
+			this.lblNetStatus.Location = new System.Drawing.Point(383, 104);
+			this.lblNetStatus.Name = "lblNetStatus";
+			this.lblNetStatus.Size = new System.Drawing.Size(183, 23);
+			this.lblNetStatus.TabIndex = 34;
+			this.lblNetStatus.Text = "...";
+			// 
+			// btTrain
+			// 
+			this.btTrain.Location = new System.Drawing.Point(452, 77);
+			this.btTrain.Name = "btTrain";
+			this.btTrain.Size = new System.Drawing.Size(87, 24);
+			this.btTrain.TabIndex = 33;
+			this.btTrain.Text = "Entrenar";
+			this.btTrain.UseVisualStyleBackColor = true;
+			this.btTrain.Click += new System.EventHandler(this.btTrain_Click);
+			// 
+			// progDataGen
+			// 
+			this.progDataGen.Location = new System.Drawing.Point(174, 70);
+			this.progDataGen.Name = "progDataGen";
+			this.progDataGen.Size = new System.Drawing.Size(156, 23);
+			this.progDataGen.TabIndex = 11;
+			// 
+			// lblFeatStatus
+			// 
+			this.lblFeatStatus.AutoSize = true;
+			this.lblFeatStatus.ForeColor = System.Drawing.Color.Purple;
+			this.lblFeatStatus.Location = new System.Drawing.Point(208, 25);
+			this.lblFeatStatus.Name = "lblFeatStatus";
+			this.lblFeatStatus.Size = new System.Drawing.Size(43, 13);
+			this.lblFeatStatus.TabIndex = 10;
+			this.lblFeatStatus.Text = "(Status)";
+			// 
+			// btGenFeatures
+			// 
+			this.btGenFeatures.Location = new System.Drawing.Point(255, 41);
+			this.btGenFeatures.Name = "btGenFeatures";
+			this.btGenFeatures.Size = new System.Drawing.Size(75, 23);
+			this.btGenFeatures.TabIndex = 9;
+			this.btGenFeatures.Text = "Generar";
+			this.btGenFeatures.UseVisualStyleBackColor = true;
+			this.btGenFeatures.Click += new System.EventHandler(this.btGenFeatures_Click);
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(174, 25);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(37, 13);
+			this.label9.TabIndex = 8;
+			this.label9.Text = "Status";
+			// 
+			// btRemoveFeatures
+			// 
+			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 41);
+			this.btRemoveFeatures.Name = "btRemoveFeatures";
+			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
+			this.btRemoveFeatures.TabIndex = 7;
+			this.btRemoveFeatures.Text = "Eliminar";
+			this.btRemoveFeatures.UseVisualStyleBackColor = true;
+			this.btRemoveFeatures.Click += new System.EventHandler(this.btRemoveFeatures_Click);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label8.Location = new System.Drawing.Point(171, 4);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(61, 17);
+			this.label8.TabIndex = 6;
+			this.label8.Text = "2. Datos";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label6.Location = new System.Drawing.Point(9, 4);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(83, 17);
+			this.label6.TabIndex = 5;
+			this.label6.Text = "1. Etiquetas";
+			// 
+			// listLabels
+			// 
+			this.listLabels.FormattingEnabled = true;
+			this.listLabels.Location = new System.Drawing.Point(12, 23);
+			this.listLabels.Name = "listLabels";
+			this.listLabels.Size = new System.Drawing.Size(133, 173);
+			this.listLabels.TabIndex = 4;
+			this.listLabels.SelectedIndexChanged += new System.EventHandler(this.listLabels_SelectedIndexChanged);
+			// 
+			// btAddLabel
+			// 
+			this.btAddLabel.Enabled = false;
+			this.btAddLabel.Location = new System.Drawing.Point(82, 225);
+			this.btAddLabel.Name = "btAddLabel";
+			this.btAddLabel.Size = new System.Drawing.Size(63, 23);
+			this.btAddLabel.TabIndex = 3;
+			this.btAddLabel.Text = "Agregar";
+			this.btAddLabel.UseVisualStyleBackColor = true;
+			this.btAddLabel.Click += new System.EventHandler(this.btAddLabel_Click);
+			// 
+			// txtLabel
+			// 
+			this.txtLabel.Location = new System.Drawing.Point(8, 228);
+			this.txtLabel.Name = "txtLabel";
+			this.txtLabel.Size = new System.Drawing.Size(68, 20);
+			this.txtLabel.TabIndex = 2;
+			this.txtLabel.TextChanged += new System.EventHandler(this.txtLabel_TextChanged);
+			// 
+			// btRemoveLabel
+			// 
+			this.btRemoveLabel.Enabled = false;
+			this.btRemoveLabel.Location = new System.Drawing.Point(82, 202);
+			this.btRemoveLabel.Name = "btRemoveLabel";
+			this.btRemoveLabel.Size = new System.Drawing.Size(63, 23);
+			this.btRemoveLabel.TabIndex = 1;
+			this.btRemoveLabel.Text = "Eliminar";
+			this.btRemoveLabel.UseVisualStyleBackColor = true;
+			this.btRemoveLabel.Click += new System.EventHandler(this.btRemoveLabel_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -412,12 +525,13 @@
 			this.MaximumSize = new System.Drawing.Size(630, 320);
 			this.Name = "Form1";
 			this.Text = "Eliminar";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
-			this.tabPage2.ResumeLayout(false);
-			this.tabPage2.PerformLayout();
+			this.tabPage3.ResumeLayout(false);
+			this.tabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).EndInit();
 			this.ResumeLayout(false);
 
@@ -446,17 +560,27 @@
 		private System.Windows.Forms.Label lblStatus;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.Label lblNetStatus;
-		private System.Windows.Forms.Button btGen;
-		private System.Windows.Forms.PictureBox picWorking;
-		private System.Windows.Forms.TextBox txtNetConsole;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TextBox txtLambda;
+		private System.Windows.Forms.Button btPredecir;
+		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.Button btRemoveLabel;
+		private System.Windows.Forms.Button btAddLabel;
+		private System.Windows.Forms.TextBox txtLabel;
+		private System.Windows.Forms.ListBox listLabels;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox txtIntentos;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button btRemoveFeatures;
+		private System.Windows.Forms.Button btGenFeatures;
+		private System.Windows.Forms.Label lblFeatStatus;
+		private System.Windows.Forms.ProgressBar progDataGen;
+		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.TextBox txtIteraciones;
 		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TextBox txtLambda;
+		private System.Windows.Forms.PictureBox picWorking;
+		private System.Windows.Forms.Label lblNetStatus;
+		private System.Windows.Forms.Button btTrain;
 
 	}
 }
