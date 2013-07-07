@@ -87,9 +87,8 @@ namespace SpeechAnalyzer
 
 			try
 			{
-				Dictionary<string, int> labels = analysis.LoadLabels();
-				List<string> labelsName = labels.Keys.ToList();
-				this.listLabels.Items.AddRange(labelsName.ToArray());
+				Labels labels = analysis.LoadLabels();
+				this.listLabels.Items.AddRange( labels.labelsList.ToArray() );
 			}
 			catch (Exception /*e*/) { }
 
@@ -138,14 +137,23 @@ namespace SpeechAnalyzer
 
 		void _bkgTraining_DoWork(object sender, DoWorkEventArgs e)
 		{
-			this.analysis.TrainNeuralNetwork();
+			try	{
+				this.analysis.TrainNeuralNetwork();
+				e.Result = this.analysis.FinalCostValue;
+			} catch (Exception) {
+				e.Result = "No se han generado las features";
+			}
 		}
 
 		void _bkgTraining_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			this.lblNetStatus.Text = String.Format("Cost = {0,5:f} accuracy = {1,8:p}",
-					analysis.FinalCostValue,
-					analysis.FinalAccuracy);
+			if (e.Result is String) {
+				this.lblNetStatus.Text = e.Result.ToString();
+			} else {
+				this.lblNetStatus.Text = String.Format("Cost = {0,5:f} accuracy = {1,8:p}",
+						analysis.FinalCostValue,
+						analysis.FinalAccuracy);
+			}
 			this.picWorking.Visible = false;
 			this.btTrain.Enabled = true;
 			this.txtLambda.Enabled = true;
@@ -469,8 +477,12 @@ namespace SpeechAnalyzer
 		private void btRemoveLabel_Click(object sender, EventArgs e)
 		{
 			listLabels.Items.RemoveAt(listLabels.SelectedIndex);
-			String[] labels = listLabels.Items.Cast<String>().ToArray();
-			this.analysis.SaveLabels(labels);
+			
+			Labels lbls = new Labels() {
+				labelsList = listLabels.Items.Cast<String>().ToList()
+			};
+
+			this.analysis.SaveLabels(lbls);
 		}
 
 		private void btAddLabel_Click(object sender, EventArgs e)
@@ -478,8 +490,11 @@ namespace SpeechAnalyzer
 			listLabels.Items.Add(txtLabel.Text);
 			txtLabel.Text = "";
 
-			String[] labels = listLabels.Items.Cast<String>().ToArray();
-			this.analysis.SaveLabels(labels);
+			Labels lbls = new Labels() {
+				labelsList = listLabels.Items.Cast<String>().ToList()
+			};
+			
+			this.analysis.SaveLabels(lbls);
 		}
 
 		private void txtLabel_TextChanged(object sender, EventArgs e)

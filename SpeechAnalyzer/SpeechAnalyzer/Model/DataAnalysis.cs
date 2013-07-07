@@ -92,16 +92,14 @@ namespace SpeechAnalyzer.Model
 			prediction = predictions[0];
 
 			// load labels
-			Dictionary<string, int> labels = LoadLabels();
+			Labels labels = LoadLabels();
 
 			String label = "unknown";
-			var invQuery = from tuple in labels
-						   where tuple.Value == prediction
-						   select tuple.Key;
-			if (invQuery.Any())
+			if (prediction >= 0 && prediction < labels.labelsList.Count)
 			{
-				label = invQuery.FirstOrDefault();
+				label = labels.labelsList[prediction];
 			}
+			
 			return label;
 		}
 
@@ -175,7 +173,7 @@ namespace SpeechAnalyzer.Model
 		private List<AudioFileFeatures> GetTrainingFilesList()
 		{
 			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
-			Dictionary<string, int> labels = LoadLabels();
+			Labels labels = LoadLabels();
 
 			FileInfo[] files = srcDir.GetFiles("*.wav");
 			List<AudioFileFeatures> AudioInfosList = new List<AudioFileFeatures>();
@@ -183,62 +181,51 @@ namespace SpeechAnalyzer.Model
 			// Add every matching file and its label to a list
 			foreach (FileInfo file in files)
 			{
-				int labelValue = -1;
-				foreach (String key in labels.Keys)
+				for (int i = 0; i < labels.labelsList.Count; i++)
 				{
-					Regex regex = new Regex(String.Format(@"{0}\d+\.wav", key));
-					if (regex.IsMatch(file.Name))
+					if (Regex.IsMatch(file.Name, String.Format(@"{0}\d+\.wav", labels.labelsList[i])))
 					{
-						labelValue = labels[key];
+						AudioFileFeatures AudioInfo = new AudioFileFeatures()
+						{
+							fileInfo = file,
+							label = i+1
+						};
+
+						AudioInfosList.Add(AudioInfo);
 						break;
 					}
-				}
-
-				if (labelValue != -1)
-				{
-					AudioFileFeatures AudioInfo = new AudioFileFeatures()
-					{
-						fileInfo = file,
-						label = labelValue
-					};
-
-					AudioInfosList.Add(AudioInfo);
 				}
 			}
 			return AudioInfosList;
 		}
 
 
-		public Dictionary<string, int> LoadLabels()
+		public Labels LoadLabels()
 		{
-			Dictionary<string, int> labels = null;
+			Labels lbls = new Labels();
 			try
 			{
 				StreamReader sr = new StreamReader(this.labelsFile.FullName);
 				String json = sr.ReadToEnd();
-				labels = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
 				sr.Close();
+
+				lbls = JsonConvert.DeserializeObject<Labels>(json);
 			}
 			catch (Exception e)
 			{
 				throw new Exception("Error leyendo archivo labels: " + e.Message);
 			}
-			return labels;
+			
+			return lbls;
 		}
 
 		/// <summary>
 		/// Changes the labels assignations, deletes all the training data, and neural network parameters
 		/// </summary>
-		public void SaveLabels(String[] labels)
+		public void SaveLabels(Labels lbls)
 		{
-			Dictionary<string, int> newLabels = new Dictionary<string, int>();
-			for (int i = 0; i < labels.Length; i++)
-			{
-				newLabels.Add(labels[i], i + 1);
-			}
-
 			StreamWriter sw = new StreamWriter(this.labelsFile.FullName);
-			sw.Write(JsonConvert.SerializeObject(newLabels, Formatting.Indented));
+			sw.Write(JsonConvert.SerializeObject(lbls, Formatting.Indented));
 			sw.Close();
 		}
 
@@ -373,7 +360,7 @@ namespace SpeechAnalyzer.Model
 				fInfo.Delete();
 			}
 
-			System.Diagnostics.Debug.WriteLine(String.Format("Processed: {0}", audioInfo.fileInfo.Name));
+			System.Diagnostics.Debug.WriteLine(String.Format("Processed: {0} -> {1}", audioInfo.fileInfo.Name, audioInfo.label));
 		}
 
 		/// <summary>

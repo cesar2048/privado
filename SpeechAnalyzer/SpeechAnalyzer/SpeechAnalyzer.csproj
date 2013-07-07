@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Model\AudioFileFeatures.cs" />
     <Compile Include="Model\DataAnalysis.cs" />
+    <Compile Include="Model\Labels.cs" />
     <Compile Include="Model\MatrixExtensionMethods.cs" />
     <Compile Include="Model\NeuralNetwork.cs" />
     <Compile Include="Model\NeuralNetworkParameters.cs" />
