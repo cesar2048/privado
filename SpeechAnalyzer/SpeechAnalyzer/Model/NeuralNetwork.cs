@@ -242,7 +242,7 @@ namespace SpeechAnalyzer.Model
         }
 
 
-        private static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X, DenseMatrix normParameters)
+        public static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X, DenseMatrix normParameters)
         {
             DenseVector meanN,stdN, temp;
 			DenseMatrix XN;

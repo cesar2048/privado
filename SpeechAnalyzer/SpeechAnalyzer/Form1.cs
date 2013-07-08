@@ -543,5 +543,27 @@ namespace SpeechAnalyzer
 			}
 		}
 
+		BackgroundWorker _bkgSvm = new BackgroundWorker();
+		private void btSvm_Click(object sender, EventArgs e)
+		{
+			_bkgSvm.DoWork += new DoWorkEventHandler(_bkgSvm_DoWork);
+			_bkgSvm.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bkgSvm_RunWorkerCompleted);
+			_bkgSvm.RunWorkerAsync();
+			picWorking.Visible = true;
+			btSvm.Enabled = false;
+		}
+
+		void _bkgSvm_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			btSvm.Enabled = true;
+			picWorking.Visible = false;
+		}
+
+		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
+		{
+			//Model.LibSvmTest.Test();
+			Model.LibSvmTest.TestOnData();
+		}
+
 	}
 }

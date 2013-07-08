@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MathNet.Numerics.LinearAlgebra.Double;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SpeechAnalyzer.Model
 {
@@ -43,6 +45,25 @@ namespace SpeechAnalyzer.Model
 		public DenseMatrix GetNormalization()
 		{
 			return new DenseMatrix(2, this.nInput, this.normalization);
+		}
+
+		public static NeuralNetworkParameters Load(String file)
+		{
+			NeuralNetworkParameters nnp = null;
+			try
+			{
+				StreamReader sr = new StreamReader(file);
+				String serialization = sr.ReadToEnd();
+				sr.Close();
+
+				nnp = JsonConvert.DeserializeObject<NeuralNetworkParameters>(serialization);
+			}
+			catch (Exception e)
+			{
+				System.Diagnostics.Debug.WriteLine("Error al cargar red neural: " + e.Message);
+			}
+
+			return nnp;
 		}
 	}
 }

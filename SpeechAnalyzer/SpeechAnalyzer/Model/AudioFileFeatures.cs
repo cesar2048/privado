@@ -14,5 +14,15 @@ namespace SpeechAnalyzer.Model
 		public DenseMatrix featureVector { get; set; }
 		public Int32 label { get; set; }
 		public FileInfo fileInfo { get; set; }
+
+		public AudioFileFeatures(FileInfo audioFile, Int32 label)
+		{
+			this.fileInfo = audioFile;
+			this.label = label;
+		}
+
+		public AudioFileFeatures()
+		{
+		}
 	}
 }

@@ -70,6 +70,7 @@
 			this.btAddLabel = new System.Windows.Forms.Button();
 			this.txtLabel = new System.Windows.Forms.TextBox();
 			this.btRemoveLabel = new System.Windows.Forms.Button();
+			this.btSvm = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -313,6 +314,7 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.btSvm);
 			this.tabPage3.Controls.Add(this.label10);
 			this.tabPage3.Controls.Add(this.txtIteraciones);
 			this.tabPage3.Controls.Add(this.label7);
@@ -516,6 +518,16 @@
 			this.btRemoveLabel.UseVisualStyleBackColor = true;
 			this.btRemoveLabel.Click += new System.EventHandler(this.btRemoveLabel_Click);
 			// 
+			// btSvm
+			// 
+			this.btSvm.Location = new System.Drawing.Point(255, 202);
+			this.btSvm.Name = "btSvm";
+			this.btSvm.Size = new System.Drawing.Size(75, 23);
+			this.btSvm.TabIndex = 41;
+			this.btSvm.Text = "Probar SVM";
+			this.btSvm.UseVisualStyleBackColor = true;
+			this.btSvm.Click += new System.EventHandler(this.btSvm_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -581,6 +593,7 @@
 		private System.Windows.Forms.PictureBox picWorking;
 		private System.Windows.Forms.Label lblNetStatus;
 		private System.Windows.Forms.Button btTrain;
+		private System.Windows.Forms.Button btSvm;
 
 	}
 }

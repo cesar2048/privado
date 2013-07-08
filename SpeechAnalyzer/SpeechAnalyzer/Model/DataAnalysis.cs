@@ -57,16 +57,11 @@ namespace SpeechAnalyzer.Model
 		{
 			this.networkFile.Refresh();
 			FileInfo wavFile = new FileInfo(wavFilePath);
-			StreamReader sr;
 
 			// Load parameters if these are not already loaded
 			if (nnp == null && networkFile.Exists)
 			{
-				sr = new StreamReader(networkFile.FullName);
-				String serialization = sr.ReadToEnd();
-				sr.Close();
-
-				nnp = JsonConvert.DeserializeObject<NeuralNetworkParameters>(serialization);
+				this.nnp = NeuralNetworkParameters.Load(networkFile.FullName);
 			}
 			if (nnp == null) throw new Exception("Neural network parameters are not loaded");
 			if (!wavFile.Exists) throw new Exception("Test file doesn't exists");
@@ -74,30 +69,24 @@ namespace SpeechAnalyzer.Model
 
 			// generate features for the testing file
 			List<AudioFileFeatures> trainingAudiosList = new List<AudioFileFeatures>();
-			trainingAudiosList.Add(new AudioFileFeatures()
-			{
-				fileInfo = wavFile
-			});
+			trainingAudiosList.Add(new AudioFileFeatures(wavFile, 0));
 
 			DenseMatrix dataMat = ProcessFiles(trainingAudiosList);
-			NeuralNetwork nn = new NeuralNetwork(nnp);
-
 			DenseMatrix X = dataMat.SubMatrix(0, dataMat.RowCount, 1, dataMat.ColumnCount - 1) as DenseMatrix;
 			DenseVector y = dataMat.Column(0) as DenseVector;
 
 			// execute neural network
 			int[] predictions;
-			int prediction;
+			NeuralNetwork nn = new NeuralNetwork(nnp);
 			this.FinalAccuracy = nn.Predict(X, y, out predictions);
-			prediction = predictions[0];
 
 			// load labels
 			Labels labels = LoadLabels();
 
 			String label = "unknown";
-			if (prediction >= 0 && prediction < labels.labelsList.Count)
+			if (predictions[0] >= 0 && predictions[0] < labels.labelsList.Count)
 			{
-				label = labels.labelsList[prediction];
+				label = labels.labelsList[predictions[0]];
 			}
 			
 			return label;
@@ -185,13 +174,7 @@ namespace SpeechAnalyzer.Model
 				{
 					if (Regex.IsMatch(file.Name, String.Format(@"{0}\d+\.wav", labels.labelsList[i])))
 					{
-						AudioFileFeatures AudioInfo = new AudioFileFeatures()
-						{
-							fileInfo = file,
-							label = i+1
-						};
-
-						AudioInfosList.Add(AudioInfo);
+						AudioInfosList.Add(new AudioFileFeatures(file, i+1));
 						break;
 					}
 				}
