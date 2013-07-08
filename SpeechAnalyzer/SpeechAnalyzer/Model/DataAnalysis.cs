@@ -89,7 +89,7 @@ namespace SpeechAnalyzer.Model
 			int[] predictions;
 			int prediction;
 			this.FinalAccuracy = nn.Predict(X, y, out predictions);
-			prediction = predictions[0];
+			prediction = predictions[0]-1;
 
 			// load labels
 			Labels labels = LoadLabels();
