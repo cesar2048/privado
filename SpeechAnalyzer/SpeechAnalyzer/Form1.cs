@@ -545,6 +545,8 @@ namespace SpeechAnalyzer
 				this.lblFeatStatus.Text = "Listo";
 			}
 		}
+	
+
 
 		BackgroundWorker _bkgSvm = new BackgroundWorker();
 		private void btSvm_Click(object sender, EventArgs e)
@@ -560,18 +562,19 @@ namespace SpeechAnalyzer
 		{
 			btSvm.Enabled = true;
 			picWorking.Visible = false;
+			lblNetStatus.Text = String.Format("SVM Accuracy =  {0,8:p}", e.Result);
 		}
 
 		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
 		{
-			//Model.LibSvmTest.Test();
-			Model.LibSvmTest.TestOnData();
+			e.Result = Model.LibSvmTest.TestOnData();
 		}
 
-        private void label11_Click(object sender, EventArgs e)
-        {
 
-        }
+		//
+		// ------------------------- TAB: Escuchar  ------------------------------ //
+		//
+
 
         private void btnEscuchar_Click(object sender, EventArgs e)
         {

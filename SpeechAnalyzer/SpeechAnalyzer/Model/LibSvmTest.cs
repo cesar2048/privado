@@ -47,7 +47,7 @@ namespace SpeechAnalyzer.Model
 			Prediction.Predict(test, @"temp\results.txt", model, false);
 		}
 
-		public static void TestOnData()
+		public static double TestOnData()
 		{
 			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
 			DelimitedWriter matrixWriter = new DelimitedWriter(",");
@@ -95,8 +95,9 @@ namespace SpeechAnalyzer.Model
 			// Perform classification on the test data, putting the
 			// results in results.txt.
 
-
-			Prediction.Predict(test, @"temp\results.txt", model, false);
+			
+			double accuracy = Prediction.Predict(test, @"temp\results.txt", model, false);
+			return accuracy;
 		}
 
 		private static Problem MatricesToProblem(DenseMatrix data)
