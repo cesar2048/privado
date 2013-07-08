@@ -22,10 +22,10 @@ namespace SpeechAnalyzer
 		DataAnalysis analysis;
 		Config config;
 
-		private IWaveIn waveIn;
-		private WaveFileWriter writer;
-		private string outputFilename = "";
-		private readonly string outputFolder;
+		private IWaveIn waveIn, waveIn2;
+		private WaveFileWriter writer,writer2;
+		private string outputFilename = "",outputFilename2;
+        private readonly string outputFolder, outputFolder2;
 
 		private string[] filePaths;
 		private IWavePlayer player;
@@ -33,9 +33,10 @@ namespace SpeechAnalyzer
 		private int playPause = 1;
 		private string filePlayed;
 
-		private float time = 30.0f;
-		private int tHoldValue = 0;
-		private bool tHoldInicio = false;
+		private float time,time2 = 30.0f;
+        private int tHoldValue, tHoldValue2 = 0;
+        private bool tHoldInicio, tHoldInicio2 = false;
+        private int muestrasSegundo = 44100;
 
 		BackgroundWorker _bkgDataGeneration;
 		BackgroundWorker _bkgTraining;
@@ -51,6 +52,8 @@ namespace SpeechAnalyzer
 
 			this.config = Config.ReadConfigFile();
 			this.outputFolder = config.DataDirectory;
+            this.outputFolder2 = config.TempDirectory;
+
 			this.analysis = new DataAnalysis(config.DataDirectory, config.TempDirectory, config.SonicAnnotator);
 
 			_bkgDataGeneration = new BackgroundWorker();
@@ -75,7 +78,7 @@ namespace SpeechAnalyzer
 
 			this.txtTiempo.Text = "5";
 			this.nupHold.Value = 30;
-
+            this.tHoldValue2 = 30;
 			// tab neural network
 			
 			this.picWorking.Visible = false;
@@ -189,7 +192,7 @@ namespace SpeechAnalyzer
 				}
 
 				waveIn = new WaveIn();
-				waveIn.WaveFormat = new WaveFormat(8000, 1);
+				waveIn.WaveFormat = new WaveFormat(muestrasSegundo, 1);
 				waveIn.DataAvailable += OnDataAvailable;
 				waveIn.RecordingStopped += OnRecordingStopped;
 
@@ -422,8 +425,8 @@ namespace SpeechAnalyzer
 
 		private void txtTiempo_TextChanged(object sender, EventArgs e)
 		{
-			time = (float)Convert.ToDouble(txtTiempo.Text.Replace('.', ','));
-			System.Diagnostics.Debug.WriteLine("variable time" + time + "texto=" + txtTiempo.Text);
+			time = (float)Convert.ToDouble(txtTiempo.Text.Replace('.', '.'));
+			//System.Diagnostics.Debug.WriteLine("variable time" + time + "texto=" + txtTiempo.Text);
 		}
 
 		private void txtNombre_TextChanged(object sender, EventArgs e)
@@ -565,5 +568,109 @@ namespace SpeechAnalyzer
 			Model.LibSvmTest.TestOnData();
 		}
 
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEscuchar_Click(object sender, EventArgs e)
+        {
+            time2 = (float)Convert.ToDouble(txtTiempo2.Text.Replace('.','.'));
+            //System.Diagnostics.Debug.WriteLine("variable time" + time2 + "texto=" + txtTiempo2.Text);
+            if (waveIn2 == null)
+            {
+                outputFilename2 = String.Format("temp.wav", DateTime.Now);
+                waveIn2 = new WaveIn();
+                waveIn2.WaveFormat = new WaveFormat(muestrasSegundo, 1);
+                waveIn2.DataAvailable += OnDataAvailable2;
+                waveIn2.RecordingStopped += OnRecordingStopped2;
+
+                writer2 = new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
+                waveIn2.StartRecording();
+
+               // btStartRecording.Enabled = false;
+            }
+
+        }
+        void OnDataAvailable2(object sender, WaveInEventArgs e)
+        {
+                MemoryStream ms = new MemoryStream(e.Buffer);
+                BinaryReader br = new BinaryReader(ms);
+                try
+                {
+                    double max = 0;
+                    for (int i = 0; i < e.Buffer.Length / 2; i++)
+                    {
+                        double val = Math.Abs((br.ReadInt16() * 100.0) / 0x8FFF);
+                        if (val > max) max = val;
+                    }
+                    if (max > tHoldValue2) { tHoldInicio2 = true; }
+                    this.levelIndicator2.Level = (int)max;
+                }
+                catch (EndOfStreamException /*eos*/)
+                {
+                    // ignored
+                }
+                finally
+                {
+                    br.Close();
+                }
+                if (tHoldInicio2)
+                {
+                    writer2.Write(e.Buffer, 0, e.BytesRecorded);
+                    float secondsRecorded2 = (float)writer2.Length / (float)writer2.WaveFormat.AverageBytesPerSecond;
+                    if (secondsRecorded2 >= time2)
+                    {            
+                        tHoldInicio2 = false;
+                        stopWriting2();
+                    }
+                
+                }
+        }
+        private void stopWriting2(){
+        
+                if (writer2 != null)
+                {
+                    writer2.Close();
+                    String label = this.analysis.TestNeuralNetwork(Path.Combine(config.TempDirectory, "temp.wav"));
+                   // MessageBox.Show("Tipo:" + label);
+                    lblPrediction.Text = label ;
+                   //File.Delete(Path.Combine(outputFolder2, outputFilename2));
+                    writer2=new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
+                }
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(waveIn2!=null){
+                 waveIn2.Dispose();
+                 waveIn2 = null;
+            }
+            if(writer2!=null){
+                writer2.Close();
+                writer2 = null;
+            }
+        }
+
+        private void Thold2_ValueChanged(object sender, EventArgs e)
+        {
+            tHoldValue2 = (int)nupHold.Value;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+           
+        }
+        private void OnRecordingStopped2(object sender, EventArgs e){
+            if(waveIn2!= null)
+            {
+               waveIn2.Dispose();
+               waveIn2 = null;
+            }
+            if(writer2!=null)
+            {
+                writer2.Close();
+                writer2 = null;
+            }
+        }
 	}
 }
