@@ -59,7 +59,7 @@ namespace SpeechAnalyzer.Model
 			
 			// split into training/testing and save data
 			DenseMatrix mat1, mat2;
-			NeuralNetwork.SplitDataRandomly(dataMat, 0.8, out mat1, out mat2);
+			NeuralNetwork.SplitDataRandomly(dataMat, dataMat.Column(0) as DenseVector, 0.8, out mat1, out mat2);
 			matrixWriter.WriteMatrix(mat1, @"temp\svm-training-features.csv");
 			matrixWriter.WriteMatrix(mat2, @"temp\svm-testing--features.csv");
 

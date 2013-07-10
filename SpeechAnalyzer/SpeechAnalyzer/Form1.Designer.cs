@@ -390,7 +390,7 @@
 			// 
 			// picWorking
 			// 
-			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources._120x120px_LS_482a3971_multilockon;
+			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
 			this.picWorking.Location = new System.Drawing.Point(395, 157);
 			this.picWorking.Name = "picWorking";
 			this.picWorking.Size = new System.Drawing.Size(128, 91);

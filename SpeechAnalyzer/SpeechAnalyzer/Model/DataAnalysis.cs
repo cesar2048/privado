@@ -105,7 +105,7 @@ namespace SpeechAnalyzer.Model
 			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
 			DenseMatrix dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
 			DenseMatrix mat1, mat2;
-			NeuralNetwork.SplitDataRandomly(dataMat, 0.8, out mat1, out mat2);
+			NeuralNetwork.SplitDataRandomly(dataMat, dataMat.Column(0) as DenseVector, 0.8, out mat1, out mat2);
 
 			//
 			// execute machine learning process
@@ -181,7 +181,6 @@ namespace SpeechAnalyzer.Model
 			}
 			return AudioInfosList;
 		}
-
 
 		public Labels LoadLabels()
 		{
@@ -298,11 +297,9 @@ namespace SpeechAnalyzer.Model
 			String wavFilePath	= audioInfo.fileInfo.FullName.Replace("\\", "/");
 			String filePitch	= String.Format("{0}_vamp_vamp-aubio_aubiopitch_frequency.csv", wavFileName);
 			String fileMfcc		= String.Format("{0}_vamp_qm-vamp-plugins_qm-mfcc_coefficients.csv", wavFileName);
-			String fileNoisi	= String.Format("{0}_vamp_vamp-aubio_aubiosilence_noisy.csv", wavFileName);
 
 			filePitch	= Path.Combine(tempDir, filePitch);
 			fileMfcc	= Path.Combine(tempDir, fileMfcc);
-			fileNoisi	= Path.Combine(tempDir, fileNoisi);
 
 			// execute sonic annotator
 			String sonicArgs = String.Format("-t {0} \"{1}\" -w csv --csv-basedir {2} --csv-force",
@@ -337,7 +334,7 @@ namespace SpeechAnalyzer.Model
 			audioInfo.mfcc = audioInfo.mfcc.SubMatrix(0, audioInfo.mfcc.RowCount - 9, 0, audioInfo.mfcc.ColumnCount) as DenseMatrix;
 
 			// delete generated files
-			foreach(String file in new String[] {filePitch, fileMfcc, fileNoisi} ) 
+			foreach(String file in new String[] {filePitch, fileMfcc} ) 
 			{
 				FileInfo fInfo = new FileInfo(file);
 				fInfo.Delete();

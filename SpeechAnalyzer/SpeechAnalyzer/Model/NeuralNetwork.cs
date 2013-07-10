@@ -277,21 +277,35 @@ namespace SpeechAnalyzer.Model
         }
 
 
-		public static void SplitDataRandomly(DenseMatrix data, double proportion, out DenseMatrix part1, out DenseMatrix part2) 
+		/// <summary>
+		/// Split the data as randomly as possible, but ensure that there are not missing classes on any output matrix
+		/// </summary>
+		/// <param name="data"></param>
+		/// <param name="y"></param>
+		/// <param name="proportion"></param>
+		/// <param name="part1"></param>
+		/// <param name="part2"></param>
+		public static void SplitDataRandomly(DenseMatrix data, DenseVector y, double proportion, out DenseMatrix part1, out DenseMatrix part2) 
 		{
 			Random rnd = new Random();
 			DenseVector selector = new DenseVector(data.RowCount);
 			part1 = new DenseMatrix((int) (data.RowCount * proportion), data.ColumnCount);
 			part2 = new DenseMatrix(data.RowCount - part1.RowCount, data.ColumnCount);
-			int count1 = 0, count2 = 0;
+			
+			int count1 = 0, count2 = 0, classes1 = 0, classes2 = 0, i=0;
 
 			do
 			{
 				selector.MapInplace(x => (rnd.NextDouble() <= proportion) ? 1 : 0);
-			} while (selector.SumMagnitudes() != part1.RowCount);
+
+				classes1 = selector.PointwiseMultiply(y).Distinct().Count() - 1;						// remove class 0 as it doesn't exists
+				classes2 = selector.Multiply(-1).Add(1).PointwiseMultiply(y).Distinct().Count() - 1;	// remove class 0 as it doesn't exists
+				i++;
+
+			} while (selector.SumMagnitudes() != part1.RowCount || classes1 != classes2);
 
 
-			for (int i = 0; i < data.RowCount; i++ )
+			for (i = 0; i < data.RowCount; i++ )
 			{
 				if (selector[i] == 1)
 				{

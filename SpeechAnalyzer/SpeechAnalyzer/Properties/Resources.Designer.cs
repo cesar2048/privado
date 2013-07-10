@@ -60,9 +60,9 @@ namespace SpeechAnalyzer.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap _120x120px_LS_482a3971_multilockon {
+        internal static System.Drawing.Bitmap multilockon {
             get {
-                object obj = ResourceManager.GetObject("120x120px-LS-482a3971_multilockon", resourceCulture);
+                object obj = ResourceManager.GetObject("multilockon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
