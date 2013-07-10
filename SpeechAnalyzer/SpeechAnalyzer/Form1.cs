@@ -658,6 +658,10 @@ namespace SpeechAnalyzer
                     lblPrediction.Text = label ;
                    //File.Delete(Path.Combine(outputFolder2, outputFilename2));
                     writer2=new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
+
+					// ******************************************* NETWORK CODE ***************************
+					enviar(label);
+					// ******************************************* NETWORK CODE ***************************
                 }
         }
         private void button1_Click(object sender, EventArgs e)
