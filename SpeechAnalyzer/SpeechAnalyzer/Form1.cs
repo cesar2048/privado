@@ -15,6 +15,8 @@ using NAudio.CoreAudioApi;
 using System.Collections.ObjectModel;
 
 
+
+
 namespace SpeechAnalyzer
 {
 	public partial class Form1 : Form
@@ -32,11 +34,13 @@ namespace SpeechAnalyzer
 		private WaveFileReader reader;
 		private int playPause = 1;
 		private string filePlayed;
+        private string extra;
 
 		private float time,time2 = 30.0f;
         private int tHoldValue, tHoldValue2 = 0;
         private bool tHoldInicio, tHoldInicio2 = false;
         private int muestrasSegundo = 44100;
+        
 
 		BackgroundWorker _bkgDataGeneration;
 		BackgroundWorker _bkgTraining;
@@ -49,7 +53,7 @@ namespace SpeechAnalyzer
 			{
 				LoadWasapiDevicesCombo();
 			}
-
+           
 			this.config = Config.ReadConfigFile();
 			this.outputFolder = config.DataDirectory;
             this.outputFolder2 = config.TempDirectory;
@@ -76,7 +80,7 @@ namespace SpeechAnalyzer
 			filePaths = withOutSlash(Directory.GetFiles(@config.DataDirectory, "*.wav"));
 			this.listBoxRecordings.Items.AddRange(filePaths);
 
-			this.txtTiempo.Text = "5";
+            time = (float)Convert.ToDouble(txtTiempo.Text);
 			this.nupHold.Value = 30;
             this.tHoldValue2 = 30;
 			// tab neural network
@@ -186,17 +190,23 @@ namespace SpeechAnalyzer
 		{
 			if (waveIn == null)
 			{
-				if (outputFilename == "" || outputFilename.StartsWith("muestra"))
-				{
-					outputFilename = String.Format("muestra{0:yyy-mm-ddHH-mm-ss}.wav", DateTime.Now);
-				}
+                
+                if (outputFilename == "" || outputFilename.StartsWith("muestra"))
+                {
+                    outputFilename = String.Format("muestra{0:yyy-mm-ddHH-mm-ss}.wav", DateTime.Now);
+                    extra = "";
+                }
+                else
+                {
+                    extra = String.Format("{0:yyy-mm-ddHH-mm-ss}.wav", DateTime.Now);
+                }
 
 				waveIn = new WaveIn();
 				waveIn.WaveFormat = new WaveFormat(muestrasSegundo, 1);
 				waveIn.DataAvailable += OnDataAvailable;
 				waveIn.RecordingStopped += OnRecordingStopped;
 
-				writer = new WaveFileWriter(Path.Combine(outputFolder, outputFilename), waveIn.WaveFormat);
+				writer = new WaveFileWriter(Path.Combine(outputFolder, outputFilename+ extra), waveIn.WaveFormat);
 				waveIn.StartRecording();
 
 				btStartRecording.Enabled = false;
@@ -309,7 +319,7 @@ namespace SpeechAnalyzer
 					MessageBox.Show(String.Format("A problem was encountered during recording {0}",
 												  e.Exception.Message));
 				}
-				int newItemIndex = listBoxRecordings.Items.Add(outputFilename);
+				int newItemIndex = listBoxRecordings.Items.Add(outputFilename+extra);
 				listBoxRecordings.SelectedIndex = newItemIndex;
 			}
 		}
@@ -431,7 +441,7 @@ namespace SpeechAnalyzer
 
 		private void txtNombre_TextChanged(object sender, EventArgs e)
 		{
-			outputFilename = txtNombre.Text + ".wav";
+			outputFilename = txtNombre.Text ;
 		}
 
 
@@ -479,25 +489,29 @@ namespace SpeechAnalyzer
 
 		private void btRemoveLabel_Click(object sender, EventArgs e)
 		{
+         
+            string label = listLabels.SelectedItem.ToString();
 			listLabels.Items.RemoveAt(listLabels.SelectedIndex);
 			
-			Labels lbls = new Labels() {
+			/*Labels lbls = new Labels() {
 				labelsList = listLabels.Items.Cast<String>().ToList()
-			};
+			};*/
 
-			this.analysis.SaveLabels(lbls);
+         
+            this.analysis.DeleteLabel(label);
 		}
 
 		private void btAddLabel_Click(object sender, EventArgs e)
 		{
 			listLabels.Items.Add(txtLabel.Text);
-			txtLabel.Text = "";
-
-			Labels lbls = new Labels() {
-				labelsList = listLabels.Items.Cast<String>().ToList()
-			};
 			
-			this.analysis.SaveLabels(lbls);
+
+			/*Labels lbls = new Labels() {
+				labelsList = listLabels.Items.Cast<String>().ToList()
+			};*/
+
+            this.analysis.SaveLabels(txtLabel.Text);
+            txtLabel.Text = "";
 		}
 
 		private void txtLabel_TextChanged(object sender, EventArgs e)
@@ -626,8 +640,12 @@ namespace SpeechAnalyzer
                     {            
                         tHoldInicio2 = false;
                         stopWriting2();
+                        progressBar2.Value = 0;
                     }
-                
+                    else
+                    {
+                        progressBar2.Value = (int)((secondsRecorded2 / time2) * 100);
+                    }
                 }
         }
         private void stopWriting2(){
@@ -675,5 +693,39 @@ namespace SpeechAnalyzer
                 writer2 = null;
             }
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                SQLiteDatabase db = new SQLiteDatabase();
+                DataTable recipe;
+               
+                String query = "select etiquetaid, nombre ";
+          
+                query += "from etiquetas;";
+                recipe = db.GetDataTable(query);
+                // The results can be directly applied to a DataGridView control
+         
+               
+                // Or looped through for some other reason
+                foreach (DataRow r in recipe.Rows)
+                {
+                    MessageBox.Show(r["etiquetaid"].ToString());
+                    MessageBox.Show(r["nombre"].ToString());
+                }
+	
+                
+            }
+            catch (Exception fail)
+            {
+                String error = "The following error has occurred:\n\n";
+                error += fail.Message.ToString() + "\n\n";
+                MessageBox.Show(error);
+               // this.Close();
+            }
+        }
+
+
 	}
 }

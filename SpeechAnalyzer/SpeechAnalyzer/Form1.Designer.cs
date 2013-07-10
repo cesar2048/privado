@@ -50,6 +50,15 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.btPredecir = new System.Windows.Forms.Button();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.label14 = new System.Windows.Forms.Label();
+			this.button4 = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
+			this.button3 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.listBox2 = new System.Windows.Forms.ListBox();
+			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.btSvm = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.txtIteraciones = new System.Windows.Forms.TextBox();
 			this.label7 = new System.Windows.Forms.Label();
@@ -61,7 +70,6 @@
 			this.progDataGen = new System.Windows.Forms.ProgressBar();
 			this.lblFeatStatus = new System.Windows.Forms.Label();
 			this.btGenFeatures = new System.Windows.Forms.Button();
-			this.label9 = new System.Windows.Forms.Label();
 			this.btRemoveFeatures = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -70,6 +78,10 @@
 			this.txtLabel = new System.Windows.Forms.TextBox();
 			this.btRemoveLabel = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.label16 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
+			this.progressBar2 = new System.Windows.Forms.ProgressBar();
+			this.button1 = new System.Windows.Forms.Button();
 			this.lblPrediction = new System.Windows.Forms.Label();
 			this.Thold2 = new System.Windows.Forms.NumericUpDown();
 			this.label13 = new System.Windows.Forms.Label();
@@ -78,7 +90,14 @@
 			this.btnDetener = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnEscuchar = new System.Windows.Forms.Button();
-			this.btSvm = new System.Windows.Forms.Button();
+			this.txtIP = new System.Windows.Forms.TextBox();
+			this.txtPort = new System.Windows.Forms.TextBox();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
+			this.btSocketConnect = new System.Windows.Forms.Button();
+			this.txtCommand = new System.Windows.Forms.TextBox();
+			this.label20 = new System.Windows.Forms.Label();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.levelIndicator2 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
@@ -129,10 +148,12 @@
 			// 
 			// listBoxRecordings
 			// 
+			this.listBoxRecordings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.listBoxRecordings.FormattingEnabled = true;
 			this.listBoxRecordings.Location = new System.Drawing.Point(330, 13);
 			this.listBoxRecordings.Name = "listBoxRecordings";
-			this.listBoxRecordings.Size = new System.Drawing.Size(158, 212);
+			this.listBoxRecordings.Size = new System.Drawing.Size(158, 264);
 			this.listBoxRecordings.TabIndex = 6;
 			this.listBoxRecordings.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
@@ -155,7 +176,8 @@
 			// 
 			// btnOpenFolder
 			// 
-			this.btnOpenFolder.Location = new System.Drawing.Point(330, 227);
+			this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.btnOpenFolder.Location = new System.Drawing.Point(330, 287);
 			this.btnOpenFolder.Name = "btnOpenFolder";
 			this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
 			this.btnOpenFolder.TabIndex = 9;
@@ -188,7 +210,7 @@
 			this.txtTiempo.Name = "txtTiempo";
 			this.txtTiempo.Size = new System.Drawing.Size(163, 20);
 			this.txtTiempo.TabIndex = 12;
-			this.txtTiempo.Text = "1.5";
+			this.txtTiempo.Text = "1.25";
 			this.txtTiempo.TextChanged += new System.EventHandler(this.txtTiempo_TextChanged);
 			// 
 			// label3
@@ -271,7 +293,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(611, 281);
+			this.tabControl1.Size = new System.Drawing.Size(634, 344);
 			this.tabControl1.TabIndex = 23;
 			// 
 			// tabPage1
@@ -299,7 +321,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(603, 255);
+			this.tabPage1.Size = new System.Drawing.Size(626, 318);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Grabaciones";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -316,6 +338,14 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.label14);
+			this.tabPage3.Controls.Add(this.button4);
+			this.tabPage3.Controls.Add(this.textBox1);
+			this.tabPage3.Controls.Add(this.label9);
+			this.tabPage3.Controls.Add(this.button3);
+			this.tabPage3.Controls.Add(this.button2);
+			this.tabPage3.Controls.Add(this.listBox2);
+			this.tabPage3.Controls.Add(this.listBox1);
 			this.tabPage3.Controls.Add(this.btSvm);
 			this.tabPage3.Controls.Add(this.label10);
 			this.tabPage3.Controls.Add(this.txtIteraciones);
@@ -328,7 +358,6 @@
 			this.tabPage3.Controls.Add(this.progDataGen);
 			this.tabPage3.Controls.Add(this.lblFeatStatus);
 			this.tabPage3.Controls.Add(this.btGenFeatures);
-			this.tabPage3.Controls.Add(this.label9);
 			this.tabPage3.Controls.Add(this.btRemoveFeatures);
 			this.tabPage3.Controls.Add(this.label8);
 			this.tabPage3.Controls.Add(this.label6);
@@ -338,10 +367,88 @@
 			this.tabPage3.Controls.Add(this.btRemoveLabel);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(603, 255);
+			this.tabPage3.Size = new System.Drawing.Size(626, 318);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Machine Learning";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// label14
+			// 
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(168, 46);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(59, 13);
+			this.label14.TabIndex = 49;
+			this.label14.Text = "Funciones ";
+			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(171, 22);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(51, 23);
+			this.button4.TabIndex = 48;
+			this.button4.Text = "Crear";
+			this.button4.UseVisualStyleBackColor = true;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(227, 22);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(100, 20);
+			this.textBox1.TabIndex = 47;
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(171, 205);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(164, 13);
+			this.label9.TabIndex = 46;
+			this.label9.Text = "Etiquetas Asociadas a Funciones";
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(252, 283);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(75, 23);
+			this.button3.TabIndex = 45;
+			this.button3.Text = "eliminar";
+			this.button3.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(171, 283);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 44;
+			this.button2.Text = "agregar";
+			this.button2.UseVisualStyleBackColor = true;
+			// 
+			// listBox2
+			// 
+			this.listBox2.FormattingEnabled = true;
+			this.listBox2.Location = new System.Drawing.Point(171, 221);
+			this.listBox2.Name = "listBox2";
+			this.listBox2.Size = new System.Drawing.Size(156, 56);
+			this.listBox2.TabIndex = 43;
+			// 
+			// listBox1
+			// 
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Location = new System.Drawing.Point(171, 62);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(156, 69);
+			this.listBox1.TabIndex = 42;
+			// 
+			// btSvm
+			// 
+			this.btSvm.Location = new System.Drawing.Point(448, 283);
+			this.btSvm.Name = "btSvm";
+			this.btSvm.Size = new System.Drawing.Size(75, 23);
+			this.btSvm.TabIndex = 41;
+			this.btSvm.Text = "Test SVM";
+			this.btSvm.UseVisualStyleBackColor = true;
+			this.btSvm.Click += new System.EventHandler(this.btSvm_Click);
 			// 
 			// label10
 			// 
@@ -355,7 +462,7 @@
 			// 
 			// txtIteraciones
 			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(452, 51);
+			this.txtIteraciones.Location = new System.Drawing.Point(452, 61);
 			this.txtIteraciones.Name = "txtIteraciones";
 			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
 			this.txtIteraciones.TabIndex = 39;
@@ -391,7 +498,7 @@
 			// picWorking
 			// 
 			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
-			this.picWorking.Location = new System.Drawing.Point(395, 157);
+			this.picWorking.Location = new System.Drawing.Point(395, 168);
 			this.picWorking.Name = "picWorking";
 			this.picWorking.Size = new System.Drawing.Size(128, 91);
 			this.picWorking.TabIndex = 35;
@@ -399,7 +506,7 @@
 			// 
 			// lblNetStatus
 			// 
-			this.lblNetStatus.Location = new System.Drawing.Point(383, 104);
+			this.lblNetStatus.Location = new System.Drawing.Point(392, 142);
 			this.lblNetStatus.Name = "lblNetStatus";
 			this.lblNetStatus.Size = new System.Drawing.Size(183, 23);
 			this.lblNetStatus.TabIndex = 34;
@@ -407,9 +514,9 @@
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(452, 77);
+			this.btTrain.Location = new System.Drawing.Point(448, 115);
 			this.btTrain.Name = "btTrain";
-			this.btTrain.Size = new System.Drawing.Size(87, 24);
+			this.btTrain.Size = new System.Drawing.Size(75, 24);
 			this.btTrain.TabIndex = 33;
 			this.btTrain.Text = "Entrenar";
 			this.btTrain.UseVisualStyleBackColor = true;
@@ -417,7 +524,7 @@
 			// 
 			// progDataGen
 			// 
-			this.progDataGen.Location = new System.Drawing.Point(174, 70);
+			this.progDataGen.Location = new System.Drawing.Point(171, 179);
 			this.progDataGen.Name = "progDataGen";
 			this.progDataGen.Size = new System.Drawing.Size(156, 23);
 			this.progDataGen.TabIndex = 11;
@@ -426,7 +533,7 @@
 			// 
 			this.lblFeatStatus.AutoSize = true;
 			this.lblFeatStatus.ForeColor = System.Drawing.Color.Purple;
-			this.lblFeatStatus.Location = new System.Drawing.Point(208, 25);
+			this.lblFeatStatus.Location = new System.Drawing.Point(171, 163);
 			this.lblFeatStatus.Name = "lblFeatStatus";
 			this.lblFeatStatus.Size = new System.Drawing.Size(43, 13);
 			this.lblFeatStatus.TabIndex = 10;
@@ -434,7 +541,7 @@
 			// 
 			// btGenFeatures
 			// 
-			this.btGenFeatures.Location = new System.Drawing.Point(255, 41);
+			this.btGenFeatures.Location = new System.Drawing.Point(252, 137);
 			this.btGenFeatures.Name = "btGenFeatures";
 			this.btGenFeatures.Size = new System.Drawing.Size(75, 23);
 			this.btGenFeatures.TabIndex = 9;
@@ -442,18 +549,9 @@
 			this.btGenFeatures.UseVisualStyleBackColor = true;
 			this.btGenFeatures.Click += new System.EventHandler(this.btGenFeatures_Click);
 			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(174, 25);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(37, 13);
-			this.label9.TabIndex = 8;
-			this.label9.Text = "Status";
-			// 
 			// btRemoveFeatures
 			// 
-			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 41);
+			this.btRemoveFeatures.Location = new System.Drawing.Point(171, 137);
 			this.btRemoveFeatures.Name = "btRemoveFeatures";
 			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
 			this.btRemoveFeatures.TabIndex = 7;
@@ -483,17 +581,20 @@
 			// 
 			// listLabels
 			// 
+			this.listLabels.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.listLabels.FormattingEnabled = true;
 			this.listLabels.Location = new System.Drawing.Point(12, 23);
 			this.listLabels.Name = "listLabels";
-			this.listLabels.Size = new System.Drawing.Size(133, 173);
+			this.listLabels.Size = new System.Drawing.Size(133, 225);
 			this.listLabels.TabIndex = 4;
 			this.listLabels.SelectedIndexChanged += new System.EventHandler(this.listLabels_SelectedIndexChanged);
 			// 
 			// btAddLabel
 			// 
+			this.btAddLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btAddLabel.Enabled = false;
-			this.btAddLabel.Location = new System.Drawing.Point(82, 225);
+			this.btAddLabel.Location = new System.Drawing.Point(12, 287);
 			this.btAddLabel.Name = "btAddLabel";
 			this.btAddLabel.Size = new System.Drawing.Size(63, 23);
 			this.btAddLabel.TabIndex = 3;
@@ -503,7 +604,8 @@
 			// 
 			// txtLabel
 			// 
-			this.txtLabel.Location = new System.Drawing.Point(8, 228);
+			this.txtLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.txtLabel.Location = new System.Drawing.Point(81, 289);
 			this.txtLabel.Name = "txtLabel";
 			this.txtLabel.Size = new System.Drawing.Size(68, 20);
 			this.txtLabel.TabIndex = 2;
@@ -511,8 +613,9 @@
 			// 
 			// btRemoveLabel
 			// 
+			this.btRemoveLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btRemoveLabel.Enabled = false;
-			this.btRemoveLabel.Location = new System.Drawing.Point(82, 202);
+			this.btRemoveLabel.Location = new System.Drawing.Point(12, 258);
 			this.btRemoveLabel.Name = "btRemoveLabel";
 			this.btRemoveLabel.Size = new System.Drawing.Size(63, 23);
 			this.btRemoveLabel.TabIndex = 1;
@@ -522,6 +625,18 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.label20);
+			this.tabPage2.Controls.Add(this.txtCommand);
+			this.tabPage2.Controls.Add(this.btSocketConnect);
+			this.tabPage2.Controls.Add(this.label19);
+			this.tabPage2.Controls.Add(this.label18);
+			this.tabPage2.Controls.Add(this.label17);
+			this.tabPage2.Controls.Add(this.txtPort);
+			this.tabPage2.Controls.Add(this.txtIP);
+			this.tabPage2.Controls.Add(this.label16);
+			this.tabPage2.Controls.Add(this.label15);
+			this.tabPage2.Controls.Add(this.progressBar2);
+			this.tabPage2.Controls.Add(this.button1);
 			this.tabPage2.Controls.Add(this.lblPrediction);
 			this.tabPage2.Controls.Add(this.Thold2);
 			this.tabPage2.Controls.Add(this.label13);
@@ -533,15 +648,55 @@
 			this.tabPage2.Controls.Add(this.levelIndicator2);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(603, 255);
+			this.tabPage2.Size = new System.Drawing.Size(626, 318);
 			this.tabPage2.TabIndex = 3;
 			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label16.Location = new System.Drawing.Point(301, 18);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(123, 20);
+			this.label16.TabIndex = 31;
+			this.label16.Text = "Escucha en vivo";
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label15.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.label15.Location = new System.Drawing.Point(9, 18);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(123, 20);
+			this.label15.TabIndex = 30;
+			this.label15.Text = "Escucha en vivo";
+			// 
+			// progressBar2
+			// 
+			this.progressBar2.Location = new System.Drawing.Point(68, 222);
+			this.progressBar2.Name = "progressBar2";
+			this.progressBar2.Size = new System.Drawing.Size(156, 23);
+			this.progressBar2.TabIndex = 29;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(93, 158);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 28;
+			this.button1.TabStop = false;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click_1);
+			// 
 			// lblPrediction
 			// 
 			this.lblPrediction.AutoSize = true;
-			this.lblPrediction.Location = new System.Drawing.Point(112, 81);
+			this.lblPrediction.Location = new System.Drawing.Point(127, 206);
 			this.lblPrediction.Name = "lblPrediction";
 			this.lblPrediction.Size = new System.Drawing.Size(51, 13);
 			this.lblPrediction.TabIndex = 27;
@@ -549,10 +704,11 @@
 			// 
 			// Thold2
 			// 
-			this.Thold2.Location = new System.Drawing.Point(432, 40);
+			this.Thold2.Location = new System.Drawing.Point(145, 112);
 			this.Thold2.Name = "Thold2";
 			this.Thold2.Size = new System.Drawing.Size(79, 20);
 			this.Thold2.TabIndex = 26;
+			this.Thold2.TabStop = false;
 			this.Thold2.Value = new decimal(new int[] {
             30,
             0,
@@ -563,7 +719,7 @@
 			// label13
 			// 
 			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(331, 43);
+			this.label13.Location = new System.Drawing.Point(55, 114);
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(84, 13);
 			this.label13.TabIndex = 25;
@@ -572,7 +728,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(221, 42);
+			this.label12.Location = new System.Drawing.Point(55, 94);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(45, 13);
 			this.label12.TabIndex = 24;
@@ -580,27 +736,29 @@
 			// 
 			// txtTiempo2
 			// 
-			this.txtTiempo2.Location = new System.Drawing.Point(272, 39);
+			this.txtTiempo2.Location = new System.Drawing.Point(145, 91);
 			this.txtTiempo2.Name = "txtTiempo2";
-			this.txtTiempo2.Size = new System.Drawing.Size(42, 20);
+			this.txtTiempo2.Size = new System.Drawing.Size(79, 20);
 			this.txtTiempo2.TabIndex = 23;
+			this.txtTiempo2.TabStop = false;
 			this.txtTiempo2.Text = "1.25";
 			this.txtTiempo2.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
 			// btnDetener
 			// 
-			this.btnDetener.Location = new System.Drawing.Point(130, 37);
+			this.btnDetener.Location = new System.Drawing.Point(130, 50);
 			this.btnDetener.Name = "btnDetener";
 			this.btnDetener.Size = new System.Drawing.Size(75, 23);
 			this.btnDetener.TabIndex = 22;
-			this.btnDetener.Text = "Detener";
+			this.btnDetener.TabStop = false;
+			this.btnDetener.Text = "&Detener";
 			this.btnDetener.UseVisualStyleBackColor = true;
 			this.btnDetener.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(46, 81);
+			this.label11.Location = new System.Drawing.Point(64, 206);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(60, 13);
 			this.label11.TabIndex = 1;
@@ -608,23 +766,87 @@
 			// 
 			// btnEscuchar
 			// 
-			this.btnEscuchar.Location = new System.Drawing.Point(49, 37);
+			this.btnEscuchar.Location = new System.Drawing.Point(49, 50);
 			this.btnEscuchar.Name = "btnEscuchar";
 			this.btnEscuchar.Size = new System.Drawing.Size(75, 23);
 			this.btnEscuchar.TabIndex = 0;
-			this.btnEscuchar.Text = "Escuchar";
+			this.btnEscuchar.TabStop = false;
+			this.btnEscuchar.Text = "&Escuchar";
 			this.btnEscuchar.UseVisualStyleBackColor = true;
 			this.btnEscuchar.Click += new System.EventHandler(this.btnEscuchar_Click);
 			// 
-			// btSvm
+			// txtIP
 			// 
-			this.btSvm.Location = new System.Drawing.Point(255, 201);
-			this.btSvm.Name = "btSvm";
-			this.btSvm.Size = new System.Drawing.Size(75, 23);
-			this.btSvm.TabIndex = 41;
-			this.btSvm.Text = "Test SVM";
-			this.btSvm.UseVisualStyleBackColor = true;
-			this.btSvm.Click += new System.EventHandler(this.btSvm_Click);
+			this.txtIP.Location = new System.Drawing.Point(372, 47);
+			this.txtIP.Name = "txtIP";
+			this.txtIP.Size = new System.Drawing.Size(100, 20);
+			this.txtIP.TabIndex = 32;
+			this.txtIP.TabStop = false;
+			// 
+			// txtPort
+			// 
+			this.txtPort.Location = new System.Drawing.Point(372, 73);
+			this.txtPort.Name = "txtPort";
+			this.txtPort.Size = new System.Drawing.Size(100, 20);
+			this.txtPort.TabIndex = 33;
+			this.txtPort.TabStop = false;
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(305, 50);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(17, 13);
+			this.label17.TabIndex = 34;
+			this.label17.Text = "IP";
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(305, 76);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(38, 13);
+			this.label18.TabIndex = 35;
+			this.label18.Text = "Puerto";
+			// 
+			// label19
+			// 
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(389, 119);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(77, 13);
+			this.label19.TabIndex = 36;
+			this.label19.Text = "Desconectado";
+			// 
+			// btSocketConnect
+			// 
+			this.btSocketConnect.Location = new System.Drawing.Point(308, 114);
+			this.btSocketConnect.Name = "btSocketConnect";
+			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
+			this.btSocketConnect.TabIndex = 37;
+			this.btSocketConnect.TabStop = false;
+			this.btSocketConnect.Text = "&Conectar";
+			this.btSocketConnect.UseVisualStyleBackColor = true;
+			this.btSocketConnect.Click += new System.EventHandler(this.btSocketConnect_Click);
+			// 
+			// txtCommand
+			// 
+			this.txtCommand.Enabled = false;
+			this.txtCommand.Location = new System.Drawing.Point(305, 187);
+			this.txtCommand.Name = "txtCommand";
+			this.txtCommand.Size = new System.Drawing.Size(164, 20);
+			this.txtCommand.TabIndex = 1;
+			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
+			this.txtCommand.Leave += new System.EventHandler(this.txtCommand_Leave);
+			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(308, 168);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(84, 13);
+			this.label20.TabIndex = 39;
+			this.label20.Text = "Enviar comando";
 			// 
 			// levelIndicator1
 			// 
@@ -641,7 +863,7 @@
 			// 
 			this.levelIndicator2.BackColor = System.Drawing.Color.Black;
 			this.levelIndicator2.Level = 0;
-			this.levelIndicator2.Location = new System.Drawing.Point(8, 37);
+			this.levelIndicator2.Location = new System.Drawing.Point(8, 50);
 			this.levelIndicator2.Maximum = 100;
 			this.levelIndicator2.Minimum = 0;
 			this.levelIndicator2.Name = "levelIndicator2";
@@ -652,11 +874,12 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(611, 281);
+			this.ClientSize = new System.Drawing.Size(634, 344);
 			this.Controls.Add(this.tabControl1);
-			this.MaximumSize = new System.Drawing.Size(630, 320);
+			this.MinimumSize = new System.Drawing.Size(650, 382);
 			this.Name = "Form1";
-			this.Text = "Eliminar";
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+			this.Text = "Machine Learning";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).EndInit();
 			this.tabControl1.ResumeLayout(false);
@@ -702,8 +925,7 @@
 		private System.Windows.Forms.TextBox txtLabel;
 		private System.Windows.Forms.ListBox listLabels;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Button btRemoveFeatures;
 		private System.Windows.Forms.Button btGenFeatures;
 		private System.Windows.Forms.Label lblFeatStatus;
@@ -727,6 +949,26 @@
         private System.Windows.Forms.TextBox txtTiempo2;
         private System.Windows.Forms.Label lblPrediction;
 		private System.Windows.Forms.Button btSvm;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ProgressBar progressBar2;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.TextBox txtIP;
+		private System.Windows.Forms.TextBox txtPort;
+		private System.Windows.Forms.Label label18;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.Button btSocketConnect;
+		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.Label label20;
+		private System.Windows.Forms.TextBox txtCommand;
 
 	}
 }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Data;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Double.IO;
 using MathNet.Numerics.LinearAlgebra.IO;
@@ -20,6 +22,7 @@ namespace SpeechAnalyzer.Model
 		private String SonicAnnotator;
 		private String DataDirectory;
 		private String TempDirectory;
+        private SQLiteDatabase db;
 
 		// properties
 		public NeuralNetworkParameters nnp { get; set; }
@@ -47,7 +50,7 @@ namespace SpeechAnalyzer.Model
 			this.FinalCostValue = Double.PositiveInfinity;
 			this.ConsoleOut = "";
 			this.Lambda = 0.1;
-
+            db = new SQLiteDatabase();
 			this.trainingFile = new FileInfo(Path.Combine(this.TempDirectory, "training-features.csv"));
 			this.networkFile = new FileInfo(Path.Combine(TempDirectory, "networkParams.js"));
 			this.labelsFile = new FileInfo(Path.Combine(TempDirectory, "labels.js"));
@@ -84,9 +87,9 @@ namespace SpeechAnalyzer.Model
 			Labels labels = LoadLabels();
 
 			String label = "unknown";
-			if (predictions[0] >= 0 && predictions[0] < labels.labelsList.Count)
+			if (predictions[0] >= 0 && predictions[0] <= labels.labelsList.Count)
 			{
-				label = labels.labelsList[predictions[0]];
+				label = labels.labelsList[predictions[0]-1];
 			}
 			
 			return label;
@@ -172,7 +175,7 @@ namespace SpeechAnalyzer.Model
 			{
 				for (int i = 0; i < labels.labelsList.Count; i++)
 				{
-					if (Regex.IsMatch(file.Name, String.Format(@"{0}\d+\.wav", labels.labelsList[i])))
+                    if (Regex.IsMatch(file.Name, String.Format(@"{0}.*\.wav", labels.labelsList[i])))
 					{
 						AudioInfosList.Add(new AudioFileFeatures(file, i+1));
 						break;
@@ -185,17 +188,26 @@ namespace SpeechAnalyzer.Model
 		public Labels LoadLabels()
 		{
 			Labels lbls = new Labels();
+        
 			try
 			{
-				StreamReader sr = new StreamReader(this.labelsFile.FullName);
+				/*StreamReader sr = new StreamReader(this.labelsFile.FullName);
 				String json = sr.ReadToEnd();
 				sr.Close();
-
-				lbls = JsonConvert.DeserializeObject<Labels>(json);
+				lbls = JsonConvert.DeserializeObject<Labels>(json);*/
+                DataTable recipe;
+                String query = "select nombre from etiquetas; ";
+                recipe = db.GetDataTable(query);
+                foreach (DataRow r in recipe.Rows)
+                {
+                    lbls.labelsList.Add(r["nombre"].ToString());
+                }
 			}
 			catch (Exception e)
 			{
+                MessageBox.Show("Error leyendo archivo labels: " + e.Message);
 				throw new Exception("Error leyendo archivo labels: " + e.Message);
+               
 			}
 			
 			return lbls;
@@ -206,12 +218,20 @@ namespace SpeechAnalyzer.Model
 		/// </summary>
 		public void SaveLabels(Labels lbls)
 		{
-			StreamWriter sw = new StreamWriter(this.labelsFile.FullName);
+			/*StreamWriter sw = new StreamWriter(this.labelsFile.FullName);
 			sw.Write(JsonConvert.SerializeObject(lbls, Formatting.Indented));
-			sw.Close();
+			sw.Close();*/
 		}
-
-
+        public void SaveLabels(string label)
+        {
+        Dictionary<string,string> campos = new Dictionary<string,string>();
+            campos.Add("nombre",label);
+            db.Insert("etiquetas", campos);  
+        }
+        public void DeleteLabel(string label)
+        {
+            db.Delete("etiquetas", "nombre='"+label+"'");
+        }
 
 
 
@@ -248,7 +268,7 @@ namespace SpeechAnalyzer.Model
 
 				// extract statistical information from the previous features
 				DenseMatrix featureVector = DenseMatrix.Create(1, 1, (i, j) => audio.label);				// 1x1 matrix
-				DenseMatrix mfccVector = ExtractFeatureVector(audio.mfcc, mfccLimit, 20, false, true);		// append row
+				DenseMatrix mfccVector = ExtractFeatureVector(audio.mfcc, mfccLimit, 20, true, true);		// append row
 				DenseMatrix pitchVector = ExtractFeatureVector(audio.pitch, pitchLimit, 1, false, true);	// apend row
 
 				featureVector = featureVector.Append(mfccVector) as DenseMatrix;
@@ -375,7 +395,7 @@ namespace SpeechAnalyzer.Model
 			if (bData)
 			{
 				double[] dValues = values
-						.SubMatrix(0, values.RowCount, 1, nColumns)
+						.SubMatrix(0, Math.Min(values.RowCount, limit), 1, nColumns-1)
 						.ToColumnWiseArray();
 				
 				DenseMatrix dmValues = new DenseMatrix(1, dValues.Length, dValues);
@@ -383,7 +403,7 @@ namespace SpeechAnalyzer.Model
 				if (result == null) {
 					result = dmValues;
 				} else {
-					result = result.Add(dmValues) as DenseMatrix;
+					result = result.Append(dmValues) as DenseMatrix;
 				}
 			}
 
