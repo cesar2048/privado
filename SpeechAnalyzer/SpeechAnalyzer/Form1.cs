@@ -726,6 +726,5 @@ namespace SpeechAnalyzer
             }
         }
 
-
 	}
 }

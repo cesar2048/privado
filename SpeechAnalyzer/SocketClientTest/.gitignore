@@ -1,0 +1,3 @@
+# Ignore some objects in this directory
+bin
+obj

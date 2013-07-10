@@ -78,6 +78,14 @@
 			this.txtLabel = new System.Windows.Forms.TextBox();
 			this.btRemoveLabel = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.label20 = new System.Windows.Forms.Label();
+			this.txtCommand = new System.Windows.Forms.TextBox();
+			this.btSocketConnect = new System.Windows.Forms.Button();
+			this.lblSocketStatus = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
+			this.txtPort = new System.Windows.Forms.TextBox();
+			this.txtIP = new System.Windows.Forms.TextBox();
 			this.label16 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
 			this.progressBar2 = new System.Windows.Forms.ProgressBar();
@@ -90,14 +98,7 @@
 			this.btnDetener = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnEscuchar = new System.Windows.Forms.Button();
-			this.txtIP = new System.Windows.Forms.TextBox();
-			this.txtPort = new System.Windows.Forms.TextBox();
-			this.label17 = new System.Windows.Forms.Label();
-			this.label18 = new System.Windows.Forms.Label();
-			this.label19 = new System.Windows.Forms.Label();
-			this.btSocketConnect = new System.Windows.Forms.Button();
-			this.txtCommand = new System.Windows.Forms.TextBox();
-			this.label20 = new System.Windows.Forms.Label();
+			this.txtCommandHistory = new System.Windows.Forms.TextBox();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.levelIndicator2 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
@@ -625,10 +626,11 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.txtCommandHistory);
 			this.tabPage2.Controls.Add(this.label20);
 			this.tabPage2.Controls.Add(this.txtCommand);
 			this.tabPage2.Controls.Add(this.btSocketConnect);
-			this.tabPage2.Controls.Add(this.label19);
+			this.tabPage2.Controls.Add(this.lblSocketStatus);
 			this.tabPage2.Controls.Add(this.label18);
 			this.tabPage2.Controls.Add(this.label17);
 			this.tabPage2.Controls.Add(this.txtPort);
@@ -653,6 +655,83 @@
 			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(408, 196);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(37, 13);
+			this.label20.TabIndex = 39;
+			this.label20.Text = "Enviar";
+			// 
+			// txtCommand
+			// 
+			this.txtCommand.Enabled = false;
+			this.txtCommand.Location = new System.Drawing.Point(451, 196);
+			this.txtCommand.Name = "txtCommand";
+			this.txtCommand.Size = new System.Drawing.Size(164, 20);
+			this.txtCommand.TabIndex = 1;
+			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
+			this.txtCommand.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCommand_KeyUp);
+			this.txtCommand.Leave += new System.EventHandler(this.txtCommand_Leave);
+			// 
+			// btSocketConnect
+			// 
+			this.btSocketConnect.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.btSocketConnect.Location = new System.Drawing.Point(305, 196);
+			this.btSocketConnect.Name = "btSocketConnect";
+			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
+			this.btSocketConnect.TabIndex = 37;
+			this.btSocketConnect.TabStop = false;
+			this.btSocketConnect.Text = "&Conectar";
+			this.btSocketConnect.UseVisualStyleBackColor = true;
+			this.btSocketConnect.Click += new System.EventHandler(this.btSocketConnect_Click);
+			// 
+			// lblSocketStatus
+			// 
+			this.lblSocketStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.lblSocketStatus.Location = new System.Drawing.Point(305, 222);
+			this.lblSocketStatus.Name = "lblSocketStatus";
+			this.lblSocketStatus.Size = new System.Drawing.Size(313, 79);
+			this.lblSocketStatus.TabIndex = 36;
+			this.lblSocketStatus.Text = "Desconectado";
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(305, 76);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(38, 13);
+			this.label18.TabIndex = 35;
+			this.label18.Text = "Puerto";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(305, 50);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(17, 13);
+			this.label17.TabIndex = 34;
+			this.label17.Text = "IP";
+			// 
+			// txtPort
+			// 
+			this.txtPort.Location = new System.Drawing.Point(372, 73);
+			this.txtPort.Name = "txtPort";
+			this.txtPort.Size = new System.Drawing.Size(100, 20);
+			this.txtPort.TabIndex = 33;
+			this.txtPort.TabStop = false;
+			this.txtPort.Text = "27010";
+			// 
+			// txtIP
+			// 
+			this.txtIP.Location = new System.Drawing.Point(372, 47);
+			this.txtIP.Name = "txtIP";
+			this.txtIP.Size = new System.Drawing.Size(100, 20);
+			this.txtIP.TabIndex = 32;
+			this.txtIP.TabStop = false;
+			this.txtIP.Text = "127.0.0.1";
+			// 
 			// label16
 			// 
 			this.label16.AutoSize = true;
@@ -660,9 +739,9 @@
 			this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.label16.Location = new System.Drawing.Point(301, 18);
 			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(123, 20);
+			this.label16.Size = new System.Drawing.Size(141, 20);
 			this.label16.TabIndex = 31;
-			this.label16.Text = "Escucha en vivo";
+			this.label16.Text = "Conexion de datos";
 			// 
 			// label15
 			// 
@@ -775,78 +854,16 @@
 			this.btnEscuchar.UseVisualStyleBackColor = true;
 			this.btnEscuchar.Click += new System.EventHandler(this.btnEscuchar_Click);
 			// 
-			// txtIP
+			// txtCommandHistory
 			// 
-			this.txtIP.Location = new System.Drawing.Point(372, 47);
-			this.txtIP.Name = "txtIP";
-			this.txtIP.Size = new System.Drawing.Size(100, 20);
-			this.txtIP.TabIndex = 32;
-			this.txtIP.TabStop = false;
-			// 
-			// txtPort
-			// 
-			this.txtPort.Location = new System.Drawing.Point(372, 73);
-			this.txtPort.Name = "txtPort";
-			this.txtPort.Size = new System.Drawing.Size(100, 20);
-			this.txtPort.TabIndex = 33;
-			this.txtPort.TabStop = false;
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(305, 50);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(17, 13);
-			this.label17.TabIndex = 34;
-			this.label17.Text = "IP";
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(305, 76);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(38, 13);
-			this.label18.TabIndex = 35;
-			this.label18.Text = "Puerto";
-			// 
-			// label19
-			// 
-			this.label19.AutoSize = true;
-			this.label19.Location = new System.Drawing.Point(389, 119);
-			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(77, 13);
-			this.label19.TabIndex = 36;
-			this.label19.Text = "Desconectado";
-			// 
-			// btSocketConnect
-			// 
-			this.btSocketConnect.Location = new System.Drawing.Point(308, 114);
-			this.btSocketConnect.Name = "btSocketConnect";
-			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
-			this.btSocketConnect.TabIndex = 37;
-			this.btSocketConnect.TabStop = false;
-			this.btSocketConnect.Text = "&Conectar";
-			this.btSocketConnect.UseVisualStyleBackColor = true;
-			this.btSocketConnect.Click += new System.EventHandler(this.btSocketConnect_Click);
-			// 
-			// txtCommand
-			// 
-			this.txtCommand.Enabled = false;
-			this.txtCommand.Location = new System.Drawing.Point(305, 187);
-			this.txtCommand.Name = "txtCommand";
-			this.txtCommand.Size = new System.Drawing.Size(164, 20);
-			this.txtCommand.TabIndex = 1;
-			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
-			this.txtCommand.Leave += new System.EventHandler(this.txtCommand_Leave);
-			// 
-			// label20
-			// 
-			this.label20.AutoSize = true;
-			this.label20.Location = new System.Drawing.Point(308, 168);
-			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(84, 13);
-			this.label20.TabIndex = 39;
-			this.label20.Text = "Enviar comando";
+			this.txtCommandHistory.Location = new System.Drawing.Point(451, 100);
+			this.txtCommandHistory.Multiline = true;
+			this.txtCommandHistory.Name = "txtCommandHistory";
+			this.txtCommandHistory.ReadOnly = true;
+			this.txtCommandHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtCommandHistory.Size = new System.Drawing.Size(164, 90);
+			this.txtCommandHistory.TabIndex = 40;
+			this.txtCommandHistory.TabStop = false;
 			// 
 			// levelIndicator1
 			// 
@@ -966,9 +983,10 @@
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.Button btSocketConnect;
-		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.Label lblSocketStatus;
 		private System.Windows.Forms.Label label20;
 		private System.Windows.Forms.TextBox txtCommand;
+		private System.Windows.Forms.TextBox txtCommandHistory;
 
 	}
 }

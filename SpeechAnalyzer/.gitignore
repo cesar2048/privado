@@ -1,2 +1,6 @@
 # Ignore some objects in this directory
 SpeechAnalyzer.suo
+SpeechAnalyzer.sdf
+SpeechAnalyzer.opensdf
+Debug
+ipch
