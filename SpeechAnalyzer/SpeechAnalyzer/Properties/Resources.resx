@@ -121,4 +121,7 @@
   <data name="multilockon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\120x120px-LS-482a3971_multilockon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Nishad2m8_Hologram_Dock_My_music" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Nishad2m8-Hologram-Dock-My-music.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

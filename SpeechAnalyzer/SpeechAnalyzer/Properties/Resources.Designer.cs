@@ -66,5 +66,12 @@ namespace SpeechAnalyzer.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Icon Nishad2m8_Hologram_Dock_My_music {
+            get {
+                object obj = ResourceManager.GetObject("Nishad2m8_Hologram_Dock_My_music", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
