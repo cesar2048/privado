@@ -39,6 +39,8 @@ namespace SpeechAnalyzer.Model
 		public String ConsoleOut { get; set; }
 		public Double FinalCostValue { get; set; }
 		public Double FinalAccuracy { get; set; }
+
+		public string feature="";
 		
 
 		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
@@ -165,17 +167,16 @@ namespace SpeechAnalyzer.Model
 		private List<AudioFileFeatures> GetTrainingFilesList()
 		{
 			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
-			Labels labels = LoadLabels();
-
+			List<String> labels = LoadLabelFeatures(feature);
 			FileInfo[] files = srcDir.GetFiles("*.wav");
 			List<AudioFileFeatures> AudioInfosList = new List<AudioFileFeatures>();
 
 			// Add every matching file and its label to a list
 			foreach (FileInfo file in files)
 			{
-				for (int i = 0; i < labels.labelsList.Count; i++)
+				for (int i = 0; i < labels.Count; i++)
 				{
-                    if (Regex.IsMatch(file.Name, String.Format(@"{0}.*\.wav", labels.labelsList[i])))
+                    if (Regex.IsMatch(file.Name, String.Format(@"{0}.*\.wav", labels[i])))
 					{
 						AudioInfosList.Add(new AudioFileFeatures(file, i+1));
 						break;
@@ -212,6 +213,52 @@ namespace SpeechAnalyzer.Model
 			
 			return lbls;
 		}
+		public List<String> LoadFeatures()
+		{
+			List<String> listF = new List<String>();
+
+			try
+			{
+				DataTable recipe;
+				String query = "select nombre from funciones; ";
+				recipe = db.GetDataTable(query);
+				foreach (DataRow r in recipe.Rows)
+				{
+					listF.Add(r["nombre"].ToString());
+				}
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Error leyendo archivo labels: " + e.Message);
+				throw new Exception("Error leyendo archivo labels: " + e.Message);
+
+			}
+
+			return listF;
+		}
+		public List<String> LoadLabelFeatures(string feature)
+		{
+			List<String> listF = new List<String>();
+
+			try
+			{
+				DataTable recipe;
+				String query = "select etiquetanombre from etiquetasfunciones where funcionnombre='"+feature+"'; ";
+				recipe = db.GetDataTable(query);
+				foreach (DataRow r in recipe.Rows)
+				{
+					listF.Add(r["etiquetanombre"].ToString());
+				}
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Error leyendo archivo labels: " + e.Message);
+				throw new Exception("Error leyendo archivo labels: " + e.Message);
+
+			}
+
+			return listF;
+		}
 
 		/// <summary>
 		/// Changes the labels assignations, deletes all the training data, and neural network parameters
@@ -228,11 +275,31 @@ namespace SpeechAnalyzer.Model
             campos.Add("nombre",label);
             db.Insert("etiquetas", campos);  
         }
+		public void SaveFeature(string feature)
+		{
+			Dictionary<string, string> campos = new Dictionary<string, string>();
+			campos.Add("nombre", feature);
+			db.Insert("funciones", campos);  
+		}
+		public void SaveFeatureLabel(string feature,string label)
+		{
+			Dictionary<string, string> campos = new Dictionary<string, string>();
+			campos.Add("funcionnombre", feature);
+			campos.Add("etiquetanombre", label);
+			db.Insert("etiquetasfunciones", campos);
+		}
         public void DeleteLabel(string label)
         {
             db.Delete("etiquetas", "nombre='"+label+"'");
         }
-
+		public void DeleteFeature(string feature)
+		{
+			db.Delete("funciones", "nombre='" + feature + "'");
+		}
+		public void DeleteFeatureLabel(string feature, string label)
+		{
+			db.Delete("etiquetasfunciones", "funcionnombre='" + feature + "' AND " + "etiquetanombre='"+label+"'");
+		}
 
 
 

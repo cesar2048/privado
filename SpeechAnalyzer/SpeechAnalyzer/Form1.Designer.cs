@@ -49,15 +49,16 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.btPredecir = new System.Windows.Forms.Button();
+			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.label14 = new System.Windows.Forms.Label();
 			this.button4 = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txNombreFuncion = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.listBox2 = new System.Windows.Forms.ListBox();
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.listEtiquetasFuncion = new System.Windows.Forms.ListBox();
+			this.listFunciones = new System.Windows.Forms.ListBox();
 			this.btSvm = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.txtIteraciones = new System.Windows.Forms.TextBox();
@@ -78,6 +79,7 @@
 			this.txtLabel = new System.Windows.Forms.TextBox();
 			this.btRemoveLabel = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.txtCommandHistory = new System.Windows.Forms.TextBox();
 			this.label20 = new System.Windows.Forms.Label();
 			this.txtCommand = new System.Windows.Forms.TextBox();
 			this.btSocketConnect = new System.Windows.Forms.Button();
@@ -89,7 +91,6 @@
 			this.label16 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
 			this.progressBar2 = new System.Windows.Forms.ProgressBar();
-			this.button1 = new System.Windows.Forms.Button();
 			this.lblPrediction = new System.Windows.Forms.Label();
 			this.Thold2 = new System.Windows.Forms.NumericUpDown();
 			this.label13 = new System.Windows.Forms.Label();
@@ -98,8 +99,6 @@
 			this.btnDetener = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnEscuchar = new System.Windows.Forms.Button();
-			this.txtCommandHistory = new System.Windows.Forms.TextBox();
-			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.levelIndicator2 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -337,16 +336,27 @@
 			this.btPredecir.UseVisualStyleBackColor = true;
 			this.btPredecir.Click += new System.EventHandler(this.btPredecir_Click);
 			// 
+			// levelIndicator1
+			// 
+			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
+			this.levelIndicator1.Level = 0;
+			this.levelIndicator1.Location = new System.Drawing.Point(278, 29);
+			this.levelIndicator1.Maximum = 100;
+			this.levelIndicator1.Minimum = 0;
+			this.levelIndicator1.Name = "levelIndicator1";
+			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
+			this.levelIndicator1.TabIndex = 20;
+			// 
 			// tabPage3
 			// 
 			this.tabPage3.Controls.Add(this.label14);
 			this.tabPage3.Controls.Add(this.button4);
-			this.tabPage3.Controls.Add(this.textBox1);
+			this.tabPage3.Controls.Add(this.txNombreFuncion);
 			this.tabPage3.Controls.Add(this.label9);
 			this.tabPage3.Controls.Add(this.button3);
 			this.tabPage3.Controls.Add(this.button2);
-			this.tabPage3.Controls.Add(this.listBox2);
-			this.tabPage3.Controls.Add(this.listBox1);
+			this.tabPage3.Controls.Add(this.listEtiquetasFuncion);
+			this.tabPage3.Controls.Add(this.listFunciones);
 			this.tabPage3.Controls.Add(this.btSvm);
 			this.tabPage3.Controls.Add(this.label10);
 			this.tabPage3.Controls.Add(this.txtIteraciones);
@@ -390,13 +400,14 @@
 			this.button4.TabIndex = 48;
 			this.button4.Text = "Crear";
 			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
-			// textBox1
+			// txNombreFuncion
 			// 
-			this.textBox1.Location = new System.Drawing.Point(227, 22);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(100, 20);
-			this.textBox1.TabIndex = 47;
+			this.txNombreFuncion.Location = new System.Drawing.Point(227, 22);
+			this.txNombreFuncion.Name = "txNombreFuncion";
+			this.txNombreFuncion.Size = new System.Drawing.Size(100, 20);
+			this.txNombreFuncion.TabIndex = 47;
 			// 
 			// label9
 			// 
@@ -415,6 +426,7 @@
 			this.button3.TabIndex = 45;
 			this.button3.Text = "eliminar";
 			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.button3_Click);
 			// 
 			// button2
 			// 
@@ -424,22 +436,24 @@
 			this.button2.TabIndex = 44;
 			this.button2.Text = "agregar";
 			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// listBox2
+			// listEtiquetasFuncion
 			// 
-			this.listBox2.FormattingEnabled = true;
-			this.listBox2.Location = new System.Drawing.Point(171, 221);
-			this.listBox2.Name = "listBox2";
-			this.listBox2.Size = new System.Drawing.Size(156, 56);
-			this.listBox2.TabIndex = 43;
+			this.listEtiquetasFuncion.FormattingEnabled = true;
+			this.listEtiquetasFuncion.Location = new System.Drawing.Point(171, 221);
+			this.listEtiquetasFuncion.Name = "listEtiquetasFuncion";
+			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 56);
+			this.listEtiquetasFuncion.TabIndex = 43;
 			// 
-			// listBox1
+			// listFunciones
 			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(171, 62);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(156, 69);
-			this.listBox1.TabIndex = 42;
+			this.listFunciones.FormattingEnabled = true;
+			this.listFunciones.Location = new System.Drawing.Point(171, 62);
+			this.listFunciones.Name = "listFunciones";
+			this.listFunciones.Size = new System.Drawing.Size(156, 69);
+			this.listFunciones.TabIndex = 42;
+			this.listFunciones.SelectedIndexChanged += new System.EventHandler(this.listFunciones_SelectedIndexChanged);
 			// 
 			// btSvm
 			// 
@@ -638,7 +652,6 @@
 			this.tabPage2.Controls.Add(this.label16);
 			this.tabPage2.Controls.Add(this.label15);
 			this.tabPage2.Controls.Add(this.progressBar2);
-			this.tabPage2.Controls.Add(this.button1);
 			this.tabPage2.Controls.Add(this.lblPrediction);
 			this.tabPage2.Controls.Add(this.Thold2);
 			this.tabPage2.Controls.Add(this.label13);
@@ -655,10 +668,21 @@
 			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// txtCommandHistory
+			// 
+			this.txtCommandHistory.Location = new System.Drawing.Point(372, 100);
+			this.txtCommandHistory.Multiline = true;
+			this.txtCommandHistory.Name = "txtCommandHistory";
+			this.txtCommandHistory.ReadOnly = true;
+			this.txtCommandHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtCommandHistory.Size = new System.Drawing.Size(203, 90);
+			this.txtCommandHistory.TabIndex = 40;
+			this.txtCommandHistory.TabStop = false;
+			// 
 			// label20
 			// 
 			this.label20.AutoSize = true;
-			this.label20.Location = new System.Drawing.Point(408, 196);
+			this.label20.Location = new System.Drawing.Point(306, 201);
 			this.label20.Name = "label20";
 			this.label20.Size = new System.Drawing.Size(37, 13);
 			this.label20.TabIndex = 39;
@@ -667,9 +691,9 @@
 			// txtCommand
 			// 
 			this.txtCommand.Enabled = false;
-			this.txtCommand.Location = new System.Drawing.Point(451, 196);
+			this.txtCommand.Location = new System.Drawing.Point(372, 196);
 			this.txtCommand.Name = "txtCommand";
-			this.txtCommand.Size = new System.Drawing.Size(164, 20);
+			this.txtCommand.Size = new System.Drawing.Size(203, 20);
 			this.txtCommand.TabIndex = 1;
 			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
 			this.txtCommand.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCommand_KeyUp);
@@ -678,7 +702,7 @@
 			// btSocketConnect
 			// 
 			this.btSocketConnect.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btSocketConnect.Location = new System.Drawing.Point(305, 196);
+			this.btSocketConnect.Location = new System.Drawing.Point(500, 222);
 			this.btSocketConnect.Name = "btSocketConnect";
 			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
 			this.btSocketConnect.TabIndex = 37;
@@ -690,9 +714,9 @@
 			// lblSocketStatus
 			// 
 			this.lblSocketStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.lblSocketStatus.Location = new System.Drawing.Point(305, 222);
+			this.lblSocketStatus.Location = new System.Drawing.Point(302, 248);
 			this.lblSocketStatus.Name = "lblSocketStatus";
-			this.lblSocketStatus.Size = new System.Drawing.Size(313, 79);
+			this.lblSocketStatus.Size = new System.Drawing.Size(313, 54);
 			this.lblSocketStatus.TabIndex = 36;
 			this.lblSocketStatus.Text = "Desconectado";
 			// 
@@ -718,7 +742,7 @@
 			// 
 			this.txtPort.Location = new System.Drawing.Point(372, 73);
 			this.txtPort.Name = "txtPort";
-			this.txtPort.Size = new System.Drawing.Size(100, 20);
+			this.txtPort.Size = new System.Drawing.Size(203, 20);
 			this.txtPort.TabIndex = 33;
 			this.txtPort.TabStop = false;
 			this.txtPort.Text = "27010";
@@ -727,7 +751,7 @@
 			// 
 			this.txtIP.Location = new System.Drawing.Point(372, 47);
 			this.txtIP.Name = "txtIP";
-			this.txtIP.Size = new System.Drawing.Size(100, 20);
+			this.txtIP.Size = new System.Drawing.Size(203, 20);
 			this.txtIP.TabIndex = 32;
 			this.txtIP.TabStop = false;
 			this.txtIP.Text = "127.0.0.1";
@@ -756,26 +780,15 @@
 			// 
 			// progressBar2
 			// 
-			this.progressBar2.Location = new System.Drawing.Point(68, 222);
+			this.progressBar2.Location = new System.Drawing.Point(40, 222);
 			this.progressBar2.Name = "progressBar2";
-			this.progressBar2.Size = new System.Drawing.Size(156, 23);
+			this.progressBar2.Size = new System.Drawing.Size(184, 23);
 			this.progressBar2.TabIndex = 29;
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(93, 158);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 28;
-			this.button1.TabStop = false;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click_1);
 			// 
 			// lblPrediction
 			// 
 			this.lblPrediction.AutoSize = true;
-			this.lblPrediction.Location = new System.Drawing.Point(127, 206);
+			this.lblPrediction.Location = new System.Drawing.Point(142, 201);
 			this.lblPrediction.Name = "lblPrediction";
 			this.lblPrediction.Size = new System.Drawing.Size(51, 13);
 			this.lblPrediction.TabIndex = 27;
@@ -783,7 +796,7 @@
 			// 
 			// Thold2
 			// 
-			this.Thold2.Location = new System.Drawing.Point(145, 112);
+			this.Thold2.Location = new System.Drawing.Point(145, 74);
 			this.Thold2.Name = "Thold2";
 			this.Thold2.Size = new System.Drawing.Size(79, 20);
 			this.Thold2.TabIndex = 26;
@@ -798,7 +811,7 @@
 			// label13
 			// 
 			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(55, 114);
+			this.label13.Location = new System.Drawing.Point(37, 80);
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(84, 13);
 			this.label13.TabIndex = 25;
@@ -807,7 +820,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(55, 94);
+			this.label12.Location = new System.Drawing.Point(40, 50);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(45, 13);
 			this.label12.TabIndex = 24;
@@ -815,7 +828,7 @@
 			// 
 			// txtTiempo2
 			// 
-			this.txtTiempo2.Location = new System.Drawing.Point(145, 91);
+			this.txtTiempo2.Location = new System.Drawing.Point(145, 47);
 			this.txtTiempo2.Name = "txtTiempo2";
 			this.txtTiempo2.Size = new System.Drawing.Size(79, 20);
 			this.txtTiempo2.TabIndex = 23;
@@ -825,9 +838,9 @@
 			// 
 			// btnDetener
 			// 
-			this.btnDetener.Location = new System.Drawing.Point(130, 50);
+			this.btnDetener.Location = new System.Drawing.Point(140, 150);
 			this.btnDetener.Name = "btnDetener";
-			this.btnDetener.Size = new System.Drawing.Size(75, 23);
+			this.btnDetener.Size = new System.Drawing.Size(84, 23);
 			this.btnDetener.TabIndex = 22;
 			this.btnDetener.TabStop = false;
 			this.btnDetener.Text = "&Detener";
@@ -837,7 +850,7 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(64, 206);
+			this.label11.Location = new System.Drawing.Point(40, 201);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(60, 13);
 			this.label11.TabIndex = 1;
@@ -845,46 +858,24 @@
 			// 
 			// btnEscuchar
 			// 
-			this.btnEscuchar.Location = new System.Drawing.Point(49, 50);
+			this.btnEscuchar.Location = new System.Drawing.Point(40, 150);
 			this.btnEscuchar.Name = "btnEscuchar";
-			this.btnEscuchar.Size = new System.Drawing.Size(75, 23);
+			this.btnEscuchar.Size = new System.Drawing.Size(81, 23);
 			this.btnEscuchar.TabIndex = 0;
 			this.btnEscuchar.TabStop = false;
 			this.btnEscuchar.Text = "&Escuchar";
 			this.btnEscuchar.UseVisualStyleBackColor = true;
 			this.btnEscuchar.Click += new System.EventHandler(this.btnEscuchar_Click);
 			// 
-			// txtCommandHistory
-			// 
-			this.txtCommandHistory.Location = new System.Drawing.Point(451, 100);
-			this.txtCommandHistory.Multiline = true;
-			this.txtCommandHistory.Name = "txtCommandHistory";
-			this.txtCommandHistory.ReadOnly = true;
-			this.txtCommandHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtCommandHistory.Size = new System.Drawing.Size(164, 90);
-			this.txtCommandHistory.TabIndex = 40;
-			this.txtCommandHistory.TabStop = false;
-			// 
-			// levelIndicator1
-			// 
-			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
-			this.levelIndicator1.Level = 0;
-			this.levelIndicator1.Location = new System.Drawing.Point(278, 29);
-			this.levelIndicator1.Maximum = 100;
-			this.levelIndicator1.Minimum = 0;
-			this.levelIndicator1.Name = "levelIndicator1";
-			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
-			this.levelIndicator1.TabIndex = 20;
-			// 
 			// levelIndicator2
 			// 
 			this.levelIndicator2.BackColor = System.Drawing.Color.Black;
 			this.levelIndicator2.Level = 0;
-			this.levelIndicator2.Location = new System.Drawing.Point(8, 50);
+			this.levelIndicator2.Location = new System.Drawing.Point(8, 47);
 			this.levelIndicator2.Maximum = 100;
 			this.levelIndicator2.Minimum = 0;
 			this.levelIndicator2.Name = "levelIndicator2";
-			this.levelIndicator2.Size = new System.Drawing.Size(26, 195);
+			this.levelIndicator2.Size = new System.Drawing.Size(26, 198);
 			this.levelIndicator2.TabIndex = 21;
 			// 
 			// Form1
@@ -966,15 +957,14 @@
         private System.Windows.Forms.TextBox txtTiempo2;
         private System.Windows.Forms.Label lblPrediction;
 		private System.Windows.Forms.Button btSvm;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txNombreFuncion;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listEtiquetasFuncion;
+        private System.Windows.Forms.ListBox listFunciones;
         private System.Windows.Forms.ProgressBar progressBar2;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label16;
