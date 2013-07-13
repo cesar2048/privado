@@ -96,6 +96,7 @@ namespace SpeechAnalyzer
 			{
 				Labels labels = analysis.LoadLabels();
 				this.listLabels.Items.AddRange( labels.labelsList.ToArray() );
+				this.listFunciones.Items.AddRange(analysis.LoadFeatures().ToArray());
 			}
 			catch (Exception /*e*/) { }
 
@@ -525,16 +526,22 @@ namespace SpeechAnalyzer
 
 		private void btRemoveFeatures_Click(object sender, EventArgs e)
 		{
+			string feature = listFunciones.SelectedItem.ToString();
+			
+			listFunciones.Items.RemoveAt(listFunciones.SelectedIndex);
+
 			FileInfo trainingFile = new FileInfo(Path.Combine(config.TempDirectory, "training-features.csv"));
 			if (trainingFile.Exists)
 			{
 				trainingFile.Delete();
 				lblFeatStatus.Text = "Vacio";
 			}
+			this.analysis.DeleteFeature(feature);
 		}
 
 		private void btGenFeatures_Click(object sender, EventArgs e)
 		{
+			analysis.feature = listFunciones.SelectedItem.ToString();
 			this.progDataGen.Visible = true;
 			this.btTrain.Enabled = false;
 			this.btGenFeatures.Enabled = false;
@@ -544,7 +551,9 @@ namespace SpeechAnalyzer
 
 		void _bkgDataGeneration_DoWork(object sender, DoWorkEventArgs e)
 		{
+			
 			this.analysis.GenerateTrainingFeatures(sender as BackgroundWorker);
+			
 		}
 
 		void _bkgDataGeneration_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -729,6 +738,55 @@ namespace SpeechAnalyzer
                // this.Close();
             }
         }
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+			if (txNombreFuncion.Text != "")
+			{
+				listFunciones.Items.Add(txNombreFuncion.Text);
+				this.analysis.SaveFeature(txNombreFuncion.Text);
+				txNombreFuncion.Text = "";
+			}
+			else
+			{
+				MessageBox.Show("Ingrese un nombre para la funcion");
+			}
+		}
+
+		private void listFunciones_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			//MessageBox.Show("cambio el item seleccionado");
+			string funcion=listFunciones.SelectedItem.ToString();
+			listEtiquetasFuncion.Items.Clear();
+			List<String> etiquetas=analysis.LoadLabelFeatures(funcion);
+			listEtiquetasFuncion.Items.AddRange(etiquetas.ToArray());
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			if (listFunciones.SelectedIndex >= 0 && listLabels.SelectedIndex >= 0)
+			{
+				analysis.SaveFeatureLabel(listFunciones.SelectedItem.ToString(), listLabels.SelectedItem.ToString());
+				listEtiquetasFuncion.Items.Add(listLabels.SelectedItem.ToString());
+			}
+			else
+			{
+				MessageBox.Show("Seleccione una etiqueta y una funcion");
+			}
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			if (listFunciones.SelectedIndex >= 0 && listEtiquetasFuncion.SelectedIndex >= 0)
+			{
+				analysis.DeleteFeatureLabel(listFunciones.SelectedItem.ToString(), listEtiquetasFuncion.SelectedItem.ToString());
+				listEtiquetasFuncion.Items.RemoveAt(listEtiquetasFuncion.SelectedIndex);
+			}
+			else
+			{
+				MessageBox.Show("Seleccione una etiqueta y una funcion");
+			}
+		}
 
 	}
 }
