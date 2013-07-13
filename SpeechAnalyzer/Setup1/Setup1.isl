@@ -53,7 +53,7 @@
 		<codepage>1252</codepage>
 		<title>Installation Database</title>
 		<subject></subject>
-		<author>InstallShield</author>
+		<author>##ID_STRING11##</author>
 		<keywords>Installer,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
 		<template>Intel;1033</template>
@@ -225,7 +225,7 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
-		<row><td>DOTNETVERSION40FULL</td><td>DotNet40Full</td></row>
+		<row><td>DOTNETVERSION40CLIENT</td><td>DotNet40Client</td></row>
 	</table>
 
 	<table name="BBControl">
@@ -263,6 +263,7 @@
 		<row><td>NewBinary16</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallFirstUse.ico</td></row>
 		<row><td>NewBinary17</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallPartial.ico</td></row>
 		<row><td>NewBinary18</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallStateMenu.ico</td></row>
+		<row><td>NewBinary19</td><td/><td>&lt;ISProductFolder&gt;\redist\Language independent\i386\SerialNumCAHelper.dll</td></row>
 		<row><td>NewBinary2</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\New.ibd</td></row>
 		<row><td>NewBinary3</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\Up.ibd</td></row>
 		<row><td>NewBinary4</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\WarningIcon.ibd</td></row>
@@ -344,9 +345,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{2910F752-EC0A-446B-85D8-995312C5DC13}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{CB269071-C95B-40B2-9C1B-413127FE9F23}</td><td>VAMP_PLUGINS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{E0C7FD6F-0E36-4E2E-BCCB-B62C0F333429}</td><td>PersonalFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{D8EAF219-F986-48DD-BA5D-D06D3830FADC}</td><td>ANALISIS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{35B3EF18-9F88-486B-A22E-771A60A81B25}</td><td>TEMP</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{AE0FDD44-47E2-4B3A-889B-A9D2FDDD71CE}</td><td>DATA</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{C0BF68CC-E1FA-43DB-90B1-18DBFE218DDB}</td><td>DATA1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{ADC1FA67-6993-48FF-9082-BEC79A7581E8}</td><td>TEMP1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Qt5Core.dll</td><td>{8909BFDA-8832-4443-9AAC-B1E3D3F7DE9B}</td><td>SONIC_ANNOTATOR</td><td>2</td><td/><td>qt5core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Qt5Network.dll</td><td>{ADD65250-767A-4F5D-8B95-8B1CD82B6BAC}</td><td>SONIC_ANNOTATOR</td><td>2</td><td/><td>qt5network.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Qt5Xml.dll</td><td>{7A1E85D7-43E8-4322-953C-7089C0A1654A}</td><td>SONIC_ANNOTATOR</td><td>2</td><td/><td>qt5xml.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -947,7 +947,7 @@
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>DATABASEDIR</td><td>1</td><td>2</td></row>
 		<row><td>DatabaseFolder</td><td>Next</td><td>NewDialog</td><td>SetupType</td><td>1</td><td>1</td></row>
-		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>0</td></row>
+		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>DestinationFolder</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>INSTALLDIR</td><td>1</td><td>2</td></row>
@@ -964,7 +964,7 @@
 		<row><td>InstallChangeFolder</td><td>Up</td><td>DirectoryListUp</td><td>0</td><td>1</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Back</td><td>NewDialog</td><td>SplashBitmap</td><td>Display_IsBitmapDlg</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
-		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>LicenseAgreement</td><td>1</td><td>0</td></row>
+		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>DestinationFolder</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>ISPrintButton</td><td>DoAction</td><td>ISPrint</td><td>1</td><td>0</td></row>
@@ -999,7 +999,7 @@
 		<row><td>ReadmeInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>CustomSetup</td><td>Installed OR _IsSetupTypeMin = "Custom"</td><td>2</td></row>
-		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>NOT Installed</td><td>1</td></row>
+		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>DestinationFolder</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed AND _IsMaintenance = "Reinstall"</td><td>3</td></row>
 		<row><td>ReadyToInstall</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>EndDialog</td><td>Return</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
@@ -1037,8 +1037,9 @@
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>6</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>LaunchProgramFileFromSetupCompleteSuccess</td><td>LAUNCHPROGRAM And PROGRAMFILETOLAUNCHATEND &lt;&gt; "" And NOT Installed</td><td>2</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>7</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>3</td></row>
 		<row><td>SetupError</td><td>A</td><td>EndDialog</td><td>ErrorAbort</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>C</td><td>EndDialog</td><td>ErrorCancel</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>I</td><td>EndDialog</td><td>ErrorIgnore</td><td>1</td><td>0</td></row>
@@ -1076,10 +1077,9 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>DATA</td><td>ISX_DEFAULTCOMPONENT6</td></row>
-		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>DATA1</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>PersonalFolder</td><td>ISX_DEFAULTCOMPONENT3</td></row>
-		<row><td>TEMP</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>TEMP1</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1095,7 +1095,9 @@
 		<row><td>ISSelfRegisterCosting</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterCosting</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFiles</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>257</td><td>SetAllUsers.dll</td><td>SetAllUsers</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
+		<row><td>LaunchProgramFileFromSetupCompleteSuccess</td><td>1</td><td>NewBinary19</td><td>LaunchProgram</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
 		<row><td>SetAllUsersProfileNT</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%SystemRoot]\Profiles\All Users</td><td/><td/></row>
 		<row><td>ShowMsiLog</td><td>226</td><td>SystemFolder</td><td>[SystemFolder]notepad.exe "[MsiLogFileLocation]"</td><td/><td>Shows Property-driven MSI Log</td></row>
@@ -1159,24 +1161,26 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S255">ISFolderName</col>
 		<row><td>ALLUSERSPROFILE</td><td>TARGETDIR</td><td>.:ALLUSE~1|All Users</td><td/><td>0</td><td/></row>
-		<row><td>ANALISIS</td><td>PersonalFolder</td><td>Analisis</td><td/><td>0</td><td/></row>
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
-		<row><td>DATA</td><td>ANALISIS</td><td>data</td><td/><td>0</td><td/></row>
+		<row><td>DATA1</td><td>INSTALLDIR</td><td>data</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
-		<row><td>INSTALLDIR</td><td>ISMyProductDir</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>INSTALLDIR</td><td>MY_PRODUCT_NAME</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
-		<row><td>ISMyCompanyDir</td><td>AppDataFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
-		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
+		<row><td>ISMyProductDir</td><td>UNIVERSIDAD_GALILEO1</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
+		<row><td>MY_PRODUCT_NAME</td><td>UNIVERSIDAD_GALILEO</td><td>SPEECH~1|Speech Analyzer</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY1</td><td>TARGETDIR</td><td>NEW_DIRECTORY1</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY2</td><td>TARGETDIR</td><td>NEW_DIRECTORY2</td><td/><td>0</td><td/></row>
+		<row><td>NEW_DIRECTORY3</td><td>TARGETDIR</td><td>NEW_DIRECTORY3</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
@@ -1191,9 +1195,11 @@
 		<row><td>System16Folder</td><td>TARGETDIR</td><td>.:System</td><td/><td>0</td><td/></row>
 		<row><td>SystemFolder</td><td>TARGETDIR</td><td>.:System32</td><td/><td>0</td><td/></row>
 		<row><td>TARGETDIR</td><td/><td>SourceDir</td><td/><td>0</td><td/></row>
-		<row><td>TEMP</td><td>ANALISIS</td><td>temp</td><td/><td>0</td><td/></row>
+		<row><td>TEMP1</td><td>INSTALLDIR</td><td>temp</td><td/><td>0</td><td/></row>
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
+		<row><td>UNIVERSIDAD_GALILEO</td><td>AppDataFolder</td><td>UNIVER~1|Universidad Galileo</td><td/><td>0</td><td/></row>
+		<row><td>UNIVERSIDAD_GALILEO1</td><td>AppDataFolder</td><td>UNIVER~1|Universidad Galileo</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>VAMP_PLUGINS</td><td>INSTALLDIR</td><td>VAMP-P~1|vamp-plugins</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
@@ -1894,9 +1900,8 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
-		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
-		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
-		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 		<row><td>AlwaysInstall</td><td>Qt5Core.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Qt5Network.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Qt5Xml.dll</td></row>
@@ -1932,7 +1937,6 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>config.js</td><td>ISX_DEFAULTCOMPONENT4</td><td>config.js</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\config.js</td><td>1</td><td/></row>
 		<row><td>copying.txt</td><td>ISX_DEFAULTCOMPONENT</td><td>COPYING.txt</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\COPYING.txt</td><td>1</td><td/></row>
 		<row><td>icudt49.dll</td><td>icudt49.dll</td><td>icudt49.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\icudt49.dll</td><td>1</td><td/></row>
 		<row><td>icuin49.dll</td><td>icuin49.dll</td><td>icuin49.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\icuin49.dll</td><td>1</td><td/></row>
@@ -1954,11 +1958,11 @@
 		<row><td>qt5network.dll</td><td>Qt5Network.dll</td><td>QT5NET~1.DLL|Qt5Network.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\Qt5Network.dll</td><td>1</td><td/></row>
 		<row><td>qt5xml.dll</td><td>Qt5Xml.dll</td><td>Qt5Xml.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\Qt5Xml.dll</td><td>1</td><td/></row>
 		<row><td>readme.txt</td><td>ISX_DEFAULTCOMPONENT</td><td>README.txt</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\README.txt</td><td>1</td><td/></row>
-		<row><td>recipes.sqlite</td><td>ISX_DEFAULTCOMPONENT4</td><td>RECIPE~1.SQL|recipes.sqlite</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\recipes.sqlite</td><td>1</td><td/></row>
+		<row><td>recipes.sqlite2</td><td>ISX_DEFAULTCOMPONENT1</td><td>RECIPE~1.SQL|recipes.sqlite</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\recipes.sqlite</td><td>1</td><td/></row>
 		<row><td>sonic_annotator.exe</td><td>sonic_annotator.exe</td><td>SONIC-~1.EXE|sonic-annotator.exe</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\bin\sonic-annotator.exe</td><td>1</td><td/></row>
 		<row><td>speechanalyzer.resultado_pri</td><td>SpeechAnalyzer.Resultado_principal</td><td>SpeechAnalyzer.Resultado principal</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;SpeechAnalyzer&gt;|Built</td><td>3</td><td/></row>
 		<row><td>sqlite.interop.dll</td><td>SQLite.Interop.dll</td><td>SQLITE~1.DLL|SQLite.Interop.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\SpeechAnalyzer\SpeechAnalyzer\Libs\sqlite\SQLite.Interop.dll</td><td>1</td><td/></row>
-		<row><td>transform_descriptor.n3</td><td>ISX_DEFAULTCOMPONENT4</td><td>TRANSF~1.N3|transform-descriptor.n3</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\transform-descriptor.n3</td><td>1</td><td/></row>
+		<row><td>transform_descriptor.n32</td><td>ISX_DEFAULTCOMPONENT1</td><td>TRANSF~1.N3|transform-descriptor.n3</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\transform-descriptor.n3</td><td>1</td><td/></row>
 		<row><td>vamp_aubio.cat</td><td>ISX_DEFAULTCOMPONENT2</td><td>VAMP-A~1.CAT|vamp-aubio.cat</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\vamp-aubio-plugins-0.4.0-win32\vamp-aubio-plugins-0.4.0-win32\vamp-aubio.cat</td><td>1</td><td/></row>
 		<row><td>vamp_aubio.dll</td><td>vamp_aubio.dll</td><td>VAMP-A~1.DLL|vamp-aubio.dll</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\vamp-aubio-plugins-0.4.0-win32\vamp-aubio-plugins-0.4.0-win32\vamp-aubio.dll</td><td>1</td><td/></row>
 		<row><td>vamp_aubio.n3</td><td>ISX_DEFAULTCOMPONENT2</td><td>VAMP-A~1.N3|vamp-aubio.n3</td><td>0</td><td/><td/><td/><td>1</td><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\software\sonic-annotator\vamp-aubio-plugins-0.4.0-win32\vamp-aubio-plugins-0.4.0-win32\vamp-aubio.n3</td><td>1</td><td/></row>
@@ -2222,9 +2226,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_88445CF7_0CE7_43B5_ADF3_175539956553_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_4B7D8672_8773_47ED_8655_D0C0E20A4703_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_F3B084C3_1C58_4F29_A806_BD8BAF6E903C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_7573296C_2375_4DC7_9929_90DAE7975571_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_497B8BFD_0AB5_4050_97BB_62BFB25394B1_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_54F98BEB_F338_422C_B137_760D4BE119F9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_FE701B99_1F5B_437E_99F4_0AEAAA3379A1_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_66E58A01_C6CB_4743_9387_EE1D997E3FB3_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Qt5Core.dll</td><td/><td/><td>_D13697A9_97B5_42D4_BAF7_0D5102532ED0_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Qt5Network.dll</td><td/><td/><td>_0C99E6B4_E7C5_4CDC_A1E9_DEF9809952C4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Qt5Xml.dll</td><td/><td/><td>_A89AB24F_1F75_4527_8E92_D9C50EA0FCA9_FILTER</td><td/><td/><td/><td/></row>
@@ -2874,9 +2877,10 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Your Company Name</td><td>0</td><td/><td>1403096470</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Universidad Galileo</td><td>0</td><td/><td>1671509333</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1671523669</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL</td><td>1033</td><td>Microsoft .NET Framework 4.0 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1403084023</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
@@ -3975,6 +3979,9 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>1403098518</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>http://www.UniversidadGalileo.com</td><td>0</td><td/><td>1671515477</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>Universidad Galileo</td><td>0</td><td/><td>1671509333</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>Analisys</td><td>0</td><td/><td>1671544469</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td/><td>0</td><td/><td>1403065782</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td/><td>0</td><td/><td>1403106742</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>SPEECH~1|Speech Analyzer</td><td>0</td><td/><td>1403105879</td></row>
@@ -4091,6 +4098,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
+		<row><td>NewShortcut1_179756983D6749799EFF6B194327EC2A.exe</td><td/><td>\SpeechAnalyzer.Resultado principal</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4103,7 +4111,7 @@
 		<col def="i2">Action</col>
 		<col def="s72">Component_</col>
 		<row><td>IniTableKey1</td><td>##ID_STRING7##</td><td>INSTALLDIR</td><td>##ID_STRING8##</td><td>##ID_STRING9##</td><td>[INSTALLDIR]sonic-annotator</td><td>0</td><td>ISX_DEFAULTCOMPONENT1</td></row>
-		<row><td>IniTableKey2</td><td>##ID_STRING7##</td><td>INSTALLDIR</td><td>##ID_STRING8##</td><td> </td><td> </td><td>0</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>IniTableKey2</td><td>##ID_STRING7##</td><td>INSTALLDIR</td><td>##ID_STRING8##</td><td>##ID_STRING12##</td><td> </td><td>0</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="IniLocator">
@@ -4138,6 +4146,7 @@
 		<row><td>ISSelfRegisterCosting</td><td/><td>2201</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td/><td>5601</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td/><td>6601</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td/><td>2202</td><td/><td/></row>
 		<row><td>InstallFiles</td><td/><td>4000</td><td>InstallFiles</td><td/></row>
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
@@ -4225,7 +4234,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{4C4CB0A4-3A2E-4B16-9F85-581C42E6A5E9}</td></row>
 		<row><td>ISUSSignature</td><td>{B7E7AB65-8B9A-4707-AC59-79C3E84D132A}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewFeatureFiles,viewShortcuts,viewEnvironmentVariables,viewISToday,viewAppFiles,viewObjects,viewFileExtensions,viewDependencies,viewIniFiles,viewProject,viewUpgradePaths,viewUpdateService,viewUI,viewTextMessages,viewInstallScriptStd,viewCustomActions,viewRelease,viewDesignPatches,viewSystemSearch</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewFeatureFiles,viewShortcuts,viewEnvironmentVariables,viewISToday,viewAppFiles,viewObjects,viewFileExtensions,viewDependencies,viewIniFiles,viewProject,viewUpgradePaths,viewUpdateService,viewUI,viewTextMessages,viewInstallScriptStd,viewCustomActions,viewRelease,viewDesignPatches,viewSystemSearch,viewXMLConfig,viewVRoots,viewTextFiles,viewRegistry,viewComponentServices,viewCE,viewRealSetupDesign,viewBillboards,viewSupportFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4255,6 +4264,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FileCost</td><td/><td>900</td><td>FileCost</td><td/></row>
 		<row><td>FindRelatedProducts</td><td/><td>430</td><td>FindRelatedProducts</td><td/></row>
 		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Not Installed</td><td>1210</td><td>InstallWelcome</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
 		<row><td>LaunchConditions</td><td>Not Installed</td><td>410</td><td>LaunchConditions</td><td/></row>
@@ -4283,7 +4293,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 	<table name="LaunchCondition">
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
-		<row><td>DOTNETVERSION40FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL##</td></row>
+		<row><td>DOTNETVERSION40CLIENT&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT##</td></row>
 	</table>
 
 	<table name="ListBox">
@@ -4533,6 +4543,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ARPINSTALLLOCATION</td><td/><td/></row>
 		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
 		<row><td>ARPSIZE</td><td/><td/></row>
+		<row><td>ARPURLINFOABOUT</td><td>##ID_STRING10##</td><td/></row>
 		<row><td>AgreeToLicense</td><td>No</td><td/></row>
 		<row><td>ApplicationUsers</td><td>AllUsers</td><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
@@ -4568,7 +4579,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>IS_SQLSERVER_SERVER</td><td/><td/></row>
 		<row><td>IS_SQLSERVER_USERNAME</td><td>sa</td><td/></row>
 		<row><td>InstallChoice</td><td>AR</td><td/></row>
-		<row><td>LAUNCHPROGRAM</td><td>1</td><td/></row>
+		<row><td>LAUNCHPROGRAMCOMPCODE</td><td>{DB4A1D5F-3787-422A-AECF-E9C5190FC4FF}</td><td/></row>
+		<row><td>LAUNCHPROGRAMFILEKEY</td><td>speechanalyzer.resultado_pri</td><td/></row>
 		<row><td>LAUNCHREADME</td><td>1</td><td/></row>
 		<row><td>Manufacturer</td><td>##COMPANY_NAME##</td><td/></row>
 		<row><td>PIDKEY</td><td/><td/></row>
@@ -4596,6 +4608,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
+		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]SpeechAnalyzer.Resultado principal</td><td/></row>
 		<row><td>ProductCode</td><td>{AD6A5DCE-01E2-459F-BD5E-092F28D5A33B}</td><td/></row>
 		<row><td>ProductName</td><td>SpeechAnalyzer</td><td/></row>
 		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
@@ -4610,7 +4623,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>RestartManagerOption</td><td>CloseRestart</td><td/></row>
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40FULL</td><td/></row>
+		<row><td>SHOWLAUNCHPROGRAM</td><td>0</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40CLIENT</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{12EA6B2E-BF43-4D95-B062-25D1A43307D6}</td><td/></row>
@@ -4655,7 +4669,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
-		<row><td>DotNet40Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Install</td><td>2</td></row>
+		<row><td>DotNet40Client</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client</td><td>Install</td><td>2</td></row>
 	</table>
 
 	<table name="Registry">
@@ -4759,7 +4773,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>StartupFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td>ANALISIS</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td>NewShortcut1_179756983D6749799EFF6B194327EC2A.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
