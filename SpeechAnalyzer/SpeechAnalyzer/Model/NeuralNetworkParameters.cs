@@ -18,10 +18,10 @@ namespace SpeechAnalyzer.Model
 		public Double[] theta { get; set; }
 		public Double [] normalization { get; set; }
 
-		public NeuralNetworkParameters()
-		{
-			// used for serialization, do not use directly
-		}
+		/// <summary>
+		/// Used for serialization, do not use directly
+		/// </summary>
+		public NeuralNetworkParameters() { }
 
 		public NeuralNetworkParameters(int input, int hidden, int output, double lambda)
 		{
@@ -36,8 +36,8 @@ namespace SpeechAnalyzer.Model
 
 		public void SetNormalization(DenseMatrix normalization)
 		{
-			if (normalization.RowCount != 2) throw new ArgumentException("wrong rows count");
-			if (normalization.ColumnCount != this.nInput) throw new ArgumentException("wrong columns count");
+			if (normalization.RowCount != 2) throw new ArgumentException("wrong rows count, should be 2");
+			if (normalization.ColumnCount != this.nInput) throw new ArgumentException("wrong columns count, should be " + this.nInput);
 
 			this.normalization = normalization.ToColumnWiseArray();
 		}
@@ -47,23 +47,16 @@ namespace SpeechAnalyzer.Model
 			return new DenseMatrix(2, this.nInput, this.normalization);
 		}
 
+
 		public static NeuralNetworkParameters Load(String file)
 		{
-			NeuralNetworkParameters nnp = null;
-			try
-			{
-				StreamReader sr = new StreamReader(file);
-				String serialization = sr.ReadToEnd();
-				sr.Close();
-
-				nnp = JsonConvert.DeserializeObject<NeuralNetworkParameters>(serialization);
-			}
-			catch (Exception e)
-			{
-				System.Diagnostics.Debug.WriteLine("Error al cargar red neural: " + e.Message);
-			}
-
+			NeuralNetworkParameters nnp = JsonEncoder.Load<NeuralNetworkParameters>(file);
 			return nnp;
+		}
+
+		public static void Save(String file, NeuralNetworkParameters nnp)
+		{
+			JsonEncoder.Save(file, nnp);
 		}
 	}
 }

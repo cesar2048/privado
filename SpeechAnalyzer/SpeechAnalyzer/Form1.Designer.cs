@@ -386,7 +386,7 @@
 			// label14
 			// 
 			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(168, 46);
+			this.label14.Location = new System.Drawing.Point(9, 185);
 			this.label14.Name = "label14";
 			this.label14.Size = new System.Drawing.Size(59, 13);
 			this.label14.TabIndex = 49;
@@ -394,7 +394,7 @@
 			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(171, 22);
+			this.button4.Location = new System.Drawing.Point(11, 285);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(51, 23);
 			this.button4.TabIndex = 48;
@@ -404,7 +404,7 @@
 			// 
 			// txNombreFuncion
 			// 
-			this.txNombreFuncion.Location = new System.Drawing.Point(227, 22);
+			this.txNombreFuncion.Location = new System.Drawing.Point(67, 289);
 			this.txNombreFuncion.Name = "txNombreFuncion";
 			this.txNombreFuncion.Size = new System.Drawing.Size(100, 20);
 			this.txNombreFuncion.TabIndex = 47;
@@ -412,7 +412,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(171, 205);
+			this.label9.Location = new System.Drawing.Point(174, 185);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(164, 13);
 			this.label9.TabIndex = 46;
@@ -420,7 +420,7 @@
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(252, 283);
+			this.button3.Location = new System.Drawing.Point(254, 285);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(75, 23);
 			this.button3.TabIndex = 45;
@@ -430,7 +430,7 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(171, 283);
+			this.button2.Location = new System.Drawing.Point(173, 285);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);
 			this.button2.TabIndex = 44;
@@ -441,23 +441,23 @@
 			// listEtiquetasFuncion
 			// 
 			this.listEtiquetasFuncion.FormattingEnabled = true;
-			this.listEtiquetasFuncion.Location = new System.Drawing.Point(171, 221);
+			this.listEtiquetasFuncion.Location = new System.Drawing.Point(173, 201);
 			this.listEtiquetasFuncion.Name = "listEtiquetasFuncion";
-			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 56);
+			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 82);
 			this.listEtiquetasFuncion.TabIndex = 43;
 			// 
 			// listFunciones
 			// 
 			this.listFunciones.FormattingEnabled = true;
-			this.listFunciones.Location = new System.Drawing.Point(171, 62);
+			this.listFunciones.Location = new System.Drawing.Point(11, 201);
 			this.listFunciones.Name = "listFunciones";
-			this.listFunciones.Size = new System.Drawing.Size(156, 69);
+			this.listFunciones.Size = new System.Drawing.Size(156, 82);
 			this.listFunciones.TabIndex = 42;
 			this.listFunciones.SelectedIndexChanged += new System.EventHandler(this.listFunciones_SelectedIndexChanged);
 			// 
 			// btSvm
 			// 
-			this.btSvm.Location = new System.Drawing.Point(448, 283);
+			this.btSvm.Location = new System.Drawing.Point(543, 54);
 			this.btSvm.Name = "btSvm";
 			this.btSvm.Size = new System.Drawing.Size(75, 23);
 			this.btSvm.TabIndex = 41;
@@ -513,7 +513,7 @@
 			// picWorking
 			// 
 			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
-			this.picWorking.Location = new System.Drawing.Point(395, 168);
+			this.picWorking.Location = new System.Drawing.Point(395, 177);
 			this.picWorking.Name = "picWorking";
 			this.picWorking.Size = new System.Drawing.Size(128, 91);
 			this.picWorking.TabIndex = 35;
@@ -529,7 +529,7 @@
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(448, 115);
+			this.btTrain.Location = new System.Drawing.Point(390, 112);
 			this.btTrain.Name = "btTrain";
 			this.btTrain.Size = new System.Drawing.Size(75, 24);
 			this.btTrain.TabIndex = 33;
@@ -539,7 +539,7 @@
 			// 
 			// progDataGen
 			// 
-			this.progDataGen.Location = new System.Drawing.Point(171, 179);
+			this.progDataGen.Location = new System.Drawing.Point(174, 66);
 			this.progDataGen.Name = "progDataGen";
 			this.progDataGen.Size = new System.Drawing.Size(156, 23);
 			this.progDataGen.TabIndex = 11;
@@ -548,7 +548,7 @@
 			// 
 			this.lblFeatStatus.AutoSize = true;
 			this.lblFeatStatus.ForeColor = System.Drawing.Color.Purple;
-			this.lblFeatStatus.Location = new System.Drawing.Point(171, 163);
+			this.lblFeatStatus.Location = new System.Drawing.Point(174, 50);
 			this.lblFeatStatus.Name = "lblFeatStatus";
 			this.lblFeatStatus.Size = new System.Drawing.Size(43, 13);
 			this.lblFeatStatus.TabIndex = 10;
@@ -556,7 +556,7 @@
 			// 
 			// btGenFeatures
 			// 
-			this.btGenFeatures.Location = new System.Drawing.Point(252, 137);
+			this.btGenFeatures.Location = new System.Drawing.Point(255, 24);
 			this.btGenFeatures.Name = "btGenFeatures";
 			this.btGenFeatures.Size = new System.Drawing.Size(75, 23);
 			this.btGenFeatures.TabIndex = 9;
@@ -566,7 +566,7 @@
 			// 
 			// btRemoveFeatures
 			// 
-			this.btRemoveFeatures.Location = new System.Drawing.Point(171, 137);
+			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 24);
 			this.btRemoveFeatures.Name = "btRemoveFeatures";
 			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
 			this.btRemoveFeatures.TabIndex = 7;
@@ -596,20 +596,17 @@
 			// 
 			// listLabels
 			// 
-			this.listLabels.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
 			this.listLabels.FormattingEnabled = true;
 			this.listLabels.Location = new System.Drawing.Point(12, 23);
 			this.listLabels.Name = "listLabels";
-			this.listLabels.Size = new System.Drawing.Size(133, 225);
+			this.listLabels.Size = new System.Drawing.Size(133, 95);
 			this.listLabels.TabIndex = 4;
 			this.listLabels.SelectedIndexChanged += new System.EventHandler(this.listLabels_SelectedIndexChanged);
 			// 
 			// btAddLabel
 			// 
-			this.btAddLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btAddLabel.Enabled = false;
-			this.btAddLabel.Location = new System.Drawing.Point(12, 287);
+			this.btAddLabel.Location = new System.Drawing.Point(12, 142);
 			this.btAddLabel.Name = "btAddLabel";
 			this.btAddLabel.Size = new System.Drawing.Size(63, 23);
 			this.btAddLabel.TabIndex = 3;
@@ -619,8 +616,7 @@
 			// 
 			// txtLabel
 			// 
-			this.txtLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.txtLabel.Location = new System.Drawing.Point(81, 289);
+			this.txtLabel.Location = new System.Drawing.Point(77, 144);
 			this.txtLabel.Name = "txtLabel";
 			this.txtLabel.Size = new System.Drawing.Size(68, 20);
 			this.txtLabel.TabIndex = 2;
@@ -628,9 +624,8 @@
 			// 
 			// btRemoveLabel
 			// 
-			this.btRemoveLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btRemoveLabel.Enabled = false;
-			this.btRemoveLabel.Location = new System.Drawing.Point(12, 258);
+			this.btRemoveLabel.Location = new System.Drawing.Point(12, 119);
 			this.btRemoveLabel.Name = "btRemoveLabel";
 			this.btRemoveLabel.Size = new System.Drawing.Size(63, 23);
 			this.btRemoveLabel.TabIndex = 1;

@@ -7,7 +7,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace SpeechAnalyzer.Model
 {
-	class AudioFileFeatures
+	public class AudioFileFeatures
 	{
 		public DenseMatrix mfcc { get; set; }
 		public DenseMatrix pitch { get; set; }
@@ -21,8 +21,6 @@ namespace SpeechAnalyzer.Model
 			this.label = label;
 		}
 
-		public AudioFileFeatures()
-		{
-		}
+		public AudioFileFeatures() { }
 	}
 }

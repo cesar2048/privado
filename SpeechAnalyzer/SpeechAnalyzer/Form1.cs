@@ -64,10 +64,13 @@ namespace SpeechAnalyzer
 			_bkgDataGeneration.WorkerReportsProgress = true;
 			_bkgDataGeneration.DoWork += new DoWorkEventHandler(_bkgDataGeneration_DoWork);
 			_bkgDataGeneration.ProgressChanged += new ProgressChangedEventHandler(_bkgDataGeneration_ProgressChanged);
+			_bkgDataGeneration.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bkgDataGeneration_RunWorkerCompleted);
 
 
 			_bkgTraining = new BackgroundWorker();
 			_bkgTraining.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bkgTraining_RunWorkerCompleted);
+			_bkgTraining.WorkerReportsProgress = true;
+			_bkgTraining.ProgressChanged += new ProgressChangedEventHandler(_bkgTraining_ProgressChanged);
 			_bkgTraining.DoWork += new DoWorkEventHandler(_bkgTraining_DoWork);
 		}
 
@@ -138,19 +141,27 @@ namespace SpeechAnalyzer
 		private void btTrain_Click(object sender, EventArgs e)
 		{
 			this.lblNetStatus.Text = "Working...";
-			this._bkgTraining.RunWorkerAsync();
-			this.picWorking.Visible = true;
 			this.btTrain.Enabled = false;
+			this.txtLambda.Enabled = false;
+			this.picWorking.Visible = true;
+			this.progDataGen.Visible = true;
+			
+			this._bkgTraining.RunWorkerAsync();
 		}
 
 		void _bkgTraining_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try	{
-				this.analysis.TrainNeuralNetwork();
+				this.analysis.TrainNeuralNetwork( val => ((BackgroundWorker)sender).ReportProgress(val) );
 				e.Result = this.analysis.FinalCostValue;
 			} catch (Exception) {
 				e.Result = "No se han generado las features";
 			}
+		}
+		
+		void _bkgTraining_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			this.progDataGen.Value = e.ProgressPercentage;
 		}
 
 		void _bkgTraining_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -162,9 +173,11 @@ namespace SpeechAnalyzer
 						analysis.FinalCostValue,
 						analysis.FinalAccuracy);
 			}
-			this.picWorking.Visible = false;
+			
 			this.btTrain.Enabled = true;
 			this.txtLambda.Enabled = true;
+			this.picWorking.Visible = false;
+			this.progDataGen.Visible = false;
 		}
 
 		private void btPredecir_Click(object sender, EventArgs e)
@@ -179,7 +192,6 @@ namespace SpeechAnalyzer
 			String label = this.analysis.TestNeuralNetwork(Path.Combine(config.DataDirectory, file));
 			MessageBox.Show("Tipo:" + label);
 		}
-
 
 
 
@@ -551,21 +563,38 @@ namespace SpeechAnalyzer
 
 		void _bkgDataGeneration_DoWork(object sender, DoWorkEventArgs e)
 		{
-			
-			this.analysis.GenerateTrainingFeatures(sender as BackgroundWorker);
-			
+			try
+			{
+				BackgroundWorker w = ((BackgroundWorker)sender);
+				this.analysis.GenerateTrainingFeatures((p) => { if (w.WorkerReportsProgress) w.ReportProgress(p); });
+				e.Result = Boolean.TrueString;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				e.Result = Boolean.FalseString;
+			}
 		}
 
 		void _bkgDataGeneration_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			this.progDataGen.Value = e.ProgressPercentage;
-			if (e.ProgressPercentage >= 100)
+		}
+
+		void _bkgDataGeneration_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			this.progDataGen.Visible = false;
+			this.btTrain.Enabled = true;
+			this.btGenFeatures.Enabled = true;
+			this.btRemoveFeatures.Enabled = true;
+
+			if (String.Equals(e.Result, Boolean.TrueString))
 			{
-				this.progDataGen.Visible = false;
-				this.btTrain.Enabled = true;
-				this.btGenFeatures.Enabled = true;
-				this.btRemoveFeatures.Enabled = true;
 				this.lblFeatStatus.Text = "Listo";
+			}
+			else
+			{
+				this.lblFeatStatus.Text = "Vacio";
 			}
 		}
 	

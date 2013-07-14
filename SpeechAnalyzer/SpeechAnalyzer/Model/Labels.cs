@@ -8,7 +8,8 @@ namespace SpeechAnalyzer.Model
 	class Labels
 	{
 		public List<String> labelsList {  get; set; }
-        public Labels()
+		
+		public Labels()
         {
             labelsList = new List<String>();
         }

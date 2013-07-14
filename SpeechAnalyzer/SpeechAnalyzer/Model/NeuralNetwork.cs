@@ -33,6 +33,11 @@ namespace SpeechAnalyzer.Model
 			return this.nnp;
 		}
 
+		public void setLambda(double lambda)
+		{
+			this.nnp.lambda = lambda;
+		}
+
 		public void setTheta(double[] theta)
 		{
 			int thetaLength = (nnp.nHidden * (nnp.nInput+1)) + (nnp.nOutput * (nnp.nHidden+1));
@@ -64,12 +69,6 @@ namespace SpeechAnalyzer.Model
 			this.Theta2.MapInplace(a => rnd.NextDouble() * 2 * epsilon - epsilon);
 		}
 
-		public double costFunction()
-		{
-			double[] theta = getTheta();
-			return this.costFunction(theta);
-		}
-
 
 
 		private double costFunction(double[] theta)
@@ -99,6 +98,7 @@ namespace SpeechAnalyzer.Model
 			aux2.MapInplace(a => Math.Pow(a, 2));
 
 			J += nnp.lambda * (aux1.SumHorizontally().Sum() + aux2.SumHorizontally().Sum()) / 2 * m;
+			System.Diagnostics.Debug.WriteLine("J=" + J);
 			return J;
 		}
 
@@ -169,7 +169,17 @@ namespace SpeechAnalyzer.Model
 
 
 
+		public double costFunction()
+		{
+			double[] theta = getTheta();
+			return this.costFunction(theta);
+		}
 
+		public double costFunction(DenseMatrix X, DenseVector y)
+		{
+			SetInputData(X, y, nnp.GetNormalization());
+			return this.costFunction();
+		}
 		
 		public void Train(int funEvaluations, DenseMatrix X, DenseVector y)
 		{
@@ -222,26 +232,6 @@ namespace SpeechAnalyzer.Model
 			this.nnp.SetNormalization(normalX.Item2);
 		}
 
-
-
-
-
-        private DenseMatrix gradDescent(DenseMatrix X,DenseMatrix y,DenseMatrix theta,float alpha ,int num_iters)
-        {
-            int cont = 1;
-			
-            while(cont <= num_iters ){
-                DenseMatrix xTheta = X.Multiply(theta.Inverse()) as DenseMatrix;
-                DenseMatrix mult1= xTheta - y.Inverse() as DenseMatrix;
-                DenseMatrix sum = mult1.Multiply(X) as DenseMatrix;
-                theta = theta - sum.Multiply(alpha/m) as DenseMatrix;
-                cont++;
-            }
-
-            return theta;
-        }
-
-
         public static Tuple<DenseMatrix,DenseMatrix>  normalizeFeatures(DenseMatrix X, DenseMatrix normParameters)
         {
             DenseVector meanN,stdN, temp;
@@ -276,46 +266,5 @@ namespace SpeechAnalyzer.Model
 			return new Tuple<DenseMatrix, DenseMatrix>(XN, normParameters);
         }
 
-
-		/// <summary>
-		/// Split the data as randomly as possible, but ensure that there are not missing classes on any output matrix
-		/// </summary>
-		/// <param name="data"></param>
-		/// <param name="y"></param>
-		/// <param name="proportion"></param>
-		/// <param name="part1"></param>
-		/// <param name="part2"></param>
-		public static void SplitDataRandomly(DenseMatrix data, DenseVector y, double proportion, out DenseMatrix part1, out DenseMatrix part2) 
-		{
-			Random rnd = new Random();
-			DenseVector selector = new DenseVector(data.RowCount);
-			part1 = new DenseMatrix((int) (data.RowCount * proportion), data.ColumnCount);
-			part2 = new DenseMatrix(data.RowCount - part1.RowCount, data.ColumnCount);
-			
-			int count1 = 0, count2 = 0, classes1 = 0, classes2 = 0, i=0;
-
-			do
-			{
-				selector.MapInplace(x => (rnd.NextDouble() <= proportion) ? 1 : 0);
-
-				classes1 = selector.PointwiseMultiply(y).Distinct().Count() - 1;						// remove class 0 as it doesn't exists
-				classes2 = selector.Multiply(-1).Add(1).PointwiseMultiply(y).Distinct().Count() - 1;	// remove class 0 as it doesn't exists
-				i++;
-
-			} while (selector.SumMagnitudes() != part1.RowCount || classes1 != classes2);
-
-
-			for (i = 0; i < data.RowCount; i++ )
-			{
-				if (selector[i] == 1)
-				{
-					part1.SetRow(count1++, data.Row(i));
-				}
-				else
-				{
-					part2.SetRow(count2++, data.Row(i));
-				}
-			}
-		}
 	}
 }
