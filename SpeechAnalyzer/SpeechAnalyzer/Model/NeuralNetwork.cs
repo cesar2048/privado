@@ -14,13 +14,31 @@ namespace SpeechAnalyzer.Model
         private DenseVector y;
 		private int m;
 		private NeuralNetworkParameters nnp;
+		private Action<String> ConsoleFunction { get; set; }
 
-		public NeuralNetwork(NeuralNetworkParameters parameters)
+		private long _costExecTime;
+		private long _costExecCount;
+		private long _gradExecTime;
+		private long _gradExecCount;
+
+		public Double AvgCostExecTime
+		{
+			get { return (_costExecCount != 0) ? _costExecTime / (_costExecCount * TimeSpan.TicksPerMillisecond ): -1 ; }
+		}
+
+		public Double AvgGradExecTime
+		{
+			get { return (_gradExecCount != 0) ? _gradExecTime / (_gradExecCount * TimeSpan.TicksPerMillisecond) : -1; }
+		}
+		
+
+		public NeuralNetwork(NeuralNetworkParameters parameters,Action<String> ConsoleFunction = null)
 		{
 			this.m			= 0;
 			this.nnp		= parameters;
 			this.Theta1		= DenseMatrix.Create(nnp.nHidden, nnp.nInput + 1, (i, j) => 0);
 			this.Theta2		= DenseMatrix.Create(nnp.nOutput, nnp.nHidden + 1, (i, j) => 0);
+			this.ConsoleFunction = ConsoleFunction;
 
 			if (parameters.theta != null)
 			{
@@ -75,6 +93,7 @@ namespace SpeechAnalyzer.Model
 		{
 			DenseMatrix ybinary, aux1, aux2, aux, a2, a3, z2, z3;
 			double J = 0;
+			long timeIni = DateTime.Now.Ticks;
 
 			setTheta(theta);
 			feedForward(out a2, out a3, out z2, out z3, out ybinary);
@@ -98,7 +117,12 @@ namespace SpeechAnalyzer.Model
 			aux2.MapInplace(a => Math.Pow(a, 2));
 
 			J += nnp.lambda * (aux1.SumHorizontally().Sum() + aux2.SumHorizontally().Sum()) / 2 * m;
-			System.Diagnostics.Debug.WriteLine("J=" + J);
+			
+			long timeEnd = DateTime.Now.Ticks;
+			this._costExecTime += (timeEnd - timeIni);
+			this._costExecCount++;
+			if (ConsoleFunction != null) { ConsoleFunction("J=" + J); }
+
 			return J;
 		}
 
@@ -106,6 +130,7 @@ namespace SpeechAnalyzer.Model
 		private double[] gradFunction(double[] theta)
 		{
 			DenseMatrix Delta1, Delta2, del2, del3, z2, z3, a2, a3, ybinary, Theta2Aux, Theta1grad, Theta2grad;
+			long timeIni = DateTime.Now.Ticks;
 
 			setTheta(theta);
 			feedForward(out a2, out a3, out z2, out z3, out ybinary);
@@ -136,6 +161,11 @@ namespace SpeechAnalyzer.Model
 			// unroll gradient
 			double[] t1 = Theta1grad.ToColumnWiseArray();
 			double[] t2 = Theta2grad.ToColumnWiseArray();
+
+			long timeEnd = DateTime.Now.Ticks;
+			this._gradExecTime += (timeEnd - timeIni);
+			this._gradExecCount++;
+
 			return t1.Concat(t2).ToArray();
 		}
 
@@ -175,9 +205,14 @@ namespace SpeechAnalyzer.Model
 			return this.costFunction(theta);
 		}
 
-		public double costFunction(DenseMatrix X, DenseVector y)
+		public double costFunction(DenseMatrix X, DenseVector y, bool useLambda = true)
 		{
+			double auxLambda = nnp.lambda;
+			if (!useLambda) nnp.lambda = 0;
+			
 			SetInputData(X, y, nnp.GetNormalization());
+			
+			if (!useLambda) nnp.lambda = auxLambda;
 			return this.costFunction();
 		}
 		
@@ -187,13 +222,20 @@ namespace SpeechAnalyzer.Model
 
 			// execute minimization algorithm
 			L_BFGS_B LBFGSB = new L_BFGS_B();
-			LBFGSB.MaxFunEvaluations = funEvaluations;
+			//LBFGSB.MaxFunEvaluations = funEvaluations;
 
 			this.RandInitializeTheta();
 			nnp.theta = LBFGSB.ComputeMin(this.costFunction, this.gradFunction, this.getTheta() );
 			setTheta(nnp.theta);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="X"></param>
+		/// <param name="y"></param>
+		/// <param name="predictions"></param>
+		/// <returns></returns>
 		public double Predict(DenseMatrix X, DenseVector y, out int[] predictions)
 		{
 			DenseMatrix z2, z3, a2, a3, ybinary;
@@ -227,7 +269,7 @@ namespace SpeechAnalyzer.Model
 
 			// save training data
 			this.X = normalX.Item1.InsertColumn(0, DenseVector.Create(X.RowCount, i => 1)) as DenseMatrix;
-			this.y = y;
+			this.y = DenseVector.OfVector(y) as DenseVector;
 			this.m = X.RowCount;
 			this.nnp.SetNormalization(normalX.Item2);
 		}

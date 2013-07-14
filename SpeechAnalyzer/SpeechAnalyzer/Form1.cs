@@ -44,6 +44,7 @@ namespace SpeechAnalyzer
 
 		BackgroundWorker _bkgDataGeneration;
 		BackgroundWorker _bkgTraining;
+		BackgroundWorker _bkgSvm;
 
 		public Form1()
 		{
@@ -58,7 +59,12 @@ namespace SpeechAnalyzer
 			this.outputFolder = config.DataDirectory;
             this.outputFolder2 = config.TempDirectory;
 
-			this.analysis = new DataAnalysis(config.DataDirectory, config.TempDirectory, config.SonicAnnotator);
+			this.analysis = new DataAnalysis(
+				config.DataDirectory, 
+				config.TempDirectory, 
+				config.SonicAnnotator, 
+				(str) => this.ConsoleAppend(str) 
+			);
 
 			_bkgDataGeneration = new BackgroundWorker();
 			_bkgDataGeneration.WorkerReportsProgress = true;
@@ -72,6 +78,10 @@ namespace SpeechAnalyzer
 			_bkgTraining.WorkerReportsProgress = true;
 			_bkgTraining.ProgressChanged += new ProgressChangedEventHandler(_bkgTraining_ProgressChanged);
 			_bkgTraining.DoWork += new DoWorkEventHandler(_bkgTraining_DoWork);
+
+			_bkgSvm = new BackgroundWorker();
+			_bkgSvm.DoWork += new DoWorkEventHandler(_bkgSvm_DoWork);
+			_bkgSvm.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bkgSvm_RunWorkerCompleted);
 		}
 
 
@@ -134,6 +144,24 @@ namespace SpeechAnalyzer
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//															//
 		// ---------------- neural network code ------------------- //
 		//															//
@@ -145,7 +173,7 @@ namespace SpeechAnalyzer
 			this.txtLambda.Enabled = false;
 			this.picWorking.Visible = true;
 			this.progDataGen.Visible = true;
-			
+
 			this._bkgTraining.RunWorkerAsync();
 		}
 
@@ -162,6 +190,20 @@ namespace SpeechAnalyzer
 		void _bkgTraining_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			this.progDataGen.Value = e.ProgressPercentage;
+			
+			// plot error graph
+			foreach (var serie in chartCurves.Series)
+			{
+				serie.Points.Clear();
+			}
+			for (int i = 0; i < analysis.CostTest.Count; i++)
+			{
+				chartCurves.Series["Training"].Points.AddXY(i, analysis.CostTrain[i]);
+				chartCurves.Series["Testing"].Points.AddXY(i, analysis.CostTest[i]);
+				
+				chartCurves.Series["ErrTraining"].Points.AddXY(i, analysis.ErrorTrain[i]);
+				chartCurves.Series["ErrTesting"].Points.AddXY(i, analysis.ErrorTest[i]);
+			}
 		}
 
 		void _bkgTraining_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -192,6 +234,70 @@ namespace SpeechAnalyzer
 			String label = this.analysis.TestNeuralNetwork(Path.Combine(config.DataDirectory, file));
 			MessageBox.Show("Tipo:" + label);
 		}
+
+		private void btSavePlot_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
+			sfd.FilterIndex = 0;
+			sfd.RestoreDirectory = true;
+
+			Stream outStream = null;
+			if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				if ((outStream = sfd.OpenFile()) != null)
+				{
+					chartCurves.SaveImage(outStream, System.Drawing.Imaging.ImageFormat.Png);
+					outStream.Close();
+				}
+			}
+		}
+
+		// -------------- SVM TEST -------------------------- //
+
+		private void btSvm_Click(object sender, EventArgs e)
+		{
+			picWorking.Visible = true;
+			btSvm.Enabled = false;
+			_bkgSvm.RunWorkerAsync();
+		}
+
+		void _bkgSvm_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			btSvm.Enabled = true;
+			picWorking.Visible = false;
+			lblNetStatus.Text = String.Format("SVM Accuracy =  {0,8:p}", e.Result);
+		}
+
+		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
+		{
+			e.Result = Model.LibSvmTest.TestOnData();
+		}
+
+		public void ConsoleAppend(String str)
+		{
+			if (this.InvokeRequired) { this.BeginInvoke(new Action<String>(ConsoleAppend), new Object[] { str }); }
+			else
+			{
+				this.txtConsola.AppendText("\r\n" + str);
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -348,6 +454,21 @@ namespace SpeechAnalyzer
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//															//
 		// ---------------- sounds list playback------------------- //
 		//															//
@@ -422,10 +543,6 @@ namespace SpeechAnalyzer
 		}
 
 
-		//															//
-		// ---------------- on change - events -------------------- //
-		//															//
-
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
 		{
 			if (chkThold.Checked)
@@ -491,6 +608,22 @@ namespace SpeechAnalyzer
 			}
 		}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//
 		// -------------------- tab Neural Network ---------------------
 		//
@@ -505,24 +638,12 @@ namespace SpeechAnalyzer
          
             string label = listLabels.SelectedItem.ToString();
 			listLabels.Items.RemoveAt(listLabels.SelectedIndex);
-			
-			/*Labels lbls = new Labels() {
-				labelsList = listLabels.Items.Cast<String>().ToList()
-			};*/
-
-         
             this.analysis.DeleteLabel(label);
 		}
 
 		private void btAddLabel_Click(object sender, EventArgs e)
 		{
 			listLabels.Items.Add(txtLabel.Text);
-			
-
-			/*Labels lbls = new Labels() {
-				labelsList = listLabels.Items.Cast<String>().ToList()
-			};*/
-
             this.analysis.SaveLabels(txtLabel.Text);
             txtLabel.Text = "";
 		}
@@ -597,31 +718,6 @@ namespace SpeechAnalyzer
 				this.lblFeatStatus.Text = "Vacio";
 			}
 		}
-	
-
-
-		BackgroundWorker _bkgSvm = new BackgroundWorker();
-		private void btSvm_Click(object sender, EventArgs e)
-		{
-			_bkgSvm.DoWork += new DoWorkEventHandler(_bkgSvm_DoWork);
-			_bkgSvm.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bkgSvm_RunWorkerCompleted);
-			_bkgSvm.RunWorkerAsync();
-			picWorking.Visible = true;
-			btSvm.Enabled = false;
-		}
-
-		void _bkgSvm_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			btSvm.Enabled = true;
-			picWorking.Visible = false;
-			lblNetStatus.Text = String.Format("SVM Accuracy =  {0,8:p}", e.Result);
-		}
-
-		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
-		{
-			e.Result = Model.LibSvmTest.TestOnData();
-		}
-
 
 		//
 		// ------------------------- TAB: Escuchar  ------------------------------ //
@@ -697,9 +793,7 @@ namespace SpeechAnalyzer
                    //File.Delete(Path.Combine(outputFolder2, outputFilename2));
                     writer2=new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
 
-					// ******************************************* NETWORK CODE ***************************
 					enviar(label);
-					// ******************************************* NETWORK CODE ***************************
                 }
         }
         private void button1_Click(object sender, EventArgs e)

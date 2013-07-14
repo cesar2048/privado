@@ -26,6 +26,7 @@ namespace SpeechAnalyzer.Model
 
 		// properties
 		public String feature { get; set; }
+		public Action<String> ConsoleFunction { get; set; }
 
 		// input properties
 		public Double Lambda { get; set; }
@@ -35,24 +36,31 @@ namespace SpeechAnalyzer.Model
 		// output properties
 		public Double FinalCostValue { get; set; }
 		public Double FinalAccuracy { get; set; }
-		public List<double> ErrorTest { get; set;  }
+		public List<double> CostTest { get; set;  }
+		public List<double> CostTrain { get; set; }
+		public List<double> ErrorTest { get; set; }
 		public List<double> ErrorTrain { get; set; }
-
+		public List<double> LambdaValues { get; set; }
+		
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="dataDir"></param>
 		/// <param name="tempDir"></param>
 		/// <param name="SonicAnotatorPath"></param>
-		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath) 
+		public DataAnalysis(String dataDir, String tempDir, String SonicAnotatorPath, Action<String> ConsoleFunction = null) 
 		{
 			this.Lambda			= 0.1;
 			this.FinalCostValue = Double.PositiveInfinity;
 			this.DataDirectory	= dataDir;
 			this.trainingFile	= new FileInfo(Path.Combine(tempDir, "training-features.csv"));
 			this.networkFile	= new FileInfo(Path.Combine(tempDir, "networkParams.js"));
+			this.CostTest		= new List<double>();
+			this.CostTrain		= new List<double>();
 			this.ErrorTest		= new List<double>();
 			this.ErrorTrain		= new List<double>();
+			this.LambdaValues = new List<double>(new double[] { 0, 0.0001, 0.003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30 } );
+			this.ConsoleFunction = ConsoleFunction;
 
 			// Load previously generated parameters if these are not already loaded
 			if (networkFile.Exists)
@@ -112,24 +120,33 @@ namespace SpeechAnalyzer.Model
 			DenseVector ytest = mat2.Column(0) as DenseVector;
 
 			nnp = new NeuralNetworkParameters(Xtrain.ColumnCount, 50, (int)ytrain.Max(), this.Lambda);
-			NeuralNetwork nn = new NeuralNetwork(nnp);
+			NeuralNetwork nn = new NeuralNetwork(nnp, this.ConsoleFunction);
 
+			CostTrain.Clear();
+			CostTest.Clear();
 			ErrorTrain.Clear();
 			ErrorTest.Clear();
-
-			double[] lambdas = { 0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10 };
-			for(int i=0; i < lambdas.Length; i++)
-			{
-				nn.setLambda( lambdas[i] );
-				nn.Train(this.Iterations, Xtrain, ytrain);
-				ErrorTrain.Add(nn.costFunction(Xtrain, ytrain));
-				ErrorTest.Add(nn.costFunction(Xtest, ytest));
-
-				if (progressCallback != null) progressCallback( i * 100 / lambdas.Length );
-			}
-
 			int[] predictions;
+
+			for(int i=0; i < LambdaValues.Count; i++)
+			{
+				if (ConsoleFunction != null) ConsoleFunction("Training with λ = " + LambdaValues[i]);
+
+				nn.setLambda( LambdaValues[i] );
+				nn.Train(this.Iterations, Xtrain, ytrain);
+				CostTrain.Add(nn.costFunction(Xtrain, ytrain, false));
+				CostTest.Add(nn.costFunction(Xtest, ytest, false));
+				ErrorTrain.Add(nn.Predict(Xtrain, ytrain, out predictions) * 100);
+				ErrorTest.Add(nn.Predict(Xtest, ytest, out predictions) * 100);
+
+				if (progressCallback != null) progressCallback( (i+1) * 100 / LambdaValues.Count );
+				if (ConsoleFunction != null) ConsoleFunction("Avg cost exec time = " + nn.AvgCostExecTime );
+				if (ConsoleFunction != null) ConsoleFunction("Avg grad exec time = " + nn.AvgGradExecTime);
+			}
+			
+			
 			this.FinalAccuracy = nn.Predict(Xtest, ytest, out predictions);
+			 
 
 			// save nerual network
 			NeuralNetworkParameters.Save(networkFile.FullName, nnp);
@@ -137,8 +154,8 @@ namespace SpeechAnalyzer.Model
 			// process finished
 			System.Diagnostics.Debug.WriteLine("------------------------");
 			System.Diagnostics.Debug.WriteLine("training result J = {0,5:f}	accuracy = {1,8:p}", FinalCostValue, FinalAccuracy);
-			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", ErrorTrain.ToArray()));
-			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", ErrorTest.ToArray()));
+			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", CostTrain.ToArray()), "");
+			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", CostTest.ToArray()), "");
 		}
 
 		/// <summary>

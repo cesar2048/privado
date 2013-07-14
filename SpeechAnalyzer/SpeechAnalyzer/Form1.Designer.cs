@@ -28,6 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			this.comboWasapiDevices = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btStartRecording = new System.Windows.Forms.Button();
@@ -51,6 +57,10 @@
 			this.btPredecir = new System.Windows.Forms.Button();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.btSavePlot = new System.Windows.Forms.Button();
+			this.txtConsola = new System.Windows.Forms.TextBox();
+			this.btRemoveFeatures = new System.Windows.Forms.Button();
+			this.chartCurves = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.label14 = new System.Windows.Forms.Label();
 			this.button4 = new System.Windows.Forms.Button();
 			this.txNombreFuncion = new System.Windows.Forms.TextBox();
@@ -71,7 +81,6 @@
 			this.progDataGen = new System.Windows.Forms.ProgressBar();
 			this.lblFeatStatus = new System.Windows.Forms.Label();
 			this.btGenFeatures = new System.Windows.Forms.Button();
-			this.btRemoveFeatures = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.listLabels = new System.Windows.Forms.ListBox();
@@ -104,6 +113,7 @@
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.Thold2)).BeginInit();
@@ -153,7 +163,7 @@
 			this.listBoxRecordings.FormattingEnabled = true;
 			this.listBoxRecordings.Location = new System.Drawing.Point(330, 13);
 			this.listBoxRecordings.Name = "listBoxRecordings";
-			this.listBoxRecordings.Size = new System.Drawing.Size(158, 264);
+			this.listBoxRecordings.Size = new System.Drawing.Size(158, 420);
 			this.listBoxRecordings.TabIndex = 6;
 			this.listBoxRecordings.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
@@ -177,7 +187,7 @@
 			// btnOpenFolder
 			// 
 			this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnOpenFolder.Location = new System.Drawing.Point(330, 287);
+			this.btnOpenFolder.Location = new System.Drawing.Point(330, 434);
 			this.btnOpenFolder.Name = "btnOpenFolder";
 			this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
 			this.btnOpenFolder.TabIndex = 9;
@@ -293,7 +303,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(634, 344);
+			this.tabControl1.Size = new System.Drawing.Size(701, 485);
 			this.tabControl1.TabIndex = 23;
 			// 
 			// tabPage1
@@ -321,7 +331,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(626, 318);
+			this.tabPage1.Size = new System.Drawing.Size(693, 459);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Grabaciones";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -349,6 +359,10 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.btSavePlot);
+			this.tabPage3.Controls.Add(this.txtConsola);
+			this.tabPage3.Controls.Add(this.btRemoveFeatures);
+			this.tabPage3.Controls.Add(this.chartCurves);
 			this.tabPage3.Controls.Add(this.label14);
 			this.tabPage3.Controls.Add(this.button4);
 			this.tabPage3.Controls.Add(this.txNombreFuncion);
@@ -369,7 +383,6 @@
 			this.tabPage3.Controls.Add(this.progDataGen);
 			this.tabPage3.Controls.Add(this.lblFeatStatus);
 			this.tabPage3.Controls.Add(this.btGenFeatures);
-			this.tabPage3.Controls.Add(this.btRemoveFeatures);
 			this.tabPage3.Controls.Add(this.label8);
 			this.tabPage3.Controls.Add(this.label6);
 			this.tabPage3.Controls.Add(this.listLabels);
@@ -378,10 +391,81 @@
 			this.tabPage3.Controls.Add(this.btRemoveLabel);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(626, 318);
+			this.tabPage3.Size = new System.Drawing.Size(693, 459);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Machine Learning";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// btSavePlot
+			// 
+			this.btSavePlot.Location = new System.Drawing.Point(610, 421);
+			this.btSavePlot.Name = "btSavePlot";
+			this.btSavePlot.Size = new System.Drawing.Size(75, 23);
+			this.btSavePlot.TabIndex = 52;
+			this.btSavePlot.Text = "Guardar Img";
+			this.btSavePlot.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			this.btSavePlot.UseVisualStyleBackColor = true;
+			this.btSavePlot.Click += new System.EventHandler(this.btSavePlot_Click);
+			// 
+			// txtConsola
+			// 
+			this.txtConsola.Location = new System.Drawing.Point(271, 99);
+			this.txtConsola.Multiline = true;
+			this.txtConsola.Name = "txtConsola";
+			this.txtConsola.ReadOnly = true;
+			this.txtConsola.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtConsola.Size = new System.Drawing.Size(280, 156);
+			this.txtConsola.TabIndex = 51;
+			this.txtConsola.TabStop = false;
+			// 
+			// btRemoveFeatures
+			// 
+			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 24);
+			this.btRemoveFeatures.Name = "btRemoveFeatures";
+			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
+			this.btRemoveFeatures.TabIndex = 7;
+			this.btRemoveFeatures.Text = "Eliminar";
+			this.btRemoveFeatures.UseVisualStyleBackColor = true;
+			this.btRemoveFeatures.Click += new System.EventHandler(this.btRemoveFeatures_Click);
+			// 
+			// chartCurves
+			// 
+			chartArea1.Name = "ChartArea1";
+			this.chartCurves.ChartAreas.Add(chartArea1);
+			legend1.Name = "Legend1";
+			this.chartCurves.Legends.Add(legend1);
+			this.chartCurves.Location = new System.Drawing.Point(248, 249);
+			this.chartCurves.Name = "chartCurves";
+			this.chartCurves.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+			series1.BorderWidth = 2;
+			series1.ChartArea = "ChartArea1";
+			series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+			series1.LabelBorderWidth = 2;
+			series1.Legend = "Legend1";
+			series1.Name = "Training";
+			series1.YValuesPerPoint = 2;
+			series2.BorderWidth = 2;
+			series2.ChartArea = "ChartArea1";
+			series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+			series2.Legend = "Legend1";
+			series2.Name = "Testing";
+			series3.BorderWidth = 2;
+			series3.ChartArea = "ChartArea1";
+			series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+			series3.Legend = "Legend1";
+			series3.Name = "ErrTraining";
+			series4.BorderWidth = 2;
+			series4.ChartArea = "ChartArea1";
+			series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+			series4.Legend = "Legend1";
+			series4.Name = "ErrTesting";
+			this.chartCurves.Series.Add(series1);
+			this.chartCurves.Series.Add(series2);
+			this.chartCurves.Series.Add(series3);
+			this.chartCurves.Series.Add(series4);
+			this.chartCurves.Size = new System.Drawing.Size(437, 207);
+			this.chartCurves.TabIndex = 50;
+			this.chartCurves.Text = "Learning Curve";
 			// 
 			// label14
 			// 
@@ -412,7 +496,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(174, 185);
+			this.label9.Location = new System.Drawing.Point(9, 321);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(164, 13);
 			this.label9.TabIndex = 46;
@@ -420,7 +504,7 @@
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(254, 285);
+			this.button3.Location = new System.Drawing.Point(82, 421);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(75, 23);
 			this.button3.TabIndex = 45;
@@ -430,7 +514,7 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(173, 285);
+			this.button2.Location = new System.Drawing.Point(8, 421);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);
 			this.button2.TabIndex = 44;
@@ -441,7 +525,7 @@
 			// listEtiquetasFuncion
 			// 
 			this.listEtiquetasFuncion.FormattingEnabled = true;
-			this.listEtiquetasFuncion.Location = new System.Drawing.Point(173, 201);
+			this.listEtiquetasFuncion.Location = new System.Drawing.Point(8, 337);
 			this.listEtiquetasFuncion.Name = "listEtiquetasFuncion";
 			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 82);
 			this.listEtiquetasFuncion.TabIndex = 43;
@@ -457,7 +541,7 @@
 			// 
 			// btSvm
 			// 
-			this.btSvm.Location = new System.Drawing.Point(543, 54);
+			this.btSvm.Location = new System.Drawing.Point(576, 22);
 			this.btSvm.Name = "btSvm";
 			this.btSvm.Size = new System.Drawing.Size(75, 23);
 			this.btSvm.TabIndex = 41;
@@ -477,7 +561,7 @@
 			// 
 			// txtIteraciones
 			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(452, 61);
+			this.txtIteraciones.Location = new System.Drawing.Point(452, 47);
 			this.txtIteraciones.Name = "txtIteraciones";
 			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
 			this.txtIteraciones.TabIndex = 39;
@@ -486,7 +570,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(383, 54);
+			this.label7.Location = new System.Drawing.Point(382, 50);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(59, 13);
 			this.label7.TabIndex = 38;
@@ -513,7 +597,7 @@
 			// picWorking
 			// 
 			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
-			this.picWorking.Location = new System.Drawing.Point(395, 177);
+			this.picWorking.Location = new System.Drawing.Point(557, 125);
 			this.picWorking.Name = "picWorking";
 			this.picWorking.Size = new System.Drawing.Size(128, 91);
 			this.picWorking.TabIndex = 35;
@@ -521,15 +605,16 @@
 			// 
 			// lblNetStatus
 			// 
-			this.lblNetStatus.Location = new System.Drawing.Point(392, 142);
+			this.lblNetStatus.ForeColor = System.Drawing.Color.Teal;
+			this.lblNetStatus.Location = new System.Drawing.Point(387, 70);
 			this.lblNetStatus.Name = "lblNetStatus";
-			this.lblNetStatus.Size = new System.Drawing.Size(183, 23);
+			this.lblNetStatus.Size = new System.Drawing.Size(264, 48);
 			this.lblNetStatus.TabIndex = 34;
 			this.lblNetStatus.Text = "...";
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(390, 112);
+			this.btTrain.Location = new System.Drawing.Point(576, 44);
 			this.btTrain.Name = "btTrain";
 			this.btTrain.Size = new System.Drawing.Size(75, 24);
 			this.btTrain.TabIndex = 33;
@@ -539,7 +624,7 @@
 			// 
 			// progDataGen
 			// 
-			this.progDataGen.Location = new System.Drawing.Point(174, 66);
+			this.progDataGen.Location = new System.Drawing.Point(174, 70);
 			this.progDataGen.Name = "progDataGen";
 			this.progDataGen.Size = new System.Drawing.Size(156, 23);
 			this.progDataGen.TabIndex = 11;
@@ -556,23 +641,13 @@
 			// 
 			// btGenFeatures
 			// 
-			this.btGenFeatures.Location = new System.Drawing.Point(255, 24);
+			this.btGenFeatures.Location = new System.Drawing.Point(248, 24);
 			this.btGenFeatures.Name = "btGenFeatures";
 			this.btGenFeatures.Size = new System.Drawing.Size(75, 23);
 			this.btGenFeatures.TabIndex = 9;
 			this.btGenFeatures.Text = "Generar";
 			this.btGenFeatures.UseVisualStyleBackColor = true;
 			this.btGenFeatures.Click += new System.EventHandler(this.btGenFeatures_Click);
-			// 
-			// btRemoveFeatures
-			// 
-			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 24);
-			this.btRemoveFeatures.Name = "btRemoveFeatures";
-			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
-			this.btRemoveFeatures.TabIndex = 7;
-			this.btRemoveFeatures.Text = "Eliminar";
-			this.btRemoveFeatures.UseVisualStyleBackColor = true;
-			this.btRemoveFeatures.Click += new System.EventHandler(this.btRemoveFeatures_Click);
 			// 
 			// label8
 			// 
@@ -658,7 +733,7 @@
 			this.tabPage2.Controls.Add(this.levelIndicator2);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(626, 318);
+			this.tabPage2.Size = new System.Drawing.Size(693, 459);
 			this.tabPage2.TabIndex = 3;
 			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -697,7 +772,7 @@
 			// btSocketConnect
 			// 
 			this.btSocketConnect.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btSocketConnect.Location = new System.Drawing.Point(500, 222);
+			this.btSocketConnect.Location = new System.Drawing.Point(533, 222);
 			this.btSocketConnect.Name = "btSocketConnect";
 			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
 			this.btSocketConnect.TabIndex = 37;
@@ -709,7 +784,7 @@
 			// lblSocketStatus
 			// 
 			this.lblSocketStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.lblSocketStatus.Location = new System.Drawing.Point(302, 248);
+			this.lblSocketStatus.Location = new System.Drawing.Point(335, 248);
 			this.lblSocketStatus.Name = "lblSocketStatus";
 			this.lblSocketStatus.Size = new System.Drawing.Size(313, 54);
 			this.lblSocketStatus.TabIndex = 36;
@@ -877,7 +952,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(634, 344);
+			this.ClientSize = new System.Drawing.Size(701, 485);
 			this.Controls.Add(this.tabControl1);
 			this.MinimumSize = new System.Drawing.Size(650, 382);
 			this.Name = "Form1";
@@ -890,6 +965,7 @@
 			this.tabPage1.PerformLayout();
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
@@ -972,6 +1048,9 @@
 		private System.Windows.Forms.Label label20;
 		private System.Windows.Forms.TextBox txtCommand;
 		private System.Windows.Forms.TextBox txtCommandHistory;
+		private System.Windows.Forms.DataVisualization.Charting.Chart chartCurves;
+		private System.Windows.Forms.TextBox txtConsola;
+		private System.Windows.Forms.Button btSavePlot;
 
 	}
 }
