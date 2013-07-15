@@ -57,16 +57,18 @@
 			this.btPredecir = new System.Windows.Forms.Button();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.radLambdaSingle = new System.Windows.Forms.RadioButton();
+			this.radLambdaSet = new System.Windows.Forms.RadioButton();
 			this.btSavePlot = new System.Windows.Forms.Button();
 			this.txtConsola = new System.Windows.Forms.TextBox();
 			this.btRemoveFeatures = new System.Windows.Forms.Button();
 			this.chartCurves = new System.Windows.Forms.DataVisualization.Charting.Chart();
-			this.label14 = new System.Windows.Forms.Label();
 			this.button4 = new System.Windows.Forms.Button();
 			this.txNombreFuncion = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.btRemoveLabel = new System.Windows.Forms.Button();
+			this.btAddLabel = new System.Windows.Forms.Button();
 			this.listEtiquetasFuncion = new System.Windows.Forms.ListBox();
 			this.listFunciones = new System.Windows.Forms.ListBox();
 			this.btSvm = new System.Windows.Forms.Button();
@@ -83,10 +85,7 @@
 			this.btGenFeatures = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
-			this.listLabels = new System.Windows.Forms.ListBox();
-			this.btAddLabel = new System.Windows.Forms.Button();
 			this.txtLabel = new System.Windows.Forms.TextBox();
-			this.btRemoveLabel = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.txtCommandHistory = new System.Windows.Forms.TextBox();
 			this.label20 = new System.Windows.Forms.Label();
@@ -113,6 +112,7 @@
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage3.SuspendLayout();
+			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).BeginInit();
 			this.tabPage2.SuspendLayout();
@@ -359,16 +359,16 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.groupBox1);
 			this.tabPage3.Controls.Add(this.btSavePlot);
 			this.tabPage3.Controls.Add(this.txtConsola);
 			this.tabPage3.Controls.Add(this.btRemoveFeatures);
 			this.tabPage3.Controls.Add(this.chartCurves);
-			this.tabPage3.Controls.Add(this.label14);
 			this.tabPage3.Controls.Add(this.button4);
 			this.tabPage3.Controls.Add(this.txNombreFuncion);
 			this.tabPage3.Controls.Add(this.label9);
-			this.tabPage3.Controls.Add(this.button3);
-			this.tabPage3.Controls.Add(this.button2);
+			this.tabPage3.Controls.Add(this.btRemoveLabel);
+			this.tabPage3.Controls.Add(this.btAddLabel);
 			this.tabPage3.Controls.Add(this.listEtiquetasFuncion);
 			this.tabPage3.Controls.Add(this.listFunciones);
 			this.tabPage3.Controls.Add(this.btSvm);
@@ -385,10 +385,7 @@
 			this.tabPage3.Controls.Add(this.btGenFeatures);
 			this.tabPage3.Controls.Add(this.label8);
 			this.tabPage3.Controls.Add(this.label6);
-			this.tabPage3.Controls.Add(this.listLabels);
-			this.tabPage3.Controls.Add(this.btAddLabel);
 			this.tabPage3.Controls.Add(this.txtLabel);
-			this.tabPage3.Controls.Add(this.btRemoveLabel);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Size = new System.Drawing.Size(693, 459);
@@ -396,9 +393,45 @@
 			this.tabPage3.Text = "Machine Learning";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.radLambdaSingle);
+			this.groupBox1.Controls.Add(this.radLambdaSet);
+			this.groupBox1.Location = new System.Drawing.Point(502, 4);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(104, 66);
+			this.groupBox1.TabIndex = 55;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Lambda";
+			// 
+			// radLambdaSingle
+			// 
+			this.radLambdaSingle.AutoSize = true;
+			this.radLambdaSingle.Checked = true;
+			this.radLambdaSingle.Location = new System.Drawing.Point(6, 19);
+			this.radLambdaSingle.Name = "radLambdaSingle";
+			this.radLambdaSingle.Size = new System.Drawing.Size(64, 17);
+			this.radLambdaSingle.TabIndex = 53;
+			this.radLambdaSingle.TabStop = true;
+			this.radLambdaSingle.Text = "λ Simple";
+			this.radLambdaSingle.UseVisualStyleBackColor = true;
+			this.radLambdaSingle.CheckedChanged += new System.EventHandler(this.radLambdaSingle_CheckedChanged);
+			this.radLambdaSingle.Click += new System.EventHandler(this.radLambda_CheckedChanged);
+			// 
+			// radLambdaSet
+			// 
+			this.radLambdaSet.AutoSize = true;
+			this.radLambdaSet.Location = new System.Drawing.Point(6, 41);
+			this.radLambdaSet.Name = "radLambdaSet";
+			this.radLambdaSet.Size = new System.Drawing.Size(90, 17);
+			this.radLambdaSet.TabIndex = 54;
+			this.radLambdaSet.Text = "Conjunto de λ";
+			this.radLambdaSet.UseVisualStyleBackColor = true;
+			this.radLambdaSet.Click += new System.EventHandler(this.radLambda_CheckedChanged);
+			// 
 			// btSavePlot
 			// 
-			this.btSavePlot.Location = new System.Drawing.Point(610, 421);
+			this.btSavePlot.Location = new System.Drawing.Point(611, 424);
 			this.btSavePlot.Name = "btSavePlot";
 			this.btSavePlot.Size = new System.Drawing.Size(75, 23);
 			this.btSavePlot.TabIndex = 52;
@@ -409,12 +442,12 @@
 			// 
 			// txtConsola
 			// 
-			this.txtConsola.Location = new System.Drawing.Point(271, 99);
+			this.txtConsola.Location = new System.Drawing.Point(358, 96);
 			this.txtConsola.Multiline = true;
 			this.txtConsola.Name = "txtConsola";
 			this.txtConsola.ReadOnly = true;
 			this.txtConsola.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtConsola.Size = new System.Drawing.Size(280, 156);
+			this.txtConsola.Size = new System.Drawing.Size(309, 123);
 			this.txtConsola.TabIndex = 51;
 			this.txtConsola.TabStop = false;
 			// 
@@ -432,9 +465,12 @@
 			// 
 			chartArea1.Name = "ChartArea1";
 			this.chartCurves.ChartAreas.Add(chartArea1);
+			legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+			legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Row;
 			legend1.Name = "Legend1";
+			legend1.TableStyle = System.Windows.Forms.DataVisualization.Charting.LegendTableStyle.Tall;
 			this.chartCurves.Legends.Add(legend1);
-			this.chartCurves.Location = new System.Drawing.Point(248, 249);
+			this.chartCurves.Location = new System.Drawing.Point(248, 212);
 			this.chartCurves.Name = "chartCurves";
 			this.chartCurves.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
 			series1.BorderWidth = 2;
@@ -463,22 +499,13 @@
 			this.chartCurves.Series.Add(series2);
 			this.chartCurves.Series.Add(series3);
 			this.chartCurves.Series.Add(series4);
-			this.chartCurves.Size = new System.Drawing.Size(437, 207);
+			this.chartCurves.Size = new System.Drawing.Size(437, 244);
 			this.chartCurves.TabIndex = 50;
 			this.chartCurves.Text = "Learning Curve";
 			// 
-			// label14
-			// 
-			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(9, 185);
-			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(59, 13);
-			this.label14.TabIndex = 49;
-			this.label14.Text = "Funciones ";
-			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(11, 285);
+			this.button4.Location = new System.Drawing.Point(12, 212);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(51, 23);
 			this.button4.TabIndex = 48;
@@ -488,7 +515,7 @@
 			// 
 			// txNombreFuncion
 			// 
-			this.txNombreFuncion.Location = new System.Drawing.Point(67, 289);
+			this.txNombreFuncion.Location = new System.Drawing.Point(68, 216);
 			this.txNombreFuncion.Name = "txNombreFuncion";
 			this.txNombreFuncion.Size = new System.Drawing.Size(100, 20);
 			this.txNombreFuncion.TabIndex = 47;
@@ -496,52 +523,52 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(9, 321);
+			this.label9.Location = new System.Drawing.Point(11, 262);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(164, 13);
+			this.label9.Size = new System.Drawing.Size(51, 13);
 			this.label9.TabIndex = 46;
-			this.label9.Text = "Etiquetas Asociadas a Funciones";
+			this.label9.Text = "Etiquetas";
 			// 
-			// button3
+			// btRemoveLabel
 			// 
-			this.button3.Location = new System.Drawing.Point(82, 421);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(75, 23);
-			this.button3.TabIndex = 45;
-			this.button3.Text = "eliminar";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.button3_Click);
+			this.btRemoveLabel.Location = new System.Drawing.Point(118, 431);
+			this.btRemoveLabel.Name = "btRemoveLabel";
+			this.btRemoveLabel.Size = new System.Drawing.Size(50, 23);
+			this.btRemoveLabel.TabIndex = 45;
+			this.btRemoveLabel.Text = "eliminar";
+			this.btRemoveLabel.UseVisualStyleBackColor = true;
+			this.btRemoveLabel.Click += new System.EventHandler(this.btRemoveLabel_Click);
 			// 
-			// button2
+			// btAddLabel
 			// 
-			this.button2.Location = new System.Drawing.Point(8, 421);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 44;
-			this.button2.Text = "agregar";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.btAddLabel.Location = new System.Drawing.Point(67, 431);
+			this.btAddLabel.Name = "btAddLabel";
+			this.btAddLabel.Size = new System.Drawing.Size(52, 23);
+			this.btAddLabel.TabIndex = 44;
+			this.btAddLabel.Text = "agregar";
+			this.btAddLabel.UseVisualStyleBackColor = true;
+			this.btAddLabel.Click += new System.EventHandler(this.btAddLabel_Click);
 			// 
 			// listEtiquetasFuncion
 			// 
 			this.listEtiquetasFuncion.FormattingEnabled = true;
-			this.listEtiquetasFuncion.Location = new System.Drawing.Point(8, 337);
+			this.listEtiquetasFuncion.Location = new System.Drawing.Point(10, 278);
 			this.listEtiquetasFuncion.Name = "listEtiquetasFuncion";
-			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 82);
+			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 147);
 			this.listEtiquetasFuncion.TabIndex = 43;
 			// 
 			// listFunciones
 			// 
 			this.listFunciones.FormattingEnabled = true;
-			this.listFunciones.Location = new System.Drawing.Point(11, 201);
+			this.listFunciones.Location = new System.Drawing.Point(11, 34);
 			this.listFunciones.Name = "listFunciones";
-			this.listFunciones.Size = new System.Drawing.Size(156, 82);
+			this.listFunciones.Size = new System.Drawing.Size(156, 173);
 			this.listFunciones.TabIndex = 42;
 			this.listFunciones.SelectedIndexChanged += new System.EventHandler(this.listFunciones_SelectedIndexChanged);
 			// 
 			// btSvm
 			// 
-			this.btSvm.Location = new System.Drawing.Point(576, 22);
+			this.btSvm.Location = new System.Drawing.Point(610, 22);
 			this.btSvm.Name = "btSvm";
 			this.btSvm.Size = new System.Drawing.Size(75, 23);
 			this.btSvm.TabIndex = 41;
@@ -553,7 +580,7 @@
 			// 
 			this.label10.AutoSize = true;
 			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label10.Location = new System.Drawing.Point(387, 4);
+			this.label10.Location = new System.Drawing.Point(360, 4);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(96, 17);
 			this.label10.TabIndex = 40;
@@ -561,7 +588,7 @@
 			// 
 			// txtIteraciones
 			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(452, 47);
+			this.txtIteraciones.Location = new System.Drawing.Point(425, 47);
 			this.txtIteraciones.Name = "txtIteraciones";
 			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
 			this.txtIteraciones.TabIndex = 39;
@@ -570,7 +597,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(382, 50);
+			this.label7.Location = new System.Drawing.Point(355, 50);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(59, 13);
 			this.label7.TabIndex = 38;
@@ -580,7 +607,7 @@
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(386, 25);
+			this.label5.Location = new System.Drawing.Point(359, 25);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(18, 20);
 			this.label5.TabIndex = 37;
@@ -588,7 +615,7 @@
 			// 
 			// txtLambda
 			// 
-			this.txtLambda.Location = new System.Drawing.Point(452, 25);
+			this.txtLambda.Location = new System.Drawing.Point(425, 25);
 			this.txtLambda.Name = "txtLambda";
 			this.txtLambda.Size = new System.Drawing.Size(71, 20);
 			this.txtLambda.TabIndex = 36;
@@ -597,7 +624,7 @@
 			// picWorking
 			// 
 			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
-			this.picWorking.Location = new System.Drawing.Point(557, 125);
+			this.picWorking.Location = new System.Drawing.Point(177, 99);
 			this.picWorking.Name = "picWorking";
 			this.picWorking.Size = new System.Drawing.Size(128, 91);
 			this.picWorking.TabIndex = 35;
@@ -606,15 +633,15 @@
 			// lblNetStatus
 			// 
 			this.lblNetStatus.ForeColor = System.Drawing.Color.Teal;
-			this.lblNetStatus.Location = new System.Drawing.Point(387, 70);
+			this.lblNetStatus.Location = new System.Drawing.Point(360, 71);
 			this.lblNetStatus.Name = "lblNetStatus";
-			this.lblNetStatus.Size = new System.Drawing.Size(264, 48);
+			this.lblNetStatus.Size = new System.Drawing.Size(264, 22);
 			this.lblNetStatus.TabIndex = 34;
 			this.lblNetStatus.Text = "...";
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(576, 44);
+			this.btTrain.Location = new System.Drawing.Point(610, 44);
 			this.btTrain.Name = "btTrain";
 			this.btTrain.Size = new System.Drawing.Size(75, 24);
 			this.btTrain.TabIndex = 33;
@@ -624,9 +651,9 @@
 			// 
 			// progDataGen
 			// 
-			this.progDataGen.Location = new System.Drawing.Point(174, 70);
+			this.progDataGen.Location = new System.Drawing.Point(177, 70);
 			this.progDataGen.Name = "progDataGen";
-			this.progDataGen.Size = new System.Drawing.Size(156, 23);
+			this.progDataGen.Size = new System.Drawing.Size(128, 23);
 			this.progDataGen.TabIndex = 11;
 			// 
 			// lblFeatStatus
@@ -665,48 +692,16 @@
 			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label6.Location = new System.Drawing.Point(9, 4);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(83, 17);
+			this.label6.Size = new System.Drawing.Size(89, 17);
 			this.label6.TabIndex = 5;
-			this.label6.Text = "1. Etiquetas";
-			// 
-			// listLabels
-			// 
-			this.listLabels.FormattingEnabled = true;
-			this.listLabels.Location = new System.Drawing.Point(12, 23);
-			this.listLabels.Name = "listLabels";
-			this.listLabels.Size = new System.Drawing.Size(133, 95);
-			this.listLabels.TabIndex = 4;
-			this.listLabels.SelectedIndexChanged += new System.EventHandler(this.listLabels_SelectedIndexChanged);
-			// 
-			// btAddLabel
-			// 
-			this.btAddLabel.Enabled = false;
-			this.btAddLabel.Location = new System.Drawing.Point(12, 142);
-			this.btAddLabel.Name = "btAddLabel";
-			this.btAddLabel.Size = new System.Drawing.Size(63, 23);
-			this.btAddLabel.TabIndex = 3;
-			this.btAddLabel.Text = "Agregar";
-			this.btAddLabel.UseVisualStyleBackColor = true;
-			this.btAddLabel.Click += new System.EventHandler(this.btAddLabel_Click);
+			this.label6.Text = "1. Funciones";
 			// 
 			// txtLabel
 			// 
-			this.txtLabel.Location = new System.Drawing.Point(77, 144);
+			this.txtLabel.Location = new System.Drawing.Point(10, 431);
 			this.txtLabel.Name = "txtLabel";
-			this.txtLabel.Size = new System.Drawing.Size(68, 20);
+			this.txtLabel.Size = new System.Drawing.Size(58, 20);
 			this.txtLabel.TabIndex = 2;
-			this.txtLabel.TextChanged += new System.EventHandler(this.txtLabel_TextChanged);
-			// 
-			// btRemoveLabel
-			// 
-			this.btRemoveLabel.Enabled = false;
-			this.btRemoveLabel.Location = new System.Drawing.Point(12, 119);
-			this.btRemoveLabel.Name = "btRemoveLabel";
-			this.btRemoveLabel.Size = new System.Drawing.Size(63, 23);
-			this.btRemoveLabel.TabIndex = 1;
-			this.btRemoveLabel.Text = "Eliminar";
-			this.btRemoveLabel.UseVisualStyleBackColor = true;
-			this.btRemoveLabel.Click += new System.EventHandler(this.btRemoveLabel_Click);
 			// 
 			// tabPage2
 			// 
@@ -965,6 +960,8 @@
 			this.tabPage1.PerformLayout();
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picWorking)).EndInit();
 			this.tabPage2.ResumeLayout(false);
@@ -999,10 +996,7 @@
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.Button btPredecir;
 		private System.Windows.Forms.TabPage tabPage3;
-		private System.Windows.Forms.Button btRemoveLabel;
-		private System.Windows.Forms.Button btAddLabel;
 		private System.Windows.Forms.TextBox txtLabel;
-		private System.Windows.Forms.ListBox listLabels;
 		private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Button btRemoveFeatures;
@@ -1028,12 +1022,11 @@
         private System.Windows.Forms.TextBox txtTiempo2;
         private System.Windows.Forms.Label lblPrediction;
 		private System.Windows.Forms.Button btSvm;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox txNombreFuncion;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btRemoveLabel;
+        private System.Windows.Forms.Button btAddLabel;
         private System.Windows.Forms.ListBox listEtiquetasFuncion;
         private System.Windows.Forms.ListBox listFunciones;
         private System.Windows.Forms.ProgressBar progressBar2;
@@ -1051,6 +1044,9 @@
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartCurves;
 		private System.Windows.Forms.TextBox txtConsola;
 		private System.Windows.Forms.Button btSavePlot;
+		private System.Windows.Forms.RadioButton radLambdaSingle;
+		private System.Windows.Forms.RadioButton radLambdaSet;
+		private System.Windows.Forms.GroupBox groupBox1;
 
 	}
 }

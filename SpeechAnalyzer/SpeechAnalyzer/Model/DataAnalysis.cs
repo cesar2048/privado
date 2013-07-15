@@ -59,7 +59,7 @@ namespace SpeechAnalyzer.Model
 			this.CostTrain		= new List<double>();
 			this.ErrorTest		= new List<double>();
 			this.ErrorTrain		= new List<double>();
-			this.LambdaValues = new List<double>(new double[] { 0, 0.0001, 0.003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30 } );
+			this.LambdaValues = new List<double>(new double[] { 0, 0.0001, 0.003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10 } );
 			this.ConsoleFunction = ConsoleFunction;
 
 			// Load previously generated parameters if these are not already loaded
@@ -100,7 +100,7 @@ namespace SpeechAnalyzer.Model
 		/// Step 2, Train the neural network
 		/// </summary>
 		/// <exception cref="System.Exception">The features haven't been generated</exception>
-		public void TrainNeuralNetwork(Action<int> progressCallback = null)
+		public void TrainNeuralNetwork(Action<int> progressCallback = null, bool useLambdaSet = false)
 		{
 			// load features
 			if (this.dataMat == null) {
@@ -121,13 +121,19 @@ namespace SpeechAnalyzer.Model
 
 			nnp = new NeuralNetworkParameters(Xtrain.ColumnCount, 50, (int)ytrain.Max(), this.Lambda);
 			NeuralNetwork nn = new NeuralNetwork(nnp, this.ConsoleFunction);
+			
+			int[] predictions;
+			List<double> lambdas = this.LambdaValues;
+			if (!useLambdaSet)
+			{
+				lambdas.Clear();
+				lambdas.Add(this.Lambda);
+			}
 
 			CostTrain.Clear();
 			CostTest.Clear();
 			ErrorTrain.Clear();
 			ErrorTest.Clear();
-			int[] predictions;
-
 			for(int i=0; i < LambdaValues.Count; i++)
 			{
 				if (ConsoleFunction != null) ConsoleFunction("Training with λ = " + LambdaValues[i]);
@@ -136,8 +142,8 @@ namespace SpeechAnalyzer.Model
 				nn.Train(this.Iterations, Xtrain, ytrain);
 				CostTrain.Add(nn.costFunction(Xtrain, ytrain, false));
 				CostTest.Add(nn.costFunction(Xtest, ytest, false));
-				ErrorTrain.Add(nn.Predict(Xtrain, ytrain, out predictions) * 100);
-				ErrorTest.Add(nn.Predict(Xtest, ytest, out predictions) * 100);
+				ErrorTrain.Add(100*(1 - nn.Predict(Xtrain, ytrain, out predictions)) );
+				ErrorTest.Add(100*(1-nn.Predict(Xtest, ytest, out predictions)));
 
 				if (progressCallback != null) progressCallback( (i+1) * 100 / LambdaValues.Count );
 				if (ConsoleFunction != null) ConsoleFunction("Avg cost exec time = " + nn.AvgCostExecTime );
@@ -146,8 +152,7 @@ namespace SpeechAnalyzer.Model
 			
 			
 			this.FinalAccuracy = nn.Predict(Xtest, ytest, out predictions);
-			 
-
+			
 			// save nerual network
 			NeuralNetworkParameters.Save(networkFile.FullName, nnp);
 

@@ -108,8 +108,8 @@ namespace SpeechAnalyzer
 			try
 			{
 				Labels labels = analysis.LoadLabels();
-				this.listLabels.Items.AddRange( labels.labelsList.ToArray() );
 				this.listFunciones.Items.AddRange(analysis.LoadFeatures().ToArray());
+				this.listFunciones.SelectedIndex = 0;
 			}
 			catch (Exception /*e*/) { }
 
@@ -180,7 +180,11 @@ namespace SpeechAnalyzer
 		void _bkgTraining_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try	{
-				this.analysis.TrainNeuralNetwork( val => ((BackgroundWorker)sender).ReportProgress(val) );
+				bool useLambdaSet = radLambdaSet.Checked;
+				this.analysis.TrainNeuralNetwork( 
+					val => ((BackgroundWorker)sender).ReportProgress(val), 
+					useLambdaSet
+				);
 				e.Result = this.analysis.FinalCostValue;
 			} catch (Exception) {
 				e.Result = "No se han generado las features";
@@ -628,35 +632,6 @@ namespace SpeechAnalyzer
 		// -------------------- tab Neural Network ---------------------
 		//
 
-		private void listLabels_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			this.btRemoveLabel.Enabled = true;
-		}
-
-		private void btRemoveLabel_Click(object sender, EventArgs e)
-		{
-         
-            string label = listLabels.SelectedItem.ToString();
-			listLabels.Items.RemoveAt(listLabels.SelectedIndex);
-            this.analysis.DeleteLabel(label);
-		}
-
-		private void btAddLabel_Click(object sender, EventArgs e)
-		{
-			listLabels.Items.Add(txtLabel.Text);
-            this.analysis.SaveLabels(txtLabel.Text);
-            txtLabel.Text = "";
-		}
-
-		private void txtLabel_TextChanged(object sender, EventArgs e)
-		{
-			if (((TextBox)sender).Text.Trim().Length > 0) {
-				btAddLabel.Enabled = true;
-			} else {
-				btAddLabel.Enabled = false;
-			}
-		}
-
 		private void btRemoveFeatures_Click(object sender, EventArgs e)
 		{
 			string feature = listFunciones.SelectedItem.ToString();
@@ -830,45 +805,14 @@ namespace SpeechAnalyzer
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            try
-            {
-                SQLiteDatabase db = new SQLiteDatabase();
-                DataTable recipe;
-               
-                String query = "select etiquetaid, nombre ";
-          
-                query += "from etiquetas;";
-                recipe = db.GetDataTable(query);
-                // The results can be directly applied to a DataGridView control
-         
-               
-                // Or looped through for some other reason
-                foreach (DataRow r in recipe.Rows)
-                {
-                    MessageBox.Show(r["etiquetaid"].ToString());
-                    MessageBox.Show(r["nombre"].ToString());
-                }
-	
-                
-            }
-            catch (Exception fail)
-            {
-                String error = "The following error has occurred:\n\n";
-                error += fail.Message.ToString() + "\n\n";
-                MessageBox.Show(error);
-               // this.Close();
-            }
-        }
 
 		private void button4_Click(object sender, EventArgs e)
 		{
 			if (txNombreFuncion.Text != "")
 			{
 				listFunciones.Items.Add(txNombreFuncion.Text);
-				this.analysis.SaveFeature(txNombreFuncion.Text);
 				txNombreFuncion.Text = "";
+				this.analysis.SaveFeature(txNombreFuncion.Text);
 			}
 			else
 			{
@@ -878,19 +822,20 @@ namespace SpeechAnalyzer
 
 		private void listFunciones_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//MessageBox.Show("cambio el item seleccionado");
-			string funcion=listFunciones.SelectedItem.ToString();
-			listEtiquetasFuncion.Items.Clear();
+			string funcion = listFunciones.SelectedItem.ToString();
 			List<String> etiquetas=analysis.LoadLabelFeatures(funcion);
+			
+			listEtiquetasFuncion.Items.Clear();
 			listEtiquetasFuncion.Items.AddRange(etiquetas.ToArray());
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void btAddLabel_Click(object sender, EventArgs e)
 		{
-			if (listFunciones.SelectedIndex >= 0 && listLabels.SelectedIndex >= 0)
+			if (txtLabel.Text.Trim().Length > 0)
 			{
-				analysis.SaveFeatureLabel(listFunciones.SelectedItem.ToString(), listLabels.SelectedItem.ToString());
-				listEtiquetasFuncion.Items.Add(listLabels.SelectedItem.ToString());
+				analysis.SaveFeatureLabel(listFunciones.SelectedItem.ToString(), txtLabel.Text.Trim());
+				listEtiquetasFuncion.Items.Add( txtLabel.Text.Trim() );
+				txtLabel.Text = "";
 			}
 			else
 			{
@@ -898,7 +843,7 @@ namespace SpeechAnalyzer
 			}
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void btRemoveLabel_Click(object sender, EventArgs e)
 		{
 			if (listFunciones.SelectedIndex >= 0 && listEtiquetasFuncion.SelectedIndex >= 0)
 			{
@@ -908,6 +853,23 @@ namespace SpeechAnalyzer
 			else
 			{
 				MessageBox.Show("Seleccione una etiqueta y una funcion");
+			}
+		}
+
+		private void radLambda_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void radLambdaSingle_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radLambdaSet.Checked)
+			{
+				txtLambda.Enabled = false;
+			}
+			else
+			{
+				txtLambda.Enabled = true;
 			}
 		}
 
