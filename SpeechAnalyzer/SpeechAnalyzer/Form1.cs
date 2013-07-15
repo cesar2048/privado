@@ -113,15 +113,7 @@ namespace SpeechAnalyzer
 			}
 			catch (Exception /*e*/) { }
 
-			FileInfo trainingFile = new FileInfo(Path.Combine(config.TempDirectory, "training-features.csv"));
-			if (trainingFile.Exists)
-			{
-				lblFeatStatus.Text = "Listo";
-			}
-			else
-			{
-				lblFeatStatus.Text = "Vacio";
-			}
+			lblFeatStatusUpdate();
 		}
 
 
@@ -172,6 +164,7 @@ namespace SpeechAnalyzer
 			this.btTrain.Enabled = false;
 			this.txtLambda.Enabled = false;
 			this.picWorking.Visible = true;
+			this.progDataGen.Value = 0;
 			this.progDataGen.Visible = true;
 
 			this._bkgTraining.RunWorkerAsync();
@@ -634,22 +627,15 @@ namespace SpeechAnalyzer
 
 		private void btRemoveFeatures_Click(object sender, EventArgs e)
 		{
-			string feature = listFunciones.SelectedItem.ToString();
-			
-			listFunciones.Items.RemoveAt(listFunciones.SelectedIndex);
-
-			FileInfo trainingFile = new FileInfo(Path.Combine(config.TempDirectory, "training-features.csv"));
-			if (trainingFile.Exists)
+			if (analysis.trainingFile.Exists)
 			{
-				trainingFile.Delete();
+				analysis.trainingFile.Delete();
 				lblFeatStatus.Text = "Vacio";
 			}
-			this.analysis.DeleteFeature(feature);
 		}
 
 		private void btGenFeatures_Click(object sender, EventArgs e)
 		{
-			analysis.feature = listFunciones.SelectedItem.ToString();
 			this.progDataGen.Visible = true;
 			this.btTrain.Enabled = false;
 			this.btGenFeatures.Enabled = false;
@@ -757,7 +743,8 @@ namespace SpeechAnalyzer
                     }
                 }
         }
-        private void stopWriting2(){
+        
+		private void stopWriting2(){
         
                 if (writer2 != null)
                 {
@@ -771,7 +758,8 @@ namespace SpeechAnalyzer
 					enviar(label);
                 }
         }
-        private void button1_Click(object sender, EventArgs e)
+        
+		private void button1_Click(object sender, EventArgs e)
         {
             if(waveIn2!=null){
                  waveIn2.Dispose();
@@ -788,10 +776,6 @@ namespace SpeechAnalyzer
             tHoldValue2 = (int)nupHold.Value;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-           
-        }
         private void OnRecordingStopped2(object sender, EventArgs e){
             if(waveIn2!= null)
             {
@@ -820,6 +804,20 @@ namespace SpeechAnalyzer
 			}
 		}
 
+
+
+
+
+
+		private void lblFeatStatusUpdate()
+		{
+			lblFeatStatus.Text = "(No generado)";
+			if (analysis.trainingFile.Exists)
+			{
+				lblFeatStatus.Text = "Datos listos";
+			}
+		}
+
 		private void listFunciones_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string funcion = listFunciones.SelectedItem.ToString();
@@ -827,6 +825,9 @@ namespace SpeechAnalyzer
 			
 			listEtiquetasFuncion.Items.Clear();
 			listEtiquetasFuncion.Items.AddRange(etiquetas.ToArray());
+
+			analysis.UpdateProblemName(funcion);
+			lblFeatStatusUpdate();
 		}
 
 		private void btAddLabel_Click(object sender, EventArgs e)

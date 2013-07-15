@@ -17,16 +17,17 @@ namespace SpeechAnalyzer.Model
 	class DataAnalysis
 	{
 		private String DataDirectory;
+		private String TempDirectory;
         private SQLiteDatabase db;
 		private FeaturesGenerator featuresGenerator;
 		private NeuralNetworkParameters nnp;
-		private FileInfo trainingFile;
-		private FileInfo networkFile;
 		private DenseMatrix dataMat;
+		private String feature;
 
 		// properties
-		public String feature { get; set; }
 		public Action<String> ConsoleFunction { get; set; }
+		public FileInfo trainingFile { get; set; }
+		public FileInfo networkFile { get; set; }
 
 		// input properties
 		public Double Lambda { get; set; }
@@ -53,32 +54,19 @@ namespace SpeechAnalyzer.Model
 			this.Lambda			= 0.1;
 			this.FinalCostValue = Double.PositiveInfinity;
 			this.DataDirectory	= dataDir;
-			this.trainingFile	= new FileInfo(Path.Combine(tempDir, "training-features.csv"));
-			this.networkFile	= new FileInfo(Path.Combine(tempDir, "networkParams.js"));
+			this.TempDirectory	= tempDir;
 			this.CostTest		= new List<double>();
 			this.CostTrain		= new List<double>();
 			this.ErrorTest		= new List<double>();
 			this.ErrorTrain		= new List<double>();
 			this.LambdaValues = new List<double>(new double[] { 0, 0.0001, 0.003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10 } );
 			this.ConsoleFunction = ConsoleFunction;
+			this.UpdateProblemName("");
 
-			// Load previously generated parameters if these are not already loaded
-			if (networkFile.Exists)
-			{
-				this.nnp		= NeuralNetworkParameters.Load(networkFile.FullName);
-			}
-
-			// load previously generated features if the file exists
-			if (this.trainingFile.Exists)
-			{
-				DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
-				this.dataMat	= matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
-			}
-
-			
 			this.db					= new SQLiteDatabase();
-			this.featuresGenerator	= new FeaturesGenerator(dataDir, tempDir, SonicAnotatorPath);
+			this.featuresGenerator = new FeaturesGenerator(dataDir, tempDir, SonicAnotatorPath, ConsoleFunction);
 		}
+
 
 		/// <summary>
 		/// Step 1, generate all the features for the training files
@@ -150,8 +138,8 @@ namespace SpeechAnalyzer.Model
 				if (ConsoleFunction != null) ConsoleFunction("Avg grad exec time = " + nn.AvgGradExecTime);
 			}
 			
-			
 			this.FinalAccuracy = nn.Predict(Xtest, ytest, out predictions);
+			this.FinalCostValue = nn.costFunction();
 			
 			// save nerual network
 			NeuralNetworkParameters.Save(networkFile.FullName, nnp);
@@ -303,6 +291,37 @@ namespace SpeechAnalyzer.Model
 
 			return listF;
 		}
+
+		public void UpdateProblemName(String problem)
+		{
+			this.feature = problem;
+			problem += "-";
+			this.trainingFile = new FileInfo(Path.Combine(TempDirectory, problem + "training-features.csv"));
+			this.networkFile = new FileInfo(Path.Combine(TempDirectory, problem + "networkParams.js"));
+
+			// Load previously generated parameters if these are not already loaded
+			if (networkFile.Exists)
+			{
+				this.nnp = NeuralNetworkParameters.Load(networkFile.FullName);
+			}
+
+			// load previously generated features if the file exists
+			if (this.trainingFile.Exists)
+			{
+				DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
+				this.dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file
+			}
+		}
+
+
+
+
+
+
+
+
+
+
 
         public void SaveLabels(string label)
         {

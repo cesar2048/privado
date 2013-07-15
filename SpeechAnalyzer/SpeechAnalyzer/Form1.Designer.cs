@@ -442,6 +442,7 @@
 			// 
 			// txtConsola
 			// 
+			this.txtConsola.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtConsola.Location = new System.Drawing.Point(358, 96);
 			this.txtConsola.Multiline = true;
 			this.txtConsola.Name = "txtConsola";
@@ -899,7 +900,6 @@
 			this.txtTiempo2.TabIndex = 23;
 			this.txtTiempo2.TabStop = false;
 			this.txtTiempo2.Text = "1.25";
-			this.txtTiempo2.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
 			// 
 			// btnDetener
 			// 

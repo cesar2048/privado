@@ -11,6 +11,7 @@ using MathNet.Numerics.Statistics;
 
 namespace SpeechAnalyzer.Model
 {
+	/*
 	/// <summary>
 	/// Stores a feature data set with information to separate into training/testing/validation sets
 	/// </summary>
@@ -61,18 +62,21 @@ namespace SpeechAnalyzer.Model
 		VALIDATION = 1,
 		TESTING = 2
 	}
+	*/
 
 	public class FeaturesGenerator
 	{
 		private String DataDirectory;
 		private String TempDirectory;
 		private String SonicAnnotator;
+		private Action<String> ConsoleCallback;
 
-		public FeaturesGenerator(String dataDir, String tempDir, String sonicPath)
+		public FeaturesGenerator(String dataDir, String tempDir, String sonicPath, Action<String> ConsoleCallback = null)
 		{
 			this.DataDirectory = dataDir;
 			this.TempDirectory = tempDir;
 			this.SonicAnnotator = sonicPath;
+			this.ConsoleCallback = ConsoleCallback;
 		}
 
 		/// <summary>
@@ -85,7 +89,7 @@ namespace SpeechAnalyzer.Model
 			DirectoryInfo srcDir = new DirectoryInfo(DataDirectory);
 			if (!srcDir.Exists)
 			{
-				System.Diagnostics.Debug.WriteLine(String.Format("Directorio {0} no existe", DataDirectory));
+				if( ConsoleCallback != null ) this.ConsoleCallback(String.Format("Directorio {0} no existe", DataDirectory));
 				return null;
 			}
 
@@ -193,7 +197,7 @@ namespace SpeechAnalyzer.Model
 				fInfo.Delete();
 			}
 
-			System.Diagnostics.Debug.WriteLine(String.Format("Processed: {0} -> {1}", audioInfo.fileInfo.Name, audioInfo.label));
+			if (ConsoleCallback != null) this.ConsoleCallback(String.Format("Processed: {0,15} -> {1}", audioInfo.fileInfo.Name, audioInfo.label));
 		}
 
 		/// <summary>
