@@ -49,6 +49,7 @@ namespace SpeechAnalyzer.Model
 
 		public static double TestOnData()
 		{
+			return 0;
 			DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
 			DelimitedWriter matrixWriter = new DelimitedWriter(",");
 

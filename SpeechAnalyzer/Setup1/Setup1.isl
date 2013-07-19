@@ -225,7 +225,6 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
-		<row><td>DOTNETVERSION40CLIENT</td><td>DotNet40Client</td></row>
 	</table>
 
 	<table name="BBControl">
@@ -2844,6 +2843,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
+		<row><td>_20E2B1EE_E5D9_4BCB_9A84_6370F0E6A51A_</td><td>Microsoft .NET Framework 4.0 Client (Web Download).prq</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -2880,7 +2880,6 @@
 		<row><td>COMPANY_NAME</td><td>1033</td><td>Universidad Galileo</td><td>0</td><td/><td>1671509333</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
-		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1671523669</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL</td><td>1033</td><td>Microsoft .NET Framework 4.0 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1403084023</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
@@ -3979,12 +3978,12 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1403096470</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>1403098518</td></row>
-		<row><td>ID_STRING10</td><td>1033</td><td>http://www.UniversidadGalileo.com</td><td>0</td><td/><td>1671515477</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>http://www.galileo.edu</td><td>0</td><td/><td>-1952326412</td></row>
 		<row><td>ID_STRING11</td><td>1033</td><td>Universidad Galileo</td><td>0</td><td/><td>1671509333</td></row>
 		<row><td>ID_STRING12</td><td>1033</td><td>Analisys</td><td>0</td><td/><td>1671544469</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td/><td>0</td><td/><td>1403065782</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td/><td>0</td><td/><td>1403106742</td></row>
-		<row><td>ID_STRING4</td><td>1033</td><td>SPEECH~1|Speech Analyzer</td><td>0</td><td/><td>1403105879</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>SPEECH~1|SpeechAnalyzer</td><td>0</td><td/><td>-1952373260</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>=-VAMP_PATH</td><td>0</td><td/><td>1403093655</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>[~];[INSTALLDIR]vamp-plugins</td><td>0</td><td/><td>1403067159</td></row>
 		<row><td>ID_STRING7</td><td>1033</td><td>config.ini</td><td>0</td><td/><td>1403098071</td></row>
@@ -4098,7 +4097,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
-		<row><td>NewShortcut1_179756983D6749799EFF6B194327EC2A.exe</td><td/><td>\SpeechAnalyzer.Resultado principal</td><td>0</td></row>
+		<row><td>NewShortcut1_6D2D402FD804478AB0C9CAECCA6BCE09.exe</td><td/><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\SpeechAnalyzer\SpeechAnalyzer\HologramMusic.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4220,7 +4219,7 @@
 UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 			</td></row>
 		<row><td>DefaultProductConfiguration</td><td>Express</td></row>
-		<row><td>EnableSwidtag</td><td>1</td></row>
+		<row><td>EnableSwidtag</td><td>0</td></row>
 		<row><td>ISCompilerOption_CompileBeforeBuild</td><td>1</td></row>
 		<row><td>ISCompilerOption_Debug</td><td>0</td></row>
 		<row><td>ISCompilerOption_IncludePath</td><td/></row>
@@ -4293,7 +4292,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 	<table name="LaunchCondition">
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
-		<row><td>DOTNETVERSION40CLIENT&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT##</td></row>
 	</table>
 
 	<table name="ListBox">
@@ -4624,7 +4622,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
 		<row><td>SHOWLAUNCHPROGRAM</td><td>0</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40CLIENT</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{12EA6B2E-BF43-4D95-B062-25D1A43307D6}</td><td/></row>
@@ -4669,7 +4667,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
-		<row><td>DotNet40Client</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client</td><td>Install</td><td>2</td></row>
 	</table>
 
 	<table name="Registry">
@@ -4773,7 +4770,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td>NewShortcut1_179756983D6749799EFF6B194327EC2A.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td/><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

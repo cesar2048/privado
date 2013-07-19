@@ -569,6 +569,7 @@
 			// 
 			// btSvm
 			// 
+			this.btSvm.Enabled = false;
 			this.btSvm.Location = new System.Drawing.Point(610, 22);
 			this.btSvm.Name = "btSvm";
 			this.btSvm.Size = new System.Drawing.Size(75, 23);

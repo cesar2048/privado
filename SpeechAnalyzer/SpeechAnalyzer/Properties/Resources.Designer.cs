@@ -60,17 +60,17 @@ namespace SpeechAnalyzer.Properties {
             }
         }
         
+        internal static System.Drawing.Icon HologramMusic {
+            get {
+                object obj = ResourceManager.GetObject("HologramMusic", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap multilockon {
             get {
                 object obj = ResourceManager.GetObject("multilockon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Icon Nishad2m8_Hologram_Dock_My_music {
-            get {
-                object obj = ResourceManager.GetObject("Nishad2m8_Hologram_Dock_My_music", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
     }
