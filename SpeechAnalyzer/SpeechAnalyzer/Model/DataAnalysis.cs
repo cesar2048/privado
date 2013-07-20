@@ -81,6 +81,7 @@ namespace SpeechAnalyzer.Model
 			DelimitedWriter matrixWriter = new DelimitedWriter(",");
 			matrixWriter.WriteMatrix(dataMat, trainingFile.FullName);	// save the features matrix in a csv file
 
+			this.dataMat = dataMat;
 			return dataMat;
 		}
 
@@ -179,12 +180,12 @@ namespace SpeechAnalyzer.Model
 			this.FinalAccuracy = nn.Predict(X, y, out predictions);
 
 			// load labels
-			Labels labels = LoadLabels();
+			var labels = LoadLabelFeatures(this.feature);
 
 			String label = "error";
-			if (predictions[0] >= 0 && predictions[0] <= labels.labelsList.Count)
+			if (predictions[0] >= 0 && predictions[0] <= labels.Count)
 			{
-				label = labels.labelsList[predictions[0] - 1];
+				label = labels[predictions[0] - 1];
 			}
 
 			return label;
@@ -294,6 +295,11 @@ namespace SpeechAnalyzer.Model
 
 		public void UpdateProblemName(String problem)
 		{
+			if (String.Equals(this.feature, problem))
+			{	// do nothing in case we are changing to the same name
+				return;
+			}
+
 			this.feature = problem;
 			problem += "-";
 			this.trainingFile = new FileInfo(Path.Combine(TempDirectory, problem + "training-features.csv"));

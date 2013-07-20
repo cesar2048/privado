@@ -55,7 +55,6 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.btPredecir = new System.Windows.Forms.Button();
-			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.radLambdaSingle = new System.Windows.Forms.RadioButton();
@@ -107,6 +106,7 @@
 			this.btnDetener = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnEscuchar = new System.Windows.Forms.Button();
+			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.levelIndicator2 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -158,12 +158,13 @@
 			// 
 			// listBoxRecordings
 			// 
-			this.listBoxRecordings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.listBoxRecordings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.listBoxRecordings.FormattingEnabled = true;
 			this.listBoxRecordings.Location = new System.Drawing.Point(330, 13);
 			this.listBoxRecordings.Name = "listBoxRecordings";
-			this.listBoxRecordings.Size = new System.Drawing.Size(158, 420);
+			this.listBoxRecordings.Size = new System.Drawing.Size(259, 420);
 			this.listBoxRecordings.TabIndex = 6;
 			this.listBoxRecordings.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
@@ -176,7 +177,8 @@
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point(503, 201);
+			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnDelete.Location = new System.Drawing.Point(595, 201);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(87, 23);
 			this.btnDelete.TabIndex = 8;
@@ -187,7 +189,7 @@
 			// btnOpenFolder
 			// 
 			this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnOpenFolder.Location = new System.Drawing.Point(330, 434);
+			this.btnOpenFolder.Location = new System.Drawing.Point(330, 435);
 			this.btnOpenFolder.Name = "btnOpenFolder";
 			this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
 			this.btnOpenFolder.TabIndex = 9;
@@ -197,7 +199,8 @@
 			// 
 			// btnPlayExtern
 			// 
-			this.btnPlayExtern.Location = new System.Drawing.Point(503, 172);
+			this.btnPlayExtern.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPlayExtern.Location = new System.Drawing.Point(595, 172);
 			this.btnPlayExtern.Name = "btnPlayExtern";
 			this.btnPlayExtern.Size = new System.Drawing.Size(87, 23);
 			this.btnPlayExtern.TabIndex = 10;
@@ -242,7 +245,8 @@
 			// 
 			// btnPlay
 			// 
-			this.btnPlay.Location = new System.Drawing.Point(503, 13);
+			this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPlay.Location = new System.Drawing.Point(595, 13);
 			this.btnPlay.Name = "btnPlay";
 			this.btnPlay.Size = new System.Drawing.Size(87, 23);
 			this.btnPlay.TabIndex = 15;
@@ -303,7 +307,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(701, 485);
+			this.tabControl1.Size = new System.Drawing.Size(698, 486);
 			this.tabControl1.TabIndex = 23;
 			// 
 			// tabPage1
@@ -331,14 +335,15 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(693, 459);
+			this.tabPage1.Size = new System.Drawing.Size(690, 460);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Grabaciones";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// btPredecir
 			// 
-			this.btPredecir.Location = new System.Drawing.Point(503, 43);
+			this.btPredecir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btPredecir.Location = new System.Drawing.Point(595, 42);
 			this.btPredecir.Name = "btPredecir";
 			this.btPredecir.Size = new System.Drawing.Size(87, 23);
 			this.btPredecir.TabIndex = 22;
@@ -346,19 +351,9 @@
 			this.btPredecir.UseVisualStyleBackColor = true;
 			this.btPredecir.Click += new System.EventHandler(this.btPredecir_Click);
 			// 
-			// levelIndicator1
-			// 
-			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
-			this.levelIndicator1.Level = 0;
-			this.levelIndicator1.Location = new System.Drawing.Point(278, 29);
-			this.levelIndicator1.Maximum = 100;
-			this.levelIndicator1.Minimum = 0;
-			this.levelIndicator1.Name = "levelIndicator1";
-			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
-			this.levelIndicator1.TabIndex = 20;
-			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.picWorking);
 			this.tabPage3.Controls.Add(this.groupBox1);
 			this.tabPage3.Controls.Add(this.btSavePlot);
 			this.tabPage3.Controls.Add(this.txtConsola);
@@ -377,7 +372,6 @@
 			this.tabPage3.Controls.Add(this.label7);
 			this.tabPage3.Controls.Add(this.label5);
 			this.tabPage3.Controls.Add(this.txtLambda);
-			this.tabPage3.Controls.Add(this.picWorking);
 			this.tabPage3.Controls.Add(this.lblNetStatus);
 			this.tabPage3.Controls.Add(this.btTrain);
 			this.tabPage3.Controls.Add(this.progDataGen);
@@ -388,7 +382,7 @@
 			this.tabPage3.Controls.Add(this.txtLabel);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(693, 459);
+			this.tabPage3.Size = new System.Drawing.Size(690, 460);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Machine Learning";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -431,24 +425,27 @@
 			// 
 			// btSavePlot
 			// 
-			this.btSavePlot.Location = new System.Drawing.Point(611, 424);
+			this.btSavePlot.Location = new System.Drawing.Point(617, 428);
 			this.btSavePlot.Name = "btSavePlot";
-			this.btSavePlot.Size = new System.Drawing.Size(75, 23);
+			this.btSavePlot.Size = new System.Drawing.Size(70, 23);
 			this.btSavePlot.TabIndex = 52;
-			this.btSavePlot.Text = "Guardar Img";
+			this.btSavePlot.Text = "Save Img";
 			this.btSavePlot.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			this.btSavePlot.UseVisualStyleBackColor = true;
 			this.btSavePlot.Click += new System.EventHandler(this.btSavePlot_Click);
 			// 
 			// txtConsola
 			// 
+			this.txtConsola.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtConsola.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtConsola.Location = new System.Drawing.Point(358, 96);
+			this.txtConsola.Location = new System.Drawing.Point(311, 86);
 			this.txtConsola.Multiline = true;
 			this.txtConsola.Name = "txtConsola";
 			this.txtConsola.ReadOnly = true;
 			this.txtConsola.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtConsola.Size = new System.Drawing.Size(309, 123);
+			this.txtConsola.Size = new System.Drawing.Size(366, 123);
 			this.txtConsola.TabIndex = 51;
 			this.txtConsola.TabStop = false;
 			// 
@@ -464,6 +461,8 @@
 			// 
 			// chartCurves
 			// 
+			this.chartCurves.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			chartArea1.Name = "ChartArea1";
 			this.chartCurves.ChartAreas.Add(chartArea1);
 			legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
@@ -471,7 +470,7 @@
 			legend1.Name = "Legend1";
 			legend1.TableStyle = System.Windows.Forms.DataVisualization.Charting.LegendTableStyle.Tall;
 			this.chartCurves.Legends.Add(legend1);
-			this.chartCurves.Location = new System.Drawing.Point(248, 212);
+			this.chartCurves.Location = new System.Drawing.Point(256, 215);
 			this.chartCurves.Name = "chartCurves";
 			this.chartCurves.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
 			series1.BorderWidth = 2;
@@ -500,7 +499,7 @@
 			this.chartCurves.Series.Add(series2);
 			this.chartCurves.Series.Add(series3);
 			this.chartCurves.Series.Add(series4);
-			this.chartCurves.Size = new System.Drawing.Size(437, 244);
+			this.chartCurves.Size = new System.Drawing.Size(434, 245);
 			this.chartCurves.TabIndex = 50;
 			this.chartCurves.Text = "Learning Curve";
 			// 
@@ -570,7 +569,7 @@
 			// btSvm
 			// 
 			this.btSvm.Enabled = false;
-			this.btSvm.Location = new System.Drawing.Point(610, 22);
+			this.btSvm.Location = new System.Drawing.Point(612, 42);
 			this.btSvm.Name = "btSvm";
 			this.btSvm.Size = new System.Drawing.Size(75, 23);
 			this.btSvm.TabIndex = 41;
@@ -643,11 +642,11 @@
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(610, 44);
+			this.btTrain.Location = new System.Drawing.Point(612, 12);
 			this.btTrain.Name = "btTrain";
 			this.btTrain.Size = new System.Drawing.Size(75, 24);
 			this.btTrain.TabIndex = 33;
-			this.btTrain.Text = "Entrenar";
+			this.btTrain.Text = "Train";
 			this.btTrain.UseVisualStyleBackColor = true;
 			this.btTrain.Click += new System.EventHandler(this.btTrain_Click);
 			// 
@@ -730,26 +729,31 @@
 			this.tabPage2.Controls.Add(this.levelIndicator2);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(693, 459);
+			this.tabPage2.Size = new System.Drawing.Size(690, 460);
 			this.tabPage2.TabIndex = 3;
 			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// txtCommandHistory
 			// 
-			this.txtCommandHistory.Location = new System.Drawing.Point(372, 100);
+			this.txtCommandHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCommandHistory.Location = new System.Drawing.Point(404, 100);
 			this.txtCommandHistory.Multiline = true;
 			this.txtCommandHistory.Name = "txtCommandHistory";
 			this.txtCommandHistory.ReadOnly = true;
 			this.txtCommandHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtCommandHistory.Size = new System.Drawing.Size(203, 90);
+			this.txtCommandHistory.Size = new System.Drawing.Size(278, 272);
 			this.txtCommandHistory.TabIndex = 40;
 			this.txtCommandHistory.TabStop = false;
 			// 
 			// label20
 			// 
+			this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.label20.AutoSize = true;
-			this.label20.Location = new System.Drawing.Point(306, 201);
+			this.label20.Location = new System.Drawing.Point(363, 378);
 			this.label20.Name = "label20";
 			this.label20.Size = new System.Drawing.Size(37, 13);
 			this.label20.TabIndex = 39;
@@ -757,10 +761,12 @@
 			// 
 			// txtCommand
 			// 
+			this.txtCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCommand.Enabled = false;
-			this.txtCommand.Location = new System.Drawing.Point(372, 196);
+			this.txtCommand.Location = new System.Drawing.Point(406, 378);
 			this.txtCommand.Name = "txtCommand";
-			this.txtCommand.Size = new System.Drawing.Size(203, 20);
+			this.txtCommand.Size = new System.Drawing.Size(276, 20);
 			this.txtCommand.TabIndex = 1;
 			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
 			this.txtCommand.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCommand_KeyUp);
@@ -768,8 +774,8 @@
 			// 
 			// btSocketConnect
 			// 
-			this.btSocketConnect.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btSocketConnect.Location = new System.Drawing.Point(533, 222);
+			this.btSocketConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btSocketConnect.Location = new System.Drawing.Point(613, 71);
 			this.btSocketConnect.Name = "btSocketConnect";
 			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
 			this.btSocketConnect.TabIndex = 37;
@@ -780,8 +786,9 @@
 			// 
 			// lblSocketStatus
 			// 
-			this.lblSocketStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.lblSocketStatus.Location = new System.Drawing.Point(335, 248);
+			this.lblSocketStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblSocketStatus.Location = new System.Drawing.Point(374, 401);
 			this.lblSocketStatus.Name = "lblSocketStatus";
 			this.lblSocketStatus.Size = new System.Drawing.Size(313, 54);
 			this.lblSocketStatus.TabIndex = 36;
@@ -789,8 +796,9 @@
 			// 
 			// label18
 			// 
+			this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(305, 76);
+			this.label18.Location = new System.Drawing.Point(337, 76);
 			this.label18.Name = "label18";
 			this.label18.Size = new System.Drawing.Size(38, 13);
 			this.label18.TabIndex = 35;
@@ -798,8 +806,9 @@
 			// 
 			// label17
 			// 
+			this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(305, 50);
+			this.label17.Location = new System.Drawing.Point(337, 50);
 			this.label17.Name = "label17";
 			this.label17.Size = new System.Drawing.Size(17, 13);
 			this.label17.TabIndex = 34;
@@ -807,7 +816,8 @@
 			// 
 			// txtPort
 			// 
-			this.txtPort.Location = new System.Drawing.Point(372, 73);
+			this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtPort.Location = new System.Drawing.Point(404, 73);
 			this.txtPort.Name = "txtPort";
 			this.txtPort.Size = new System.Drawing.Size(203, 20);
 			this.txtPort.TabIndex = 33;
@@ -816,7 +826,8 @@
 			// 
 			// txtIP
 			// 
-			this.txtIP.Location = new System.Drawing.Point(372, 47);
+			this.txtIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtIP.Location = new System.Drawing.Point(404, 47);
 			this.txtIP.Name = "txtIP";
 			this.txtIP.Size = new System.Drawing.Size(203, 20);
 			this.txtIP.TabIndex = 32;
@@ -825,10 +836,11 @@
 			// 
 			// label16
 			// 
+			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label16.AutoSize = true;
 			this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label16.Location = new System.Drawing.Point(301, 18);
+			this.label16.Location = new System.Drawing.Point(333, 18);
 			this.label16.Name = "label16";
 			this.label16.Size = new System.Drawing.Size(141, 20);
 			this.label16.TabIndex = 31;
@@ -933,6 +945,17 @@
 			this.btnEscuchar.UseVisualStyleBackColor = true;
 			this.btnEscuchar.Click += new System.EventHandler(this.btnEscuchar_Click);
 			// 
+			// levelIndicator1
+			// 
+			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
+			this.levelIndicator1.Level = 0;
+			this.levelIndicator1.Location = new System.Drawing.Point(278, 29);
+			this.levelIndicator1.Maximum = 100;
+			this.levelIndicator1.Minimum = 0;
+			this.levelIndicator1.Name = "levelIndicator1";
+			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
+			this.levelIndicator1.TabIndex = 20;
+			// 
 			// levelIndicator2
 			// 
 			this.levelIndicator2.BackColor = System.Drawing.Color.Black;
@@ -948,9 +971,9 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(701, 485);
+			this.ClientSize = new System.Drawing.Size(698, 486);
 			this.Controls.Add(this.tabControl1);
-			this.MinimumSize = new System.Drawing.Size(650, 382);
+			this.MinimumSize = new System.Drawing.Size(714, 524);
 			this.Name = "Form1";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
 			this.Text = "Machine Learning";

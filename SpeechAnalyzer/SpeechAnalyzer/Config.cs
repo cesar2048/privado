@@ -27,7 +27,7 @@ namespace SpeechAnalyzer
 			{
 				cfg = new Config()
 				{
-					SonicAnnotator = @"sonic-annotator.exe",
+					SonicAnnotator = @"sonic-annotator\sonic-annotator.exe",
 					TempDirectory = "temp",
 					DataDirectory = "data"
 				};

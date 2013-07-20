@@ -107,9 +107,11 @@ namespace SpeechAnalyzer
 
 			try
 			{
-				Labels labels = analysis.LoadLabels();
-				this.listFunciones.Items.AddRange(analysis.LoadFeatures().ToArray());
+				var funcionesList = analysis.LoadFeatures().ToArray();
+				this.listFunciones.Items.AddRange(funcionesList);
 				this.listFunciones.SelectedIndex = 0;
+				this.analysis.UpdateProblemName(funcionesList[0]);
+
 			}
 			catch (Exception /*e*/) { }
 

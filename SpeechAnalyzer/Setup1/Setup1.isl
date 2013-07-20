@@ -4098,6 +4098,7 @@
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_6D2D402FD804478AB0C9CAECCA6BCE09.exe</td><td/><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\SpeechAnalyzer\SpeechAnalyzer\HologramMusic.ico</td><td>0</td></row>
+		<row><td>_28BC8722CA7546F1817200522E4563E4.exe</td><td/><td>G:\Enrique\Documentos\Universidad Galileo\Semestres\Privado\git\SpeechAnalyzer\SpeechAnalyzer\obj\x86\Release\SpeechAnalyzer.exe</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4770,7 +4771,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td/><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING4##</td><td>SpeechAnalyzer.Resultado_principal</td><td>AlwaysInstall</td><td/><td/><td/><td/><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
