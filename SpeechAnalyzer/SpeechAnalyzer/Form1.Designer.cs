@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -48,40 +49,46 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.txtNombre = new System.Windows.Forms.TextBox();
 			this.btnPlay = new System.Windows.Forms.Button();
-			this.chkThold = new System.Windows.Forms.CheckBox();
+			this.chkThreshold = new System.Windows.Forms.CheckBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.nupHold = new System.Windows.Forms.NumericUpDown();
 			this.lblStatus = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.btPredecir = new System.Windows.Forms.Button();
+			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.checkPlotTestErr = new System.Windows.Forms.CheckBox();
+			this.checkPlotTrainErr = new System.Windows.Forms.CheckBox();
+			this.checkPlotTestCost = new System.Windows.Forms.CheckBox();
+			this.checkPlotTrainCost = new System.Windows.Forms.CheckBox();
+			this.btRemoveFunction = new System.Windows.Forms.Button();
+			this.picWorking = new System.Windows.Forms.PictureBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.radLambdaSingle = new System.Windows.Forms.RadioButton();
 			this.radLambdaSet = new System.Windows.Forms.RadioButton();
 			this.btSavePlot = new System.Windows.Forms.Button();
 			this.txtConsola = new System.Windows.Forms.TextBox();
-			this.btRemoveFeatures = new System.Windows.Forms.Button();
+			this.btRemoveData = new System.Windows.Forms.Button();
 			this.chartCurves = new System.Windows.Forms.DataVisualization.Charting.Chart();
-			this.button4 = new System.Windows.Forms.Button();
-			this.txNombreFuncion = new System.Windows.Forms.TextBox();
+			this.btAddFunction = new System.Windows.Forms.Button();
+			this.txtFunction = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.btRemoveLabel = new System.Windows.Forms.Button();
 			this.btAddLabel = new System.Windows.Forms.Button();
-			this.listEtiquetasFuncion = new System.Windows.Forms.ListBox();
-			this.listFunciones = new System.Windows.Forms.ListBox();
+			this.listLabels = new System.Windows.Forms.ListBox();
+			this.listFunctions = new System.Windows.Forms.ListBox();
 			this.btSvm = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.txtIteraciones = new System.Windows.Forms.TextBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.txtLambda = new System.Windows.Forms.TextBox();
-			this.picWorking = new System.Windows.Forms.PictureBox();
 			this.lblNetStatus = new System.Windows.Forms.Label();
 			this.btTrain = new System.Windows.Forms.Button();
 			this.progDataGen = new System.Windows.Forms.ProgressBar();
 			this.lblFeatStatus = new System.Windows.Forms.Label();
-			this.btGenFeatures = new System.Windows.Forms.Button();
+			this.btGenData = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.txtLabel = new System.Windows.Forms.TextBox();
@@ -106,15 +113,14 @@
 			this.btnDetener = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnEscuchar = new System.Windows.Forms.Button();
-			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.levelIndicator2 = new SpeechAnalyzer.Views.LevelIndicator();
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picWorking)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.picWorking)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.Thold2)).BeginInit();
 			this.SuspendLayout();
@@ -122,165 +128,106 @@
 			// comboWasapiDevices
 			// 
 			this.comboWasapiDevices.FormattingEnabled = true;
-			this.comboWasapiDevices.Location = new System.Drawing.Point(6, 29);
+			resources.ApplyResources(this.comboWasapiDevices, "comboWasapiDevices");
 			this.comboWasapiDevices.Name = "comboWasapiDevices";
-			this.comboWasapiDevices.Size = new System.Drawing.Size(262, 21);
-			this.comboWasapiDevices.TabIndex = 2;
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 13);
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(118, 13);
-			this.label1.TabIndex = 3;
-			this.label1.Text = "Dispositivos de Entrada";
 			// 
 			// btStartRecording
 			// 
-			this.btStartRecording.Location = new System.Drawing.Point(7, 172);
+			resources.ApplyResources(this.btStartRecording, "btStartRecording");
 			this.btStartRecording.Name = "btStartRecording";
-			this.btStartRecording.Size = new System.Drawing.Size(75, 23);
-			this.btStartRecording.TabIndex = 4;
-			this.btStartRecording.Text = "Grabar";
 			this.btStartRecording.UseVisualStyleBackColor = true;
 			this.btStartRecording.Click += new System.EventHandler(this.StartRecording_Click);
 			// 
 			// btStopRecording
 			// 
-			this.btStopRecording.Location = new System.Drawing.Point(88, 172);
+			resources.ApplyResources(this.btStopRecording, "btStopRecording");
 			this.btStopRecording.Name = "btStopRecording";
-			this.btStopRecording.Size = new System.Drawing.Size(75, 23);
-			this.btStopRecording.TabIndex = 5;
-			this.btStopRecording.Text = "Detener";
 			this.btStopRecording.UseVisualStyleBackColor = true;
 			this.btStopRecording.Click += new System.EventHandler(this.ButtonStopRecording_Click);
 			// 
 			// listBoxRecordings
 			// 
-			this.listBoxRecordings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.listBoxRecordings, "listBoxRecordings");
 			this.listBoxRecordings.FormattingEnabled = true;
-			this.listBoxRecordings.Location = new System.Drawing.Point(330, 13);
 			this.listBoxRecordings.Name = "listBoxRecordings";
-			this.listBoxRecordings.Size = new System.Drawing.Size(259, 420);
-			this.listBoxRecordings.TabIndex = 6;
 			this.listBoxRecordings.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
 			// progressBar1
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(9, 201);
+			resources.ApplyResources(this.progressBar1, "progressBar1");
 			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(263, 23);
-			this.progressBar1.TabIndex = 7;
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDelete.Location = new System.Drawing.Point(595, 201);
+			resources.ApplyResources(this.btnDelete, "btnDelete");
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(87, 23);
-			this.btnDelete.TabIndex = 8;
-			this.btnDelete.Text = "Eliminar";
 			this.btnDelete.UseVisualStyleBackColor = true;
 			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// btnOpenFolder
 			// 
-			this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnOpenFolder.Location = new System.Drawing.Point(330, 435);
+			resources.ApplyResources(this.btnOpenFolder, "btnOpenFolder");
 			this.btnOpenFolder.Name = "btnOpenFolder";
-			this.btnOpenFolder.Size = new System.Drawing.Size(87, 23);
-			this.btnOpenFolder.TabIndex = 9;
-			this.btnOpenFolder.Text = "Abrir Folder";
 			this.btnOpenFolder.UseVisualStyleBackColor = true;
 			this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
 			// 
 			// btnPlayExtern
 			// 
-			this.btnPlayExtern.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPlayExtern.Location = new System.Drawing.Point(595, 172);
+			resources.ApplyResources(this.btnPlayExtern, "btnPlayExtern");
 			this.btnPlayExtern.Name = "btnPlayExtern";
-			this.btnPlayExtern.Size = new System.Drawing.Size(87, 23);
-			this.btnPlayExtern.TabIndex = 10;
-			this.btnPlayExtern.Text = "Reproducir/E";
 			this.btnPlayExtern.UseVisualStyleBackColor = true;
 			this.btnPlayExtern.Click += new System.EventHandler(this.btnPlayExtern_Click);
 			// 
 			// label2
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 65);
+			resources.ApplyResources(this.label2, "label2");
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(56, 13);
-			this.label2.TabIndex = 11;
-			this.label2.Text = "Tiempo (s)";
 			// 
 			// txtTiempo
 			// 
-			this.txtTiempo.Location = new System.Drawing.Point(106, 65);
+			resources.ApplyResources(this.txtTiempo, "txtTiempo");
 			this.txtTiempo.Name = "txtTiempo";
-			this.txtTiempo.Size = new System.Drawing.Size(163, 20);
-			this.txtTiempo.TabIndex = 12;
-			this.txtTiempo.Text = "1.25";
 			this.txtTiempo.TextChanged += new System.EventHandler(this.txtTiempo_TextChanged);
 			// 
 			// label3
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(6, 107);
+			resources.ApplyResources(this.label3, "label3");
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(94, 13);
-			this.label3.TabIndex = 13;
-			this.label3.Text = "Nomre del Archivo";
 			// 
 			// txtNombre
 			// 
-			this.txtNombre.Location = new System.Drawing.Point(106, 104);
+			resources.ApplyResources(this.txtNombre, "txtNombre");
 			this.txtNombre.Name = "txtNombre";
-			this.txtNombre.Size = new System.Drawing.Size(163, 20);
-			this.txtNombre.TabIndex = 14;
 			this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
 			// 
 			// btnPlay
 			// 
-			this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPlay.Location = new System.Drawing.Point(595, 13);
+			resources.ApplyResources(this.btnPlay, "btnPlay");
 			this.btnPlay.Name = "btnPlay";
-			this.btnPlay.Size = new System.Drawing.Size(87, 23);
-			this.btnPlay.TabIndex = 15;
-			this.btnPlay.Text = "Reproducir";
 			this.btnPlay.UseVisualStyleBackColor = true;
 			this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
 			// 
-			// chkThold
+			// chkThreshold
 			// 
-			this.chkThold.AutoSize = true;
-			this.chkThold.Location = new System.Drawing.Point(9, 143);
-			this.chkThold.Name = "chkThold";
-			this.chkThold.Size = new System.Drawing.Size(73, 17);
-			this.chkThold.TabIndex = 16;
-			this.chkThold.Text = "Threshold";
-			this.chkThold.UseVisualStyleBackColor = true;
-			this.chkThold.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			resources.ApplyResources(this.chkThreshold, "chkThreshold");
+			this.chkThreshold.Name = "chkThreshold";
+			this.chkThreshold.UseVisualStyleBackColor = true;
+			this.chkThreshold.CheckedChanged += new System.EventHandler(this.chkTreshold_CheckedChanged);
 			// 
 			// label4
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(103, 144);
+			resources.ApplyResources(this.label4, "label4");
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(84, 13);
-			this.label4.TabIndex = 18;
-			this.label4.Text = "Valor Threshold:";
 			// 
 			// nupHold
 			// 
-			this.nupHold.Enabled = false;
-			this.nupHold.Location = new System.Drawing.Point(193, 140);
+			resources.ApplyResources(this.nupHold, "nupHold");
 			this.nupHold.Name = "nupHold";
-			this.nupHold.Size = new System.Drawing.Size(79, 20);
-			this.nupHold.TabIndex = 19;
 			this.nupHold.Value = new decimal(new int[] {
             5,
             0,
@@ -290,25 +237,18 @@
 			// 
 			// lblStatus
 			// 
-			this.lblStatus.AutoSize = true;
+			resources.ApplyResources(this.lblStatus, "lblStatus");
 			this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-			this.lblStatus.Location = new System.Drawing.Point(6, 227);
 			this.lblStatus.Name = "lblStatus";
-			this.lblStatus.Size = new System.Drawing.Size(58, 13);
-			this.lblStatus.TabIndex = 21;
-			this.lblStatus.Text = "Esperando";
 			// 
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Controls.Add(this.tabPage2);
-			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
+			resources.ApplyResources(this.tabControl1, "tabControl1");
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(698, 486);
-			this.tabControl1.TabIndex = 23;
 			// 
 			// tabPage1
 			// 
@@ -323,7 +263,7 @@
 			this.tabPage1.Controls.Add(this.listBoxRecordings);
 			this.tabPage1.Controls.Add(this.label4);
 			this.tabPage1.Controls.Add(this.progressBar1);
-			this.tabPage1.Controls.Add(this.chkThold);
+			this.tabPage1.Controls.Add(this.chkThreshold);
 			this.tabPage1.Controls.Add(this.btnDelete);
 			this.tabPage1.Controls.Add(this.btnPlay);
 			this.tabPage1.Controls.Add(this.btnOpenFolder);
@@ -332,40 +272,46 @@
 			this.tabPage1.Controls.Add(this.label3);
 			this.tabPage1.Controls.Add(this.label2);
 			this.tabPage1.Controls.Add(this.txtTiempo);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			resources.ApplyResources(this.tabPage1, "tabPage1");
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(690, 460);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Grabaciones";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// btPredecir
 			// 
-			this.btPredecir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btPredecir.Location = new System.Drawing.Point(595, 42);
+			resources.ApplyResources(this.btPredecir, "btPredecir");
 			this.btPredecir.Name = "btPredecir";
-			this.btPredecir.Size = new System.Drawing.Size(87, 23);
-			this.btPredecir.TabIndex = 22;
-			this.btPredecir.Text = "Predecir";
 			this.btPredecir.UseVisualStyleBackColor = true;
 			this.btPredecir.Click += new System.EventHandler(this.btPredecir_Click);
 			// 
+			// levelIndicator1
+			// 
+			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
+			this.levelIndicator1.Level = 0;
+			resources.ApplyResources(this.levelIndicator1, "levelIndicator1");
+			this.levelIndicator1.Maximum = 100;
+			this.levelIndicator1.Minimum = 0;
+			this.levelIndicator1.Name = "levelIndicator1";
+			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.checkPlotTestErr);
+			this.tabPage3.Controls.Add(this.checkPlotTrainErr);
+			this.tabPage3.Controls.Add(this.checkPlotTestCost);
+			this.tabPage3.Controls.Add(this.checkPlotTrainCost);
+			this.tabPage3.Controls.Add(this.btRemoveFunction);
 			this.tabPage3.Controls.Add(this.picWorking);
 			this.tabPage3.Controls.Add(this.groupBox1);
 			this.tabPage3.Controls.Add(this.btSavePlot);
 			this.tabPage3.Controls.Add(this.txtConsola);
-			this.tabPage3.Controls.Add(this.btRemoveFeatures);
+			this.tabPage3.Controls.Add(this.btRemoveData);
 			this.tabPage3.Controls.Add(this.chartCurves);
-			this.tabPage3.Controls.Add(this.button4);
-			this.tabPage3.Controls.Add(this.txNombreFuncion);
+			this.tabPage3.Controls.Add(this.btAddFunction);
+			this.tabPage3.Controls.Add(this.txtFunction);
 			this.tabPage3.Controls.Add(this.label9);
 			this.tabPage3.Controls.Add(this.btRemoveLabel);
 			this.tabPage3.Controls.Add(this.btAddLabel);
-			this.tabPage3.Controls.Add(this.listEtiquetasFuncion);
-			this.tabPage3.Controls.Add(this.listFunciones);
+			this.tabPage3.Controls.Add(this.listLabels);
+			this.tabPage3.Controls.Add(this.listFunctions);
 			this.tabPage3.Controls.Add(this.btSvm);
 			this.tabPage3.Controls.Add(this.label10);
 			this.tabPage3.Controls.Add(this.txtIteraciones);
@@ -376,93 +322,111 @@
 			this.tabPage3.Controls.Add(this.btTrain);
 			this.tabPage3.Controls.Add(this.progDataGen);
 			this.tabPage3.Controls.Add(this.lblFeatStatus);
-			this.tabPage3.Controls.Add(this.btGenFeatures);
+			this.tabPage3.Controls.Add(this.btGenData);
 			this.tabPage3.Controls.Add(this.label8);
 			this.tabPage3.Controls.Add(this.label6);
 			this.tabPage3.Controls.Add(this.txtLabel);
-			this.tabPage3.Location = new System.Drawing.Point(4, 22);
+			resources.ApplyResources(this.tabPage3, "tabPage3");
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(690, 460);
-			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "Machine Learning";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// checkPlotTestErr
+			// 
+			resources.ApplyResources(this.checkPlotTestErr, "checkPlotTestErr");
+			this.checkPlotTestErr.Checked = true;
+			this.checkPlotTestErr.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkPlotTestErr.Name = "checkPlotTestErr";
+			this.checkPlotTestErr.UseVisualStyleBackColor = true;
+			this.checkPlotTestErr.CheckedChanged += new System.EventHandler(this.checkPlot_CheckedChanged);
+			// 
+			// checkPlotTrainErr
+			// 
+			resources.ApplyResources(this.checkPlotTrainErr, "checkPlotTrainErr");
+			this.checkPlotTrainErr.Checked = true;
+			this.checkPlotTrainErr.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkPlotTrainErr.Name = "checkPlotTrainErr";
+			this.checkPlotTrainErr.UseVisualStyleBackColor = true;
+			this.checkPlotTrainErr.CheckedChanged += new System.EventHandler(this.checkPlot_CheckedChanged);
+			// 
+			// checkPlotTestCost
+			// 
+			resources.ApplyResources(this.checkPlotTestCost, "checkPlotTestCost");
+			this.checkPlotTestCost.Checked = true;
+			this.checkPlotTestCost.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkPlotTestCost.Name = "checkPlotTestCost";
+			this.checkPlotTestCost.UseVisualStyleBackColor = true;
+			this.checkPlotTestCost.CheckedChanged += new System.EventHandler(this.checkPlot_CheckedChanged);
+			// 
+			// checkPlotTrainCost
+			// 
+			resources.ApplyResources(this.checkPlotTrainCost, "checkPlotTrainCost");
+			this.checkPlotTrainCost.Checked = true;
+			this.checkPlotTrainCost.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkPlotTrainCost.Name = "checkPlotTrainCost";
+			this.checkPlotTrainCost.UseVisualStyleBackColor = true;
+			this.checkPlotTrainCost.CheckedChanged += new System.EventHandler(this.checkPlot_CheckedChanged);
+			// 
+			// btRemoveFunction
+			// 
+			resources.ApplyResources(this.btRemoveFunction, "btRemoveFunction");
+			this.btRemoveFunction.Name = "btRemoveFunction";
+			this.btRemoveFunction.UseVisualStyleBackColor = true;
+			this.btRemoveFunction.Click += new System.EventHandler(this.btRemoveFunction_Click);
+			// 
+			// picWorking
+			// 
+			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
+			resources.ApplyResources(this.picWorking, "picWorking");
+			this.picWorking.Name = "picWorking";
+			this.picWorking.TabStop = false;
 			// 
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.radLambdaSingle);
 			this.groupBox1.Controls.Add(this.radLambdaSet);
-			this.groupBox1.Location = new System.Drawing.Point(502, 4);
+			resources.ApplyResources(this.groupBox1, "groupBox1");
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(104, 66);
-			this.groupBox1.TabIndex = 55;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Lambda";
 			// 
 			// radLambdaSingle
 			// 
-			this.radLambdaSingle.AutoSize = true;
+			resources.ApplyResources(this.radLambdaSingle, "radLambdaSingle");
 			this.radLambdaSingle.Checked = true;
-			this.radLambdaSingle.Location = new System.Drawing.Point(6, 19);
 			this.radLambdaSingle.Name = "radLambdaSingle";
-			this.radLambdaSingle.Size = new System.Drawing.Size(64, 17);
-			this.radLambdaSingle.TabIndex = 53;
 			this.radLambdaSingle.TabStop = true;
-			this.radLambdaSingle.Text = "λ Simple";
 			this.radLambdaSingle.UseVisualStyleBackColor = true;
 			this.radLambdaSingle.CheckedChanged += new System.EventHandler(this.radLambdaSingle_CheckedChanged);
-			this.radLambdaSingle.Click += new System.EventHandler(this.radLambda_CheckedChanged);
 			// 
 			// radLambdaSet
 			// 
-			this.radLambdaSet.AutoSize = true;
-			this.radLambdaSet.Location = new System.Drawing.Point(6, 41);
+			resources.ApplyResources(this.radLambdaSet, "radLambdaSet");
 			this.radLambdaSet.Name = "radLambdaSet";
-			this.radLambdaSet.Size = new System.Drawing.Size(90, 17);
-			this.radLambdaSet.TabIndex = 54;
-			this.radLambdaSet.Text = "Conjunto de λ";
 			this.radLambdaSet.UseVisualStyleBackColor = true;
-			this.radLambdaSet.Click += new System.EventHandler(this.radLambda_CheckedChanged);
 			// 
 			// btSavePlot
 			// 
-			this.btSavePlot.Location = new System.Drawing.Point(617, 428);
+			resources.ApplyResources(this.btSavePlot, "btSavePlot");
 			this.btSavePlot.Name = "btSavePlot";
-			this.btSavePlot.Size = new System.Drawing.Size(70, 23);
-			this.btSavePlot.TabIndex = 52;
-			this.btSavePlot.Text = "Save Img";
-			this.btSavePlot.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			this.btSavePlot.UseVisualStyleBackColor = true;
 			this.btSavePlot.Click += new System.EventHandler(this.btSavePlot_Click);
 			// 
 			// txtConsola
 			// 
-			this.txtConsola.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtConsola.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtConsola.Location = new System.Drawing.Point(311, 86);
-			this.txtConsola.Multiline = true;
+			resources.ApplyResources(this.txtConsola, "txtConsola");
 			this.txtConsola.Name = "txtConsola";
 			this.txtConsola.ReadOnly = true;
-			this.txtConsola.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtConsola.Size = new System.Drawing.Size(366, 123);
-			this.txtConsola.TabIndex = 51;
 			this.txtConsola.TabStop = false;
 			// 
-			// btRemoveFeatures
+			// btRemoveData
 			// 
-			this.btRemoveFeatures.Location = new System.Drawing.Point(174, 24);
-			this.btRemoveFeatures.Name = "btRemoveFeatures";
-			this.btRemoveFeatures.Size = new System.Drawing.Size(75, 23);
-			this.btRemoveFeatures.TabIndex = 7;
-			this.btRemoveFeatures.Text = "Eliminar";
-			this.btRemoveFeatures.UseVisualStyleBackColor = true;
-			this.btRemoveFeatures.Click += new System.EventHandler(this.btRemoveFeatures_Click);
+			resources.ApplyResources(this.btRemoveData, "btRemoveData");
+			this.btRemoveData.Name = "btRemoveData";
+			this.btRemoveData.UseVisualStyleBackColor = true;
+			this.btRemoveData.Click += new System.EventHandler(this.btRemoveData_Click);
 			// 
 			// chartCurves
 			// 
-			this.chartCurves.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.chartCurves, "chartCurves");
 			chartArea1.Name = "ChartArea1";
 			this.chartCurves.ChartAreas.Add(chartArea1);
 			legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
@@ -470,7 +434,6 @@
 			legend1.Name = "Legend1";
 			legend1.TableStyle = System.Windows.Forms.DataVisualization.Charting.LegendTableStyle.Tall;
 			this.chartCurves.Legends.Add(legend1);
-			this.chartCurves.Location = new System.Drawing.Point(256, 215);
 			this.chartCurves.Name = "chartCurves";
 			this.chartCurves.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
 			series1.BorderWidth = 2;
@@ -499,210 +462,128 @@
 			this.chartCurves.Series.Add(series2);
 			this.chartCurves.Series.Add(series3);
 			this.chartCurves.Series.Add(series4);
-			this.chartCurves.Size = new System.Drawing.Size(434, 245);
-			this.chartCurves.TabIndex = 50;
-			this.chartCurves.Text = "Learning Curve";
 			// 
-			// button4
+			// btAddFunction
 			// 
-			this.button4.Location = new System.Drawing.Point(12, 212);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(51, 23);
-			this.button4.TabIndex = 48;
-			this.button4.Text = "Crear";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.Click += new System.EventHandler(this.button4_Click);
+			resources.ApplyResources(this.btAddFunction, "btAddFunction");
+			this.btAddFunction.Name = "btAddFunction";
+			this.btAddFunction.UseVisualStyleBackColor = true;
+			this.btAddFunction.Click += new System.EventHandler(this.btAddFunction_Click);
 			// 
-			// txNombreFuncion
+			// txtFunction
 			// 
-			this.txNombreFuncion.Location = new System.Drawing.Point(68, 216);
-			this.txNombreFuncion.Name = "txNombreFuncion";
-			this.txNombreFuncion.Size = new System.Drawing.Size(100, 20);
-			this.txNombreFuncion.TabIndex = 47;
+			resources.ApplyResources(this.txtFunction, "txtFunction");
+			this.txtFunction.Name = "txtFunction";
 			// 
 			// label9
 			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(11, 262);
+			resources.ApplyResources(this.label9, "label9");
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(51, 13);
-			this.label9.TabIndex = 46;
-			this.label9.Text = "Etiquetas";
 			// 
 			// btRemoveLabel
 			// 
-			this.btRemoveLabel.Location = new System.Drawing.Point(118, 431);
+			resources.ApplyResources(this.btRemoveLabel, "btRemoveLabel");
 			this.btRemoveLabel.Name = "btRemoveLabel";
-			this.btRemoveLabel.Size = new System.Drawing.Size(50, 23);
-			this.btRemoveLabel.TabIndex = 45;
-			this.btRemoveLabel.Text = "eliminar";
 			this.btRemoveLabel.UseVisualStyleBackColor = true;
 			this.btRemoveLabel.Click += new System.EventHandler(this.btRemoveLabel_Click);
 			// 
 			// btAddLabel
 			// 
-			this.btAddLabel.Location = new System.Drawing.Point(67, 431);
+			resources.ApplyResources(this.btAddLabel, "btAddLabel");
 			this.btAddLabel.Name = "btAddLabel";
-			this.btAddLabel.Size = new System.Drawing.Size(52, 23);
-			this.btAddLabel.TabIndex = 44;
-			this.btAddLabel.Text = "agregar";
 			this.btAddLabel.UseVisualStyleBackColor = true;
 			this.btAddLabel.Click += new System.EventHandler(this.btAddLabel_Click);
 			// 
-			// listEtiquetasFuncion
+			// listLabels
 			// 
-			this.listEtiquetasFuncion.FormattingEnabled = true;
-			this.listEtiquetasFuncion.Location = new System.Drawing.Point(10, 278);
-			this.listEtiquetasFuncion.Name = "listEtiquetasFuncion";
-			this.listEtiquetasFuncion.Size = new System.Drawing.Size(156, 147);
-			this.listEtiquetasFuncion.TabIndex = 43;
+			this.listLabels.FormattingEnabled = true;
+			resources.ApplyResources(this.listLabels, "listLabels");
+			this.listLabels.Name = "listLabels";
 			// 
-			// listFunciones
+			// listFunctions
 			// 
-			this.listFunciones.FormattingEnabled = true;
-			this.listFunciones.Location = new System.Drawing.Point(11, 34);
-			this.listFunciones.Name = "listFunciones";
-			this.listFunciones.Size = new System.Drawing.Size(156, 173);
-			this.listFunciones.TabIndex = 42;
-			this.listFunciones.SelectedIndexChanged += new System.EventHandler(this.listFunciones_SelectedIndexChanged);
+			this.listFunctions.FormattingEnabled = true;
+			resources.ApplyResources(this.listFunctions, "listFunctions");
+			this.listFunctions.Name = "listFunctions";
+			this.listFunctions.SelectedIndexChanged += new System.EventHandler(this.listFunciones_SelectedIndexChanged);
 			// 
 			// btSvm
 			// 
-			this.btSvm.Enabled = false;
-			this.btSvm.Location = new System.Drawing.Point(612, 42);
+			resources.ApplyResources(this.btSvm, "btSvm");
 			this.btSvm.Name = "btSvm";
-			this.btSvm.Size = new System.Drawing.Size(75, 23);
-			this.btSvm.TabIndex = 41;
-			this.btSvm.Text = "Test SVM";
 			this.btSvm.UseVisualStyleBackColor = true;
 			this.btSvm.Click += new System.EventHandler(this.btSvm_Click);
 			// 
 			// label10
 			// 
-			this.label10.AutoSize = true;
-			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label10.Location = new System.Drawing.Point(360, 4);
+			resources.ApplyResources(this.label10, "label10");
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(96, 17);
-			this.label10.TabIndex = 40;
-			this.label10.Text = "3. Red Neural";
 			// 
 			// txtIteraciones
 			// 
-			this.txtIteraciones.Location = new System.Drawing.Point(425, 47);
+			resources.ApplyResources(this.txtIteraciones, "txtIteraciones");
 			this.txtIteraciones.Name = "txtIteraciones";
-			this.txtIteraciones.Size = new System.Drawing.Size(71, 20);
-			this.txtIteraciones.TabIndex = 39;
-			this.txtIteraciones.Text = "10000";
 			// 
 			// label7
 			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(355, 50);
+			resources.ApplyResources(this.label7, "label7");
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(59, 13);
-			this.label7.TabIndex = 38;
-			this.label7.Text = "Iteraciones";
 			// 
 			// label5
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(359, 25);
+			resources.ApplyResources(this.label5, "label5");
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(18, 20);
-			this.label5.TabIndex = 37;
-			this.label5.Text = "λ";
 			// 
 			// txtLambda
 			// 
-			this.txtLambda.Location = new System.Drawing.Point(425, 25);
+			resources.ApplyResources(this.txtLambda, "txtLambda");
 			this.txtLambda.Name = "txtLambda";
-			this.txtLambda.Size = new System.Drawing.Size(71, 20);
-			this.txtLambda.TabIndex = 36;
-			this.txtLambda.Text = "0.1";
-			// 
-			// picWorking
-			// 
-			this.picWorking.Image = global::SpeechAnalyzer.Properties.Resources.multilockon;
-			this.picWorking.Location = new System.Drawing.Point(177, 99);
-			this.picWorking.Name = "picWorking";
-			this.picWorking.Size = new System.Drawing.Size(128, 91);
-			this.picWorking.TabIndex = 35;
-			this.picWorking.TabStop = false;
 			// 
 			// lblNetStatus
 			// 
 			this.lblNetStatus.ForeColor = System.Drawing.Color.Teal;
-			this.lblNetStatus.Location = new System.Drawing.Point(360, 71);
+			resources.ApplyResources(this.lblNetStatus, "lblNetStatus");
 			this.lblNetStatus.Name = "lblNetStatus";
-			this.lblNetStatus.Size = new System.Drawing.Size(264, 22);
-			this.lblNetStatus.TabIndex = 34;
-			this.lblNetStatus.Text = "...";
 			// 
 			// btTrain
 			// 
-			this.btTrain.Location = new System.Drawing.Point(612, 12);
+			resources.ApplyResources(this.btTrain, "btTrain");
 			this.btTrain.Name = "btTrain";
-			this.btTrain.Size = new System.Drawing.Size(75, 24);
-			this.btTrain.TabIndex = 33;
-			this.btTrain.Text = "Train";
 			this.btTrain.UseVisualStyleBackColor = true;
 			this.btTrain.Click += new System.EventHandler(this.btTrain_Click);
 			// 
 			// progDataGen
 			// 
-			this.progDataGen.Location = new System.Drawing.Point(177, 70);
+			resources.ApplyResources(this.progDataGen, "progDataGen");
 			this.progDataGen.Name = "progDataGen";
-			this.progDataGen.Size = new System.Drawing.Size(128, 23);
-			this.progDataGen.TabIndex = 11;
 			// 
 			// lblFeatStatus
 			// 
-			this.lblFeatStatus.AutoSize = true;
+			resources.ApplyResources(this.lblFeatStatus, "lblFeatStatus");
 			this.lblFeatStatus.ForeColor = System.Drawing.Color.Purple;
-			this.lblFeatStatus.Location = new System.Drawing.Point(174, 50);
 			this.lblFeatStatus.Name = "lblFeatStatus";
-			this.lblFeatStatus.Size = new System.Drawing.Size(43, 13);
-			this.lblFeatStatus.TabIndex = 10;
-			this.lblFeatStatus.Text = "(Status)";
 			// 
-			// btGenFeatures
+			// btGenData
 			// 
-			this.btGenFeatures.Location = new System.Drawing.Point(248, 24);
-			this.btGenFeatures.Name = "btGenFeatures";
-			this.btGenFeatures.Size = new System.Drawing.Size(75, 23);
-			this.btGenFeatures.TabIndex = 9;
-			this.btGenFeatures.Text = "Generar";
-			this.btGenFeatures.UseVisualStyleBackColor = true;
-			this.btGenFeatures.Click += new System.EventHandler(this.btGenFeatures_Click);
+			resources.ApplyResources(this.btGenData, "btGenData");
+			this.btGenData.Name = "btGenData";
+			this.btGenData.UseVisualStyleBackColor = true;
+			this.btGenData.Click += new System.EventHandler(this.btGenData_Click);
 			// 
 			// label8
 			// 
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label8.Location = new System.Drawing.Point(171, 4);
+			resources.ApplyResources(this.label8, "label8");
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(61, 17);
-			this.label8.TabIndex = 6;
-			this.label8.Text = "2. Datos";
 			// 
 			// label6
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(9, 4);
+			resources.ApplyResources(this.label6, "label6");
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(89, 17);
-			this.label6.TabIndex = 5;
-			this.label6.Text = "1. Funciones";
 			// 
 			// txtLabel
 			// 
-			this.txtLabel.Location = new System.Drawing.Point(10, 431);
+			resources.ApplyResources(this.txtLabel, "txtLabel");
 			this.txtLabel.Name = "txtLabel";
-			this.txtLabel.Size = new System.Drawing.Size(58, 20);
-			this.txtLabel.TabIndex = 2;
 			// 
 			// tabPage2
 			// 
@@ -727,158 +608,91 @@
 			this.tabPage2.Controls.Add(this.label11);
 			this.tabPage2.Controls.Add(this.btnEscuchar);
 			this.tabPage2.Controls.Add(this.levelIndicator2);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			resources.ApplyResources(this.tabPage2, "tabPage2");
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(690, 460);
-			this.tabPage2.TabIndex = 3;
-			this.tabPage2.Text = "Escuchar";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// txtCommandHistory
 			// 
-			this.txtCommandHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCommandHistory.Location = new System.Drawing.Point(404, 100);
-			this.txtCommandHistory.Multiline = true;
+			resources.ApplyResources(this.txtCommandHistory, "txtCommandHistory");
 			this.txtCommandHistory.Name = "txtCommandHistory";
 			this.txtCommandHistory.ReadOnly = true;
-			this.txtCommandHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtCommandHistory.Size = new System.Drawing.Size(278, 272);
-			this.txtCommandHistory.TabIndex = 40;
 			this.txtCommandHistory.TabStop = false;
 			// 
 			// label20
 			// 
-			this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label20.AutoSize = true;
-			this.label20.Location = new System.Drawing.Point(363, 378);
+			resources.ApplyResources(this.label20, "label20");
 			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(37, 13);
-			this.label20.TabIndex = 39;
-			this.label20.Text = "Enviar";
 			// 
 			// txtCommand
 			// 
-			this.txtCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCommand.Enabled = false;
-			this.txtCommand.Location = new System.Drawing.Point(406, 378);
+			resources.ApplyResources(this.txtCommand, "txtCommand");
 			this.txtCommand.Name = "txtCommand";
-			this.txtCommand.Size = new System.Drawing.Size(276, 20);
-			this.txtCommand.TabIndex = 1;
 			this.txtCommand.Enter += new System.EventHandler(this.txtCommand_Enter);
 			this.txtCommand.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCommand_KeyUp);
 			this.txtCommand.Leave += new System.EventHandler(this.txtCommand_Leave);
 			// 
 			// btSocketConnect
 			// 
-			this.btSocketConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btSocketConnect.Location = new System.Drawing.Point(613, 71);
+			resources.ApplyResources(this.btSocketConnect, "btSocketConnect");
 			this.btSocketConnect.Name = "btSocketConnect";
-			this.btSocketConnect.Size = new System.Drawing.Size(75, 23);
-			this.btSocketConnect.TabIndex = 37;
 			this.btSocketConnect.TabStop = false;
-			this.btSocketConnect.Text = "&Conectar";
 			this.btSocketConnect.UseVisualStyleBackColor = true;
 			this.btSocketConnect.Click += new System.EventHandler(this.btSocketConnect_Click);
 			// 
 			// lblSocketStatus
 			// 
-			this.lblSocketStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblSocketStatus.Location = new System.Drawing.Point(374, 401);
+			resources.ApplyResources(this.lblSocketStatus, "lblSocketStatus");
 			this.lblSocketStatus.Name = "lblSocketStatus";
-			this.lblSocketStatus.Size = new System.Drawing.Size(313, 54);
-			this.lblSocketStatus.TabIndex = 36;
-			this.lblSocketStatus.Text = "Desconectado";
 			// 
 			// label18
 			// 
-			this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(337, 76);
+			resources.ApplyResources(this.label18, "label18");
 			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(38, 13);
-			this.label18.TabIndex = 35;
-			this.label18.Text = "Puerto";
 			// 
 			// label17
 			// 
-			this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(337, 50);
+			resources.ApplyResources(this.label17, "label17");
 			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(17, 13);
-			this.label17.TabIndex = 34;
-			this.label17.Text = "IP";
 			// 
 			// txtPort
 			// 
-			this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtPort.Location = new System.Drawing.Point(404, 73);
+			resources.ApplyResources(this.txtPort, "txtPort");
 			this.txtPort.Name = "txtPort";
-			this.txtPort.Size = new System.Drawing.Size(203, 20);
-			this.txtPort.TabIndex = 33;
 			this.txtPort.TabStop = false;
-			this.txtPort.Text = "27010";
 			// 
 			// txtIP
 			// 
-			this.txtIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtIP.Location = new System.Drawing.Point(404, 47);
+			resources.ApplyResources(this.txtIP, "txtIP");
 			this.txtIP.Name = "txtIP";
-			this.txtIP.Size = new System.Drawing.Size(203, 20);
-			this.txtIP.TabIndex = 32;
 			this.txtIP.TabStop = false;
-			this.txtIP.Text = "127.0.0.1";
 			// 
 			// label16
 			// 
-			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label16.AutoSize = true;
-			this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			resources.ApplyResources(this.label16, "label16");
 			this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label16.Location = new System.Drawing.Point(333, 18);
 			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(141, 20);
-			this.label16.TabIndex = 31;
-			this.label16.Text = "Conexion de datos";
 			// 
 			// label15
 			// 
-			this.label15.AutoSize = true;
-			this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			resources.ApplyResources(this.label15, "label15");
 			this.label15.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label15.Location = new System.Drawing.Point(9, 18);
 			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(123, 20);
-			this.label15.TabIndex = 30;
-			this.label15.Text = "Escucha en vivo";
 			// 
 			// progressBar2
 			// 
-			this.progressBar2.Location = new System.Drawing.Point(40, 222);
+			resources.ApplyResources(this.progressBar2, "progressBar2");
 			this.progressBar2.Name = "progressBar2";
-			this.progressBar2.Size = new System.Drawing.Size(184, 23);
-			this.progressBar2.TabIndex = 29;
 			// 
 			// lblPrediction
 			// 
-			this.lblPrediction.AutoSize = true;
-			this.lblPrediction.Location = new System.Drawing.Point(142, 201);
+			resources.ApplyResources(this.lblPrediction, "lblPrediction");
 			this.lblPrediction.Name = "lblPrediction";
-			this.lblPrediction.Size = new System.Drawing.Size(51, 13);
-			this.lblPrediction.TabIndex = 27;
-			this.lblPrediction.Text = "unknown";
 			// 
 			// Thold2
 			// 
-			this.Thold2.Location = new System.Drawing.Point(145, 74);
+			resources.ApplyResources(this.Thold2, "Thold2");
 			this.Thold2.Name = "Thold2";
-			this.Thold2.Size = new System.Drawing.Size(79, 20);
-			this.Thold2.TabIndex = 26;
 			this.Thold2.TabStop = false;
 			this.Thold2.Value = new decimal(new int[] {
             30,
@@ -889,94 +703,57 @@
 			// 
 			// label13
 			// 
-			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(37, 80);
+			resources.ApplyResources(this.label13, "label13");
 			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(84, 13);
-			this.label13.TabIndex = 25;
-			this.label13.Text = "Valor Threshold:";
 			// 
 			// label12
 			// 
-			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(40, 50);
+			resources.ApplyResources(this.label12, "label12");
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(45, 13);
-			this.label12.TabIndex = 24;
-			this.label12.Text = "Tiempo:";
 			// 
 			// txtTiempo2
 			// 
-			this.txtTiempo2.Location = new System.Drawing.Point(145, 47);
+			resources.ApplyResources(this.txtTiempo2, "txtTiempo2");
 			this.txtTiempo2.Name = "txtTiempo2";
-			this.txtTiempo2.Size = new System.Drawing.Size(79, 20);
-			this.txtTiempo2.TabIndex = 23;
 			this.txtTiempo2.TabStop = false;
-			this.txtTiempo2.Text = "1.25";
 			// 
 			// btnDetener
 			// 
-			this.btnDetener.Location = new System.Drawing.Point(140, 150);
+			resources.ApplyResources(this.btnDetener, "btnDetener");
 			this.btnDetener.Name = "btnDetener";
-			this.btnDetener.Size = new System.Drawing.Size(84, 23);
-			this.btnDetener.TabIndex = 22;
 			this.btnDetener.TabStop = false;
-			this.btnDetener.Text = "&Detener";
 			this.btnDetener.UseVisualStyleBackColor = true;
 			this.btnDetener.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// label11
 			// 
-			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(40, 201);
+			resources.ApplyResources(this.label11, "label11");
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(60, 13);
-			this.label11.TabIndex = 1;
-			this.label11.Text = "Predicción:";
 			// 
 			// btnEscuchar
 			// 
-			this.btnEscuchar.Location = new System.Drawing.Point(40, 150);
+			resources.ApplyResources(this.btnEscuchar, "btnEscuchar");
 			this.btnEscuchar.Name = "btnEscuchar";
-			this.btnEscuchar.Size = new System.Drawing.Size(81, 23);
-			this.btnEscuchar.TabIndex = 0;
 			this.btnEscuchar.TabStop = false;
-			this.btnEscuchar.Text = "&Escuchar";
 			this.btnEscuchar.UseVisualStyleBackColor = true;
 			this.btnEscuchar.Click += new System.EventHandler(this.btnEscuchar_Click);
-			// 
-			// levelIndicator1
-			// 
-			this.levelIndicator1.BackColor = System.Drawing.Color.Black;
-			this.levelIndicator1.Level = 0;
-			this.levelIndicator1.Location = new System.Drawing.Point(278, 29);
-			this.levelIndicator1.Maximum = 100;
-			this.levelIndicator1.Minimum = 0;
-			this.levelIndicator1.Name = "levelIndicator1";
-			this.levelIndicator1.Size = new System.Drawing.Size(26, 195);
-			this.levelIndicator1.TabIndex = 20;
 			// 
 			// levelIndicator2
 			// 
 			this.levelIndicator2.BackColor = System.Drawing.Color.Black;
 			this.levelIndicator2.Level = 0;
-			this.levelIndicator2.Location = new System.Drawing.Point(8, 47);
+			resources.ApplyResources(this.levelIndicator2, "levelIndicator2");
 			this.levelIndicator2.Maximum = 100;
 			this.levelIndicator2.Minimum = 0;
 			this.levelIndicator2.Name = "levelIndicator2";
-			this.levelIndicator2.Size = new System.Drawing.Size(26, 198);
-			this.levelIndicator2.TabIndex = 21;
 			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(698, 486);
 			this.Controls.Add(this.tabControl1);
-			this.MinimumSize = new System.Drawing.Size(714, 524);
 			this.Name = "Form1";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-			this.Text = "Machine Learning";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.nupHold)).EndInit();
 			this.tabControl1.ResumeLayout(false);
@@ -984,10 +761,10 @@
 			this.tabPage1.PerformLayout();
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picWorking)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartCurves)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.picWorking)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.Thold2)).EndInit();
@@ -1011,7 +788,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Button btnPlay;
-        private System.Windows.Forms.CheckBox chkThold;
+        private System.Windows.Forms.CheckBox chkThreshold;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown nupHold;
 		private Views.LevelIndicator levelIndicator1;
@@ -1023,8 +800,8 @@
 		private System.Windows.Forms.TextBox txtLabel;
 		private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Button btRemoveFeatures;
-		private System.Windows.Forms.Button btGenFeatures;
+		private System.Windows.Forms.Button btRemoveData;
+		private System.Windows.Forms.Button btGenData;
 		private System.Windows.Forms.Label lblFeatStatus;
 		private System.Windows.Forms.ProgressBar progDataGen;
 		private System.Windows.Forms.Label label10;
@@ -1046,13 +823,13 @@
         private System.Windows.Forms.TextBox txtTiempo2;
         private System.Windows.Forms.Label lblPrediction;
 		private System.Windows.Forms.Button btSvm;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox txNombreFuncion;
+        private System.Windows.Forms.Button btAddFunction;
+        private System.Windows.Forms.TextBox txtFunction;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btRemoveLabel;
         private System.Windows.Forms.Button btAddLabel;
-        private System.Windows.Forms.ListBox listEtiquetasFuncion;
-        private System.Windows.Forms.ListBox listFunciones;
+        private System.Windows.Forms.ListBox listLabels;
+        private System.Windows.Forms.ListBox listFunctions;
         private System.Windows.Forms.ProgressBar progressBar2;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label16;
@@ -1071,6 +848,11 @@
 		private System.Windows.Forms.RadioButton radLambdaSingle;
 		private System.Windows.Forms.RadioButton radLambdaSet;
 		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Button btRemoveFunction;
+		private System.Windows.Forms.CheckBox checkPlotTestErr;
+		private System.Windows.Forms.CheckBox checkPlotTrainErr;
+		private System.Windows.Forms.CheckBox checkPlotTestCost;
+		private System.Windows.Forms.CheckBox checkPlotTrainCost;
 
 	}
 }

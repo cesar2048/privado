@@ -67,6 +67,14 @@ namespace SpeechAnalyzer.Model
 			this.featuresGenerator = new FeaturesGenerator(dataDir, tempDir, SonicAnotatorPath, ConsoleFunction);
 		}
 
+		private void Log(String msg)
+		{
+			if (this.ConsoleFunction != null)
+			{
+				this.ConsoleFunction(msg);
+			}
+		}
+
 
 		/// <summary>
 		/// Step 1, generate all the features for the training files
@@ -112,7 +120,7 @@ namespace SpeechAnalyzer.Model
 			NeuralNetwork nn = new NeuralNetwork(nnp, this.ConsoleFunction);
 			
 			int[] predictions;
-			List<double> lambdas = this.LambdaValues;
+			List<double> lambdas = new List<double>(this.LambdaValues);
 			if (!useLambdaSet)
 			{
 				lambdas.Clear();
@@ -123,33 +131,43 @@ namespace SpeechAnalyzer.Model
 			CostTest.Clear();
 			ErrorTrain.Clear();
 			ErrorTest.Clear();
-			for(int i=0; i < LambdaValues.Count; i++)
-			{
-				if (ConsoleFunction != null) ConsoleFunction("Training with λ = " + LambdaValues[i]);
 
-				nn.setLambda( LambdaValues[i] );
+			for (int i = 0; i < lambdas.Count; i++)
+			{
+				Log("");
+				Log("Training with λ = " + lambdas[i]);
+
+				nn.setLambda(lambdas[i]);
 				nn.Train(this.Iterations, Xtrain, ytrain);
+				
 				CostTrain.Add(nn.costFunction(Xtrain, ytrain, false));
 				CostTest.Add(nn.costFunction(Xtest, ytest, false));
-				ErrorTrain.Add(100*(1 - nn.Predict(Xtrain, ytrain, out predictions)) );
-				ErrorTest.Add(100*(1-nn.Predict(Xtest, ytest, out predictions)));
 
-				if (progressCallback != null) progressCallback( (i+1) * 100 / LambdaValues.Count );
-				if (ConsoleFunction != null) ConsoleFunction("Avg cost exec time = " + nn.AvgCostExecTime );
-				if (ConsoleFunction != null) ConsoleFunction("Avg grad exec time = " + nn.AvgGradExecTime);
+				ErrorTrain.Add(1 - nn.Predict(Xtrain, ytrain, out predictions) );
+				ErrorTest.Add(1-nn.Predict(Xtest, ytest, out predictions));
+
+				if (progressCallback != null) progressCallback((i + 1) * 100 / lambdas.Count);
+				Log("Avg cost exec time = " + nn.AvgCostExecTime);
+				Log("Avg grad exec time = " + nn.AvgGradExecTime);
+				Log(String.Format("Train error {0,5:p}", ErrorTrain.Last() ));
+				Log(String.Format("Test  error {0,5:p}", ErrorTest.Last() ));
 			}
-			
-			this.FinalAccuracy = nn.Predict(Xtest, ytest, out predictions);
-			this.FinalCostValue = nn.costFunction();
+
+			this.FinalAccuracy = 1 - ErrorTest.Last();
+			this.FinalCostValue = CostTest.Last();
 			
 			// save nerual network
 			NeuralNetworkParameters.Save(networkFile.FullName, nnp);
 
 			// process finished
-			System.Diagnostics.Debug.WriteLine("------------------------");
+			Log("------------ Results");
+			Log("lambda,cost train,error train,cost test, error test");
+			for (int i = 0; i < lambdas.Count; i++)
+			{
+				Log(String.Format("{0},{1},{2},{3},{4}", lambdas[i], CostTrain[i], ErrorTrain[i], CostTest[i], ErrorTest[i]));
+			}
+			
 			System.Diagnostics.Debug.WriteLine("training result J = {0,5:f}	accuracy = {1,8:p}", FinalCostValue, FinalAccuracy);
-			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", CostTrain.ToArray()), "");
-			System.Diagnostics.Debug.WriteLine("errors => {0}", String.Join(",", CostTest.ToArray()), "");
 		}
 
 		/// <summary>

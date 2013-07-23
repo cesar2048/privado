@@ -6,8 +6,9 @@ using SVM;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Double.IO;
 using MathNet.Numerics.LinearAlgebra.IO;
+using SpeechAnalyzer.Model;
 
-namespace SpeechAnalyzer.Model
+namespace SpeechAnalyzer.Testing
 {
 	class LibSvmTest
 	{

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoAudio", "DemoAudio\Demo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SocketClientTest", "SocketClientTest\SocketClientTest.vcxproj", "{B5AEF62A-F47C-4AEC-8911-0EF2B1D2F45D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServerTest", "SocketServerTest\SocketServerTest.csproj", "{5EC701EB-89B4-4D18-A5AF-FBB23607A460}"
-EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup1", "Setup1\Setup1.isproj", "{05E46CC2-C275-40E8-908D-43773D27AA14}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A507C96B-4CFB-49F4-B4C0-4209EF1F88D9} = {A507C96B-4CFB-49F4-B4C0-4209EF1F88D9}
@@ -54,16 +52,6 @@ Global
 		{B5AEF62A-F47C-4AEC-8911-0EF2B1D2F45D}.Release|Win32.ActiveCfg = Release|Win32
 		{B5AEF62A-F47C-4AEC-8911-0EF2B1D2F45D}.Release|Win32.Build.0 = Release|Win32
 		{B5AEF62A-F47C-4AEC-8911-0EF2B1D2F45D}.Release|x86.ActiveCfg = Release|Win32
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Debug|Win32.ActiveCfg = Debug|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Debug|x86.ActiveCfg = Debug|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Debug|x86.Build.0 = Debug|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Release|Mixed Platforms.Build.0 = Release|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Release|Win32.ActiveCfg = Release|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Release|x86.ActiveCfg = Release|x86
-		{5EC701EB-89B4-4D18-A5AF-FBB23607A460}.Release|x86.Build.0 = Release|x86
 		{05E46CC2-C275-40E8-908D-43773D27AA14}.Debug|Mixed Platforms.ActiveCfg = SingleImage
 		{05E46CC2-C275-40E8-908D-43773D27AA14}.Debug|Win32.ActiveCfg = DVD-5
 		{05E46CC2-C275-40E8-908D-43773D27AA14}.Debug|Win32.Build.0 = DVD-5

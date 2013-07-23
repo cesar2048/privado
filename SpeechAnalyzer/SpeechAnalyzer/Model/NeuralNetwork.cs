@@ -208,12 +208,14 @@ namespace SpeechAnalyzer.Model
 		public double costFunction(DenseMatrix X, DenseVector y, bool useLambda = true)
 		{
 			double auxLambda = nnp.lambda;
+			double cost = 0;
 			if (!useLambda) nnp.lambda = 0;
 			
 			SetInputData(X, y, nnp.GetNormalization());
+			cost = this.costFunction();
 			
 			if (!useLambda) nnp.lambda = auxLambda;
-			return this.costFunction();
+			return cost;
 		}
 		
 		public void Train(int funEvaluations, DenseMatrix X, DenseVector y)

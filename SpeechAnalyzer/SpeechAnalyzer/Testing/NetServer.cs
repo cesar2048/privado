@@ -6,13 +6,13 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 
-namespace SocketServerTest
+namespace SpeechAnalyzer.Testing
 {
-	class Program
+	class NetServer
 	{
 		static TcpListener listener;
 
-		static void Main(string[] args)
+		static void Start()
 		{
 			IPAddress ipAddress = Dns.GetHostEntry("localhost").AddressList[0];
 			Thread thListener = new Thread(new ThreadStart(ListenerThread));
@@ -28,17 +28,16 @@ namespace SocketServerTest
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.ToString());
+				System.Diagnostics.Debug.WriteLine(e.ToString());
 			}
 
-			Console.WriteLine("Escuchando...");
-			Console.WriteLine("Presione cualquier tecla para finalizar");
-			Console.ReadKey(true);
+			System.Diagnostics.Debug.WriteLine("Escuchando...");
+			System.Diagnostics.Debug.WriteLine("Presione cualquier tecla para finalizar");
 		}
 
 		static void ListenerThread()
 		{
-			Console.WriteLine("listener = " + listener);
+			System.Diagnostics.Debug.WriteLine("listener = " + listener);
 
 			while (true)
 			{
@@ -50,10 +49,10 @@ namespace SocketServerTest
 				while (byteValue != -1)
 				{
 					byteValue = stream.ReadByte();
-					Console.Write((char)byteValue);
+					System.Diagnostics.Debug.Write((char)byteValue);
 				}
 				
-				Console.WriteLine("\ncliente desconectado");
+				System.Diagnostics.Debug.WriteLine("\ncliente desconectado");
 			}
 		}
 	}

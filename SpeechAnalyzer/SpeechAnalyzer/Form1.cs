@@ -90,39 +90,33 @@ namespace SpeechAnalyzer
 		{
 			// tab grabaciones
 
-			filePaths = withOutSlash(Directory.GetFiles(@config.DataDirectory, "*.wav"));
+			filePaths =	Directory
+				.GetFiles(@config.DataDirectory, "*.wav")
+				.Select(name => Path.GetFileName(name))
+				.ToArray();
+			
 			this.listBoxRecordings.Items.AddRange(filePaths);
 
             time = (float)Convert.ToDouble(txtTiempo.Text);
 			this.nupHold.Value = 30;
             this.tHoldValue2 = 30;
-			// tab neural network
 			
+			// tab neural network
 			this.picWorking.Visible = false;
 			this.txtLambda.Text = analysis.Lambda.ToString();
 			this.analysis.Iterations = Convert.ToInt32(this.txtIteraciones.Text);
 
-			// tab datos
 			this.progDataGen.Visible = false;
 
 			try
 			{
 				var funcionesList = analysis.LoadFeatures().ToArray();
-				this.listFunciones.Items.AddRange(funcionesList);
-				this.listFunciones.SelectedIndex = 0;
+				this.listFunctions.Items.AddRange(funcionesList);
+				this.listFunctions.SelectedIndex = 0;
 				this.analysis.UpdateProblemName(funcionesList[0]);
-
 			}
 			catch (Exception /*e*/) { }
-
-			lblFeatStatusUpdate();
-		}
-
-
-		private string[] withOutSlash(string[] filePaths)
-		{
-			return (from name in filePaths
-					select Path.GetFileName(name)).ToArray();
+			UpdateDataStatusLabel();
 		}
 
 		private void LoadWasapiDevicesCombo()
@@ -132,145 +126,6 @@ namespace SpeechAnalyzer
 
 			comboWasapiDevices.DataSource = devices;
 			comboWasapiDevices.DisplayMember = "FriendlyName";
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//															//
-		// ---------------- neural network code ------------------- //
-		//															//
-
-		private void btTrain_Click(object sender, EventArgs e)
-		{
-			this.lblNetStatus.Text = "Working...";
-			this.btTrain.Enabled = false;
-			this.txtLambda.Enabled = false;
-			this.picWorking.Visible = true;
-			this.progDataGen.Value = 0;
-			this.progDataGen.Visible = true;
-
-			this._bkgTraining.RunWorkerAsync();
-		}
-
-		void _bkgTraining_DoWork(object sender, DoWorkEventArgs e)
-		{
-			try	{
-				bool useLambdaSet = radLambdaSet.Checked;
-				this.analysis.TrainNeuralNetwork( 
-					val => ((BackgroundWorker)sender).ReportProgress(val), 
-					useLambdaSet
-				);
-				e.Result = this.analysis.FinalCostValue;
-			} catch (Exception) {
-				e.Result = "No se han generado las features";
-			}
-		}
-		
-		void _bkgTraining_ProgressChanged(object sender, ProgressChangedEventArgs e)
-		{
-			this.progDataGen.Value = e.ProgressPercentage;
-			
-			// plot error graph
-			foreach (var serie in chartCurves.Series)
-			{
-				serie.Points.Clear();
-			}
-			for (int i = 0; i < analysis.CostTest.Count; i++)
-			{
-				chartCurves.Series["Training"].Points.AddXY(i, analysis.CostTrain[i]);
-				chartCurves.Series["Testing"].Points.AddXY(i, analysis.CostTest[i]);
-				
-				chartCurves.Series["ErrTraining"].Points.AddXY(i, analysis.ErrorTrain[i]);
-				chartCurves.Series["ErrTesting"].Points.AddXY(i, analysis.ErrorTest[i]);
-			}
-		}
-
-		void _bkgTraining_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			if (e.Result is String) {
-				this.lblNetStatus.Text = e.Result.ToString();
-			} else {
-				this.lblNetStatus.Text = String.Format("Cost = {0,5:f} accuracy = {1,8:p}",
-						analysis.FinalCostValue,
-						analysis.FinalAccuracy);
-			}
-			
-			this.btTrain.Enabled = true;
-			this.txtLambda.Enabled = true;
-			this.picWorking.Visible = false;
-			this.progDataGen.Visible = false;
-		}
-
-		private void btPredecir_Click(object sender, EventArgs e)
-		{
-			if (listBoxRecordings.SelectedItem == null)
-			{
-				MessageBox.Show("No audio selected");
-				return;
-			}
-
-			String file = listBoxRecordings.SelectedItem.ToString();
-			String label = this.analysis.TestNeuralNetwork(Path.Combine(config.DataDirectory, file));
-			MessageBox.Show("Tipo:" + label);
-		}
-
-		private void btSavePlot_Click(object sender, EventArgs e)
-		{
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
-			sfd.FilterIndex = 0;
-			sfd.RestoreDirectory = true;
-
-			Stream outStream = null;
-			if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-			{
-				if ((outStream = sfd.OpenFile()) != null)
-				{
-					chartCurves.SaveImage(outStream, System.Drawing.Imaging.ImageFormat.Png);
-					outStream.Close();
-				}
-			}
-		}
-
-		// -------------- SVM TEST -------------------------- //
-
-		private void btSvm_Click(object sender, EventArgs e)
-		{
-			picWorking.Visible = true;
-			btSvm.Enabled = false;
-			_bkgSvm.RunWorkerAsync();
-		}
-
-		void _bkgSvm_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			btSvm.Enabled = true;
-			picWorking.Visible = false;
-			lblNetStatus.Text = String.Format("SVM Accuracy =  {0,8:p}", e.Result);
-		}
-
-		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
-		{
-			e.Result = Model.LibSvmTest.TestOnData();
 		}
 
 		public void ConsoleAppend(String str)
@@ -300,9 +155,144 @@ namespace SpeechAnalyzer
 
 
 
-		//															//
-		// ---------------- recording ----------------------------- //
-		//															//
+
+
+		//-------------------------------------------------------------//
+		//                     Neural network code 
+		//-------------------------------------------------------------//
+
+		private void btTrain_Click(object sender, EventArgs e)
+		{
+			this.lblNetStatus.Text = "Working...";
+			this.btTrain.Enabled = false;
+			this.txtLambda.Enabled = false;
+			this.picWorking.Visible = true;
+			this.progDataGen.Value = 0;
+			this.progDataGen.Visible = true;
+
+			double lambda = 0;
+			if (Double.TryParse(txtLambda.Text, out lambda))
+			{
+				this.analysis.Lambda = lambda;
+				this._bkgTraining.RunWorkerAsync();
+			}
+			else
+			{
+				txtLambda.Text = "0.1";
+				MessageBox.Show("Invalid lambda");
+			}
+		}
+
+		void _bkgTraining_DoWork(object sender, DoWorkEventArgs e)
+		{
+			try	{
+				bool useLambdaSet = radLambdaSet.Checked;
+				this.analysis.TrainNeuralNetwork( 
+					val => ((BackgroundWorker)sender).ReportProgress(val), 
+					useLambdaSet
+				);
+				e.Result = this.analysis.FinalCostValue;
+			} catch (Exception ex) {
+				e.Result = "An error ocurred: " + ex.Message;
+			}
+		}
+		
+		void _bkgTraining_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			this.progDataGen.Value = e.ProgressPercentage;
+			PlotRedraw();
+		}
+
+		private void PlotRedraw()
+		{
+			// plot error graph
+			foreach (var serie in chartCurves.Series)
+			{
+				serie.Points.Clear();
+			}
+			for (int i = 0; i < analysis.CostTest.Count; i++)
+			{
+				chartCurves.Series["Training"].Points.AddXY(i, analysis.CostTrain[i]);
+				chartCurves.Series["Testing"].Points.AddXY(i, analysis.CostTest[i]);
+
+				chartCurves.Series["ErrTraining"].Points.AddXY(i, analysis.ErrorTrain[i] * 100);
+				chartCurves.Series["ErrTesting"].Points.AddXY(i, analysis.ErrorTest[i] * 100);
+			}
+		}
+
+		void _bkgTraining_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (e.Result is String) {
+				this.lblNetStatus.Text = e.Result.ToString();
+			} else {
+				this.lblNetStatus.Text = String.Format("Cost = {0,5:f} Test set accuracy = {1,8:p}",
+						analysis.FinalCostValue,
+						analysis.FinalAccuracy);
+			}
+			
+			this.btTrain.Enabled = true;
+			this.txtLambda.Enabled = true;
+			this.picWorking.Visible = false;
+			this.progDataGen.Visible = false;
+		}
+
+		private void btPredecir_Click(object sender, EventArgs e)
+		{
+			if (listBoxRecordings.SelectedItem == null)
+			{
+				MessageBox.Show("No audio selected");
+				return;
+			}
+
+			String file = listBoxRecordings.SelectedItem.ToString();
+			String label = this.analysis.TestNeuralNetwork(Path.Combine(config.DataDirectory, file));
+			MessageBox.Show("Tipo:" + label);
+		}
+		
+		// -------------- SVM TEST -------------------------- //
+
+		private void btSvm_Click(object sender, EventArgs e)
+		{
+			picWorking.Visible = true;
+			btSvm.Enabled = false;
+			_bkgSvm.RunWorkerAsync();
+		}
+
+		void _bkgSvm_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			btSvm.Enabled = true;
+			picWorking.Visible = false;
+			lblNetStatus.Text = String.Format("SVM Accuracy =  {0,8:p}", e.Result);
+		}
+
+		void _bkgSvm_DoWork(object sender, DoWorkEventArgs e)
+		{
+			e.Result = SpeechAnalyzer.Testing.LibSvmTest.TestOnData();
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// ---------------------------------------------------------
+		//                 TAB 1: Recording 
+		// ---------------------------------------------------------
 
 		private void StartRecording_Click(object sender, EventArgs e)
 		{
@@ -360,7 +350,7 @@ namespace SpeechAnalyzer
 			else
 			{
 				bool oldTHold = tHoldInicio;
-				if (chkThold.Checked == false)
+				if (chkThreshold.Checked == false)
 				{
 					tHoldInicio = true;
 				}
@@ -451,26 +441,9 @@ namespace SpeechAnalyzer
 		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//															//
-		// ---------------- sounds list playback------------------- //
-		//															//
+		// ---------------------------------------------------------
+		//                 sounds list playback
+		// ---------------------------------------------------------
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
@@ -542,9 +515,9 @@ namespace SpeechAnalyzer
 		}
 
 
-		private void checkBox1_CheckedChanged(object sender, EventArgs e)
+		private void chkTreshold_CheckedChanged(object sender, EventArgs e)
 		{
-			if (chkThold.Checked)
+			if (chkThreshold.Checked)
 			{
 				btStopRecording.Enabled = false;
 				nupHold.Enabled = true;
@@ -620,14 +593,245 @@ namespace SpeechAnalyzer
 
 
 
+		// ------------------------------------------------------------------------
+		//                           TAB 3: Escuchar
+		// ------------------------------------------------------------------------
+
+
+		private void btnEscuchar_Click(object sender, EventArgs e)
+		{
+			time2 = (float)Convert.ToDouble(txtTiempo2.Text.Replace('.', '.'));
+			//System.Diagnostics.Debug.WriteLine("variable time" + time2 + "texto=" + txtTiempo2.Text);
+			if (waveIn2 == null)
+			{
+				outputFilename2 = String.Format("temp.wav", DateTime.Now);
+				waveIn2 = new WaveIn();
+				waveIn2.WaveFormat = new WaveFormat(muestrasSegundo, 1);
+				waveIn2.DataAvailable += OnDataAvailable2;
+				waveIn2.RecordingStopped += OnRecordingStopped2;
+
+				writer2 = new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
+				waveIn2.StartRecording();
+
+				// btStartRecording.Enabled = false;
+			}
+		}
+
+		void OnDataAvailable2(object sender, WaveInEventArgs e)
+		{
+			MemoryStream ms = new MemoryStream(e.Buffer);
+			BinaryReader br = new BinaryReader(ms);
+			try
+			{
+				double max = 0;
+				for (int i = 0; i < e.Buffer.Length / 2; i++)
+				{
+					double val = Math.Abs((br.ReadInt16() * 100.0) / 0x8FFF);
+					if (val > max) max = val;
+				}
+				if (max > tHoldValue2) { tHoldInicio2 = true; }
+				this.levelIndicator2.Level = (int)max;
+			}
+			catch (EndOfStreamException /*eos*/)
+			{
+				// ignored
+			}
+			finally
+			{
+				br.Close();
+			}
+			if (tHoldInicio2)
+			{
+				writer2.Write(e.Buffer, 0, e.BytesRecorded);
+				float secondsRecorded2 = (float)writer2.Length / (float)writer2.WaveFormat.AverageBytesPerSecond;
+				if (secondsRecorded2 >= time2)
+				{
+					tHoldInicio2 = false;
+					stopWriting2();
+					progressBar2.Value = 0;
+				}
+				else
+				{
+					progressBar2.Value = (int)((secondsRecorded2 / time2) * 100);
+				}
+			}
+		}
+
+		private void stopWriting2()
+		{
+
+			if (writer2 != null)
+			{
+				writer2.Close();
+				String label = this.analysis.TestNeuralNetwork(Path.Combine(config.TempDirectory, "temp.wav"));
+				lblPrediction.Text = label;
+				writer2 = new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
+
+				enviar(label);
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			if (waveIn2 != null)
+			{
+				waveIn2.Dispose();
+				waveIn2 = null;
+			}
+			if (writer2 != null)
+			{
+				writer2.Close();
+				writer2 = null;
+			}
+		}
+
+        private void Thold2_ValueChanged(object sender, EventArgs e)
+        {
+            tHoldValue2 = (int)nupHold.Value;
+        }
+
+		private void OnRecordingStopped2(object sender, EventArgs e)
+		{
+			if (waveIn2 != null)
+			{
+				waveIn2.Dispose();
+				waveIn2 = null;
+			}
+			if (writer2 != null)
+			{
+				writer2.Close();
+				writer2 = null;
+			}
+		}
 
 
 
-		//
-		// -------------------- tab Neural Network ---------------------
-		//
 
-		private void btRemoveFeatures_Click(object sender, EventArgs e)
+
+
+
+
+
+
+		//------------------------------------------------------------------
+		//			TAB 2: Machine Learning
+		//------------------------------------------------------------------
+
+
+
+		private void btAddFunction_Click(object sender, EventArgs e)
+		{
+			string function = txtFunction.Text;
+			if (function != "")
+			{
+				listFunctions.Items.Add(function);
+				this.analysis.SaveFeature(function);
+
+				txtFunction.Text = "";	// finally reset
+			}
+			else
+			{
+				MessageBox.Show("Ingrese un nombre para la funcion");
+			}
+
+		}
+
+
+		private void btRemoveFunction_Click(object sender, EventArgs e)
+		{
+			if (listFunctions.SelectedIndex >= 0)
+			{
+				analysis.DeleteFeature(listFunctions.SelectedItem.ToString());
+				listLabels.Items.Clear();
+				listFunctions.Items.Remove(listFunctions.SelectedItem);
+			}
+		}
+
+		private void btAddLabel_Click(object sender, EventArgs e)
+		{
+			if (txtLabel.Text.Trim().Length > 0)
+			{
+				analysis.SaveFeatureLabel(listFunctions.SelectedItem.ToString(), txtLabel.Text.Trim());
+				listLabels.Items.Add(txtLabel.Text.Trim());
+				txtLabel.Text = "";
+			}
+			else
+			{
+				MessageBox.Show("Seleccione una etiqueta y una funcion");
+			}
+		}
+
+		private void btRemoveLabel_Click(object sender, EventArgs e)
+		{
+			if (listFunctions.SelectedIndex >= 0 && listLabels.SelectedIndex >= 0)
+			{
+				analysis.DeleteFeatureLabel(listFunctions.SelectedItem.ToString(), listLabels.SelectedItem.ToString());
+				listLabels.Items.RemoveAt(listLabels.SelectedIndex);
+			}
+			else
+			{
+				MessageBox.Show("Seleccione una etiqueta y una funcion");
+			}
+		}
+		
+		private void listFunciones_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			listLabels.Items.Clear();
+			if (listFunctions.SelectedItem != null)
+			{
+				string funcion = listFunctions.SelectedItem.ToString();
+				List<String> etiquetas = analysis.LoadLabelFeatures(funcion);
+
+				listLabels.Items.AddRange(etiquetas.ToArray());
+
+				analysis.UpdateProblemName(funcion);
+				UpdateDataStatusLabel();
+			}
+		}
+
+
+		private void UpdateDataStatusLabel()
+		{
+			lblFeatStatus.Text = "(No generado)";
+			if (analysis.trainingFile.Exists)
+			{
+				lblFeatStatus.Text = "Datos listos";
+			}
+		}
+
+		private void radLambdaSingle_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radLambdaSet.Checked)
+			{
+				txtLambda.Enabled = false;
+			}
+			else
+			{
+				txtLambda.Enabled = true;
+			}
+		}
+
+
+		private void btSavePlot_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
+			sfd.FilterIndex = 0;
+			sfd.RestoreDirectory = true;
+
+			Stream outStream = null;
+			if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				if ((outStream = sfd.OpenFile()) != null)
+				{
+					chartCurves.SaveImage(outStream, System.Drawing.Imaging.ImageFormat.Png);
+					outStream.Close();
+				}
+			}
+		}
+
+
+		private void btRemoveData_Click(object sender, EventArgs e)
 		{
 			if (analysis.trainingFile.Exists)
 			{
@@ -636,12 +840,12 @@ namespace SpeechAnalyzer
 			}
 		}
 
-		private void btGenFeatures_Click(object sender, EventArgs e)
+		private void btGenData_Click(object sender, EventArgs e)
 		{
 			this.progDataGen.Visible = true;
 			this.btTrain.Enabled = false;
-			this.btGenFeatures.Enabled = false;
-			this.btRemoveFeatures.Enabled = false;
+			this.btGenData.Enabled = false;
+			this.btRemoveData.Enabled = false;
 			this._bkgDataGeneration.RunWorkerAsync();
 		}
 
@@ -669,8 +873,8 @@ namespace SpeechAnalyzer
 		{
 			this.progDataGen.Visible = false;
 			this.btTrain.Enabled = true;
-			this.btGenFeatures.Enabled = true;
-			this.btRemoveFeatures.Enabled = true;
+			this.btGenData.Enabled = true;
+			this.btRemoveData.Enabled = true;
 
 			if (String.Equals(e.Result, Boolean.TrueString))
 			{
@@ -682,198 +886,15 @@ namespace SpeechAnalyzer
 			}
 		}
 
-		//
-		// ------------------------- TAB: Escuchar  ------------------------------ //
-		//
-
-
-        private void btnEscuchar_Click(object sender, EventArgs e)
-        {
-            time2 = (float)Convert.ToDouble(txtTiempo2.Text.Replace('.','.'));
-            //System.Diagnostics.Debug.WriteLine("variable time" + time2 + "texto=" + txtTiempo2.Text);
-            if (waveIn2 == null)
-            {
-                outputFilename2 = String.Format("temp.wav", DateTime.Now);
-                waveIn2 = new WaveIn();
-                waveIn2.WaveFormat = new WaveFormat(muestrasSegundo, 1);
-                waveIn2.DataAvailable += OnDataAvailable2;
-                waveIn2.RecordingStopped += OnRecordingStopped2;
-
-                writer2 = new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
-                waveIn2.StartRecording();
-
-               // btStartRecording.Enabled = false;
-            }
-
-        }
-        void OnDataAvailable2(object sender, WaveInEventArgs e)
-        {
-                MemoryStream ms = new MemoryStream(e.Buffer);
-                BinaryReader br = new BinaryReader(ms);
-                try
-                {
-                    double max = 0;
-                    for (int i = 0; i < e.Buffer.Length / 2; i++)
-                    {
-                        double val = Math.Abs((br.ReadInt16() * 100.0) / 0x8FFF);
-                        if (val > max) max = val;
-                    }
-                    if (max > tHoldValue2) { tHoldInicio2 = true; }
-                    this.levelIndicator2.Level = (int)max;
-                }
-                catch (EndOfStreamException /*eos*/)
-                {
-                    // ignored
-                }
-                finally
-                {
-                    br.Close();
-                }
-                if (tHoldInicio2)
-                {
-                    writer2.Write(e.Buffer, 0, e.BytesRecorded);
-                    float secondsRecorded2 = (float)writer2.Length / (float)writer2.WaveFormat.AverageBytesPerSecond;
-                    if (secondsRecorded2 >= time2)
-                    {            
-                        tHoldInicio2 = false;
-                        stopWriting2();
-                        progressBar2.Value = 0;
-                    }
-                    else
-                    {
-                        progressBar2.Value = (int)((secondsRecorded2 / time2) * 100);
-                    }
-                }
-        }
-        
-		private void stopWriting2(){
-        
-                if (writer2 != null)
-                {
-                    writer2.Close();
-                    String label = this.analysis.TestNeuralNetwork(Path.Combine(config.TempDirectory, "temp.wav"));
-                   // MessageBox.Show("Tipo:" + label);
-                    lblPrediction.Text = label ;
-                   //File.Delete(Path.Combine(outputFolder2, outputFilename2));
-                    writer2=new WaveFileWriter(Path.Combine(outputFolder2, outputFilename2), waveIn2.WaveFormat);
-
-					enviar(label);
-                }
-        }
-        
-		private void button1_Click(object sender, EventArgs e)
-        {
-            if(waveIn2!=null){
-                 waveIn2.Dispose();
-                 waveIn2 = null;
-            }
-            if(writer2!=null){
-                writer2.Close();
-                writer2 = null;
-            }
-        }
-
-        private void Thold2_ValueChanged(object sender, EventArgs e)
-        {
-            tHoldValue2 = (int)nupHold.Value;
-        }
-
-        private void OnRecordingStopped2(object sender, EventArgs e){
-            if(waveIn2!= null)
-            {
-               waveIn2.Dispose();
-               waveIn2 = null;
-            }
-            if(writer2!=null)
-            {
-                writer2.Close();
-                writer2 = null;
-            }
-        }
-
-
-		private void button4_Click(object sender, EventArgs e)
+		private void checkPlot_CheckedChanged(object sender, EventArgs e)
 		{
-			if (txNombreFuncion.Text != "")
-			{
-				listFunciones.Items.Add(txNombreFuncion.Text);
-				txNombreFuncion.Text = "";
-				this.analysis.SaveFeature(txNombreFuncion.Text);
-			}
-			else
-			{
-				MessageBox.Show("Ingrese un nombre para la funcion");
-			}
-		}
+			chartCurves.Series["Training"].Enabled = checkPlotTrainCost.Checked;
+			chartCurves.Series["Testing"].Enabled = checkPlotTestCost.Checked;
 
+			chartCurves.Series["ErrTraining"].Enabled = checkPlotTrainErr.Checked;
+			chartCurves.Series["ErrTesting"].Enabled = checkPlotTestErr.Checked;
 
-
-
-
-
-		private void lblFeatStatusUpdate()
-		{
-			lblFeatStatus.Text = "(No generado)";
-			if (analysis.trainingFile.Exists)
-			{
-				lblFeatStatus.Text = "Datos listos";
-			}
-		}
-
-		private void listFunciones_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			string funcion = listFunciones.SelectedItem.ToString();
-			List<String> etiquetas=analysis.LoadLabelFeatures(funcion);
-			
-			listEtiquetasFuncion.Items.Clear();
-			listEtiquetasFuncion.Items.AddRange(etiquetas.ToArray());
-
-			analysis.UpdateProblemName(funcion);
-			lblFeatStatusUpdate();
-		}
-
-		private void btAddLabel_Click(object sender, EventArgs e)
-		{
-			if (txtLabel.Text.Trim().Length > 0)
-			{
-				analysis.SaveFeatureLabel(listFunciones.SelectedItem.ToString(), txtLabel.Text.Trim());
-				listEtiquetasFuncion.Items.Add( txtLabel.Text.Trim() );
-				txtLabel.Text = "";
-			}
-			else
-			{
-				MessageBox.Show("Seleccione una etiqueta y una funcion");
-			}
-		}
-
-		private void btRemoveLabel_Click(object sender, EventArgs e)
-		{
-			if (listFunciones.SelectedIndex >= 0 && listEtiquetasFuncion.SelectedIndex >= 0)
-			{
-				analysis.DeleteFeatureLabel(listFunciones.SelectedItem.ToString(), listEtiquetasFuncion.SelectedItem.ToString());
-				listEtiquetasFuncion.Items.RemoveAt(listEtiquetasFuncion.SelectedIndex);
-			}
-			else
-			{
-				MessageBox.Show("Seleccione una etiqueta y una funcion");
-			}
-		}
-
-		private void radLambda_CheckedChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void radLambdaSingle_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radLambdaSet.Checked)
-			{
-				txtLambda.Enabled = false;
-			}
-			else
-			{
-				txtLambda.Enabled = true;
-			}
+			PlotRedraw();
 		}
 
 	}
