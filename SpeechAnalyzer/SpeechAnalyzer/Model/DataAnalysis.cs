@@ -181,11 +181,11 @@ namespace SpeechAnalyzer.Model
 		public String TestNeuralNetwork(String wavFilePath)
 		{
 			FileInfo wavFile = new FileInfo(wavFilePath);
-
+			if (!wavFile.Exists) throw new FileNotFoundException("Test file doesn't exists");
+			
 			LoadData();
 			if (nnp == null) throw new Exception("Neural network parameters are not loaded");
-			if (!wavFile.Exists) throw new FileNotFoundException("Test file doesn't exists");
-
+			NeuralNetwork nn = new NeuralNetwork(nnp);
 
 			// generate features for the testing file
 			List<AudioFileFeatures> trainingAudiosList = new List<AudioFileFeatures>();
@@ -197,16 +197,21 @@ namespace SpeechAnalyzer.Model
 
 			// execute neural network
 			int[] predictions;
-			NeuralNetwork nn = new NeuralNetwork(nnp);
-			this.FinalAccuracy = nn.Predict(X, y, out predictions);
+			DenseMatrix outLayerValues;
+			this.FinalAccuracy = nn.Predict(X, y, out predictions, out outLayerValues);
 
-			// load labels
-			var labels = LoadLabelFeatures(this.feature);
-
-			String label = "error";
+			// get the label
+			var labels		= LoadLabelFeatures(this.feature);
+			String label	= "error";
 			if (predictions[0] >= 0 && predictions[0] <= labels.Count)
 			{
-				label = labels[predictions[0] - 1];
+				label		= labels[predictions[0] - 1];
+			}
+
+			// log the probabilities
+			for (int i = 0; i < labels.Count; i++)
+			{
+				Log(String.Format("{0,6:F4} -> {1}", outLayerValues[0, i], labels[i]));
 			}
 
 			return label;

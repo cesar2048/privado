@@ -233,32 +233,36 @@ namespace SpeechAnalyzer.Model
 			setTheta(nnp.theta);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="X"></param>
-		/// <param name="y"></param>
-		/// <param name="predictions"></param>
-		/// <returns></returns>
-		public double Predict(DenseMatrix X, DenseVector y, out int[] predictions)
+		public double Predict(DenseMatrix X, DenseVector y, out int[] predictions, out DenseMatrix outLayerValues)
 		{
 			DenseMatrix z2, z3, a2, a3, ybinary;
 
 			SetInputData(X, y, nnp.GetNormalization() );
 			feedForward(out a2, out a3, out z2, out z3, out ybinary);
 
+			// get the predictions from the highest activation value per row
 			var query = from row in a3.RowEnumerator()
 						select row.Item2.AbsoluteMaximumIndex() + 1;
-
 			predictions = query.ToArray();
 
+			// calculate te accuracy
 			double acc = 0;
 			for (int i = 0; i < m; i++)
 			{
 				acc += (predictions[i] == (int)y[i]) ? 1 : 0;
 			}
 			acc /= m;
+
+			// write the activation values to the optional out vector
+			outLayerValues = DenseMatrix.OfMatrix(a3);
+
 			return acc;
+		}
+
+		public double Predict(DenseMatrix X, DenseVector y, out int[] predictions)
+		{
+			DenseMatrix outLayerValues;
+			return Predict(X, y, out predictions, out outLayerValues);
 		}
 
 		private void SetInputData(DenseMatrix X, DenseVector y, DenseMatrix normParams)
