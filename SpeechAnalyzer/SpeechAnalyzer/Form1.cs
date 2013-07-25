@@ -48,13 +48,14 @@ namespace SpeechAnalyzer
 
 		public Form1()
 		{
+			Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 			InitializeComponent();
 			Disposed += OnRecordingPanelDisposed;
 			if (Environment.OSVersion.Version.Major >= 6)
 			{
 				LoadWasapiDevicesCombo();
 			}
-           
+
 			this.config = Config.ReadConfigFile();
 			this.outputFolder = config.DataDirectory;
             this.outputFolder2 = config.TempDirectory;
@@ -246,7 +247,7 @@ namespace SpeechAnalyzer
 
 			String file = listBoxRecordings.SelectedItem.ToString();
 			String label = this.analysis.TestNeuralNetwork(Path.Combine(config.DataDirectory, file));
-			MessageBox.Show("Tipo:" + label);
+			this.lblTestPredict.Text = "Tipo:" + label;
 		}
 		
 		// -------------- SVM TEST -------------------------- //
@@ -554,6 +555,7 @@ namespace SpeechAnalyzer
 				player.Stop();
 			}
 			btnPlay.Text = "Reproducir";
+			lblTestPredict.Text = "";
 		}
 
 
@@ -793,10 +795,11 @@ namespace SpeechAnalyzer
 		private void UpdateDataStatusLabel()
 		{
 			lblFeatStatus.Text = "(No generado)";
-			if (analysis.trainingFile.Exists)
-			{
-				lblFeatStatus.Text = "Datos listos";
-			}
+			if (analysis.trainingFile.Exists) { lblFeatStatus.Text = "Features ready"; }
+			else { lblFeatStatus.Text = "empty"; }
+
+			if (analysis.networkFile.Exists) { lblNetStatus.Text = "Model ready"; }
+			else { lblNetStatus.Text = "empty"; }
 		}
 
 		private void radLambdaSingle_CheckedChanged(object sender, EventArgs e)

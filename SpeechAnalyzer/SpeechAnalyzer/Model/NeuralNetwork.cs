@@ -224,10 +224,12 @@ namespace SpeechAnalyzer.Model
 
 			// execute minimization algorithm
 			L_BFGS_B LBFGSB = new L_BFGS_B();
+			TruncatedNewton TN = new TruncatedNewton();
 			//LBFGSB.MaxFunEvaluations = funEvaluations;
 
 			this.RandInitializeTheta();
 			nnp.theta = LBFGSB.ComputeMin(this.costFunction, this.gradFunction, this.getTheta() );
+			//nnp.theta = TN.ComputeMin(this.costFunction, this.gradFunction, this.getTheta());
 			setTheta(nnp.theta);
 		}
 

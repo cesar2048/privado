@@ -100,6 +100,7 @@ namespace SpeechAnalyzer.Model
 		public void TrainNeuralNetwork(Action<int> progressCallback = null, bool useLambdaSet = false)
 		{
 			// load features
+			LoadData();
 			if (this.dataMat == null) {
 				throw new Exception("No features exists for training");
 			}
@@ -180,6 +181,8 @@ namespace SpeechAnalyzer.Model
 		public String TestNeuralNetwork(String wavFilePath)
 		{
 			FileInfo wavFile = new FileInfo(wavFilePath);
+
+			LoadData();
 			if (nnp == null) throw new Exception("Neural network parameters are not loaded");
 			if (!wavFile.Exists) throw new FileNotFoundException("Test file doesn't exists");
 
@@ -239,31 +242,6 @@ namespace SpeechAnalyzer.Model
 			return AudioInfosList;
 		}
 
-
-		public Labels LoadLabels()
-		{
-			Labels lbls = new Labels();
-        
-			try
-			{
-                DataTable recipe;
-                String query = "select nombre from etiquetas; ";
-                recipe = db.GetDataTable(query);
-                foreach (DataRow r in recipe.Rows)
-                {
-                    lbls.labelsList.Add(r["nombre"].ToString());
-                }
-			}
-			catch (Exception e)
-			{
-                MessageBox.Show("Error leyendo archivo labels: " + e.Message);
-				throw new Exception("Error leyendo archivo labels: " + e.Message);
-               
-			}
-			
-			return lbls;
-		}
-
 		public List<String> LoadFeatures()
 		{
 			List<String> listF = new List<String>();
@@ -311,6 +289,10 @@ namespace SpeechAnalyzer.Model
 			return listF;
 		}
 
+		/// <summary>
+		/// Changes the current problem
+		/// </summary>
+		/// <param name="problem"></param>
 		public void UpdateProblemName(String problem)
 		{
 			if (String.Equals(this.feature, problem))
@@ -320,17 +302,27 @@ namespace SpeechAnalyzer.Model
 
 			this.feature = problem;
 			problem += "-";
+			
 			this.trainingFile = new FileInfo(Path.Combine(TempDirectory, problem + "training-features.csv"));
 			this.networkFile = new FileInfo(Path.Combine(TempDirectory, problem + "networkParams.js"));
 
+			this.nnp = null;
+			this.dataMat = null;
+		}
+
+		/// <summary>
+		/// Load the neural network model and training data for the current problem
+		/// </summary>
+		private void LoadData()
+		{
 			// Load previously generated parameters if these are not already loaded
-			if (networkFile.Exists)
+			if (this.networkFile.Exists && this.nnp == null)
 			{
 				this.nnp = NeuralNetworkParameters.Load(networkFile.FullName);
 			}
 
 			// load previously generated features if the file exists
-			if (this.trainingFile.Exists)
+			if (this.trainingFile.Exists && this.dataMat == null)
 			{
 				DelimitedReader<DenseMatrix> matrixReader = new DelimitedReader<DenseMatrix>(",");
 				this.dataMat = matrixReader.ReadMatrix(trainingFile.FullName);	// load the features matrix from csv file

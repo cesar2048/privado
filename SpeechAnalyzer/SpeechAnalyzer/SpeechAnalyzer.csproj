@@ -122,9 +122,8 @@
     <Compile Include="Views\LevelIndicator.Designer.cs">
       <DependentUpon>LevelIndicator.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.en.resx">
+    <EmbeddedResource Include="Form1.es.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -158,9 +157,6 @@
     <None Include="Resources\120x120px-LS-482a3971_multilockon.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Nishad2m8-Hologram-Dock-My-music.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 y x64%29</ProductName>
@@ -185,9 +181,7 @@
   <ItemGroup>
     <Content Include="HologramMusic.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)Libs\sqlite\SQLite.Interop.dll"   "$(TargetDir)" /Y</PostBuildEvent>

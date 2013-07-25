@@ -55,6 +55,7 @@
 			this.lblStatus = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.lblTestPredict = new System.Windows.Forms.Label();
 			this.btPredecir = new System.Windows.Forms.Button();
 			this.levelIndicator1 = new SpeechAnalyzer.Views.LevelIndicator();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -252,6 +253,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.lblTestPredict);
 			this.tabPage1.Controls.Add(this.btPredecir);
 			this.tabPage1.Controls.Add(this.label1);
 			this.tabPage1.Controls.Add(this.comboWasapiDevices);
@@ -275,6 +277,11 @@
 			resources.ApplyResources(this.tabPage1, "tabPage1");
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// lblTestPredict
+			// 
+			resources.ApplyResources(this.lblTestPredict, "lblTestPredict");
+			this.lblTestPredict.Name = "lblTestPredict";
 			// 
 			// btPredecir
 			// 
@@ -853,6 +860,7 @@
 		private System.Windows.Forms.CheckBox checkPlotTrainErr;
 		private System.Windows.Forms.CheckBox checkPlotTestCost;
 		private System.Windows.Forms.CheckBox checkPlotTrainCost;
+		private System.Windows.Forms.Label lblTestPredict;
 
 	}
 }
